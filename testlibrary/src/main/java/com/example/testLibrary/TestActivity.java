@@ -81,7 +81,7 @@ public class TestActivity extends AbstractOneDataActivity {
         }
 
         @Override
-        protected void bindLayout(TestBean data) {
+        protected void bindLayout(TestBean data, int position) {
             LogHelper.of("TestActivityTag").always().join("bindLayout::").join(data).print();
             setText(R.id.title, data.getTitle());
             setListener(R.id.parent, v -> {

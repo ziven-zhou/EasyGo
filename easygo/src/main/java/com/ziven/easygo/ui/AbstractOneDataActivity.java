@@ -20,8 +20,8 @@ public abstract class AbstractOneDataActivity extends AbstractBaseActivity imple
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         mOnePresenter = AbstractPresenter.of(OnePresenter.class, obtainOneModelClass()).setView(this);
+        super.onCreate(savedInstanceState);
     }
 
     /**

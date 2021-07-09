@@ -24,7 +24,7 @@ public abstract class AbstractEasyAdapter<D, T extends AbstractEasyViewHolder<D>
 
     @Override
     public void onBindViewHolder(@NonNull T holder, int position) {
-        holder.bindLayout(mDataProvider.getData(position));
+        holder.bindLayout(mDataProvider.getData(position), position);
     }
 
     @Override

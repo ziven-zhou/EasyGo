@@ -114,6 +114,14 @@ public final class LogHelper {
     }
 
     @NonNull
+    public LogHelper exception(@NonNull Throwable tr) {
+        if(isPrint()) {
+            return join(tr);
+        }
+        return this;
+    }
+
+    @NonNull
     public LogHelper join(@Nullable Object o) {
         Condition.of(o).and(isPrint()).doTrue(() -> {
             mLog.append(o);

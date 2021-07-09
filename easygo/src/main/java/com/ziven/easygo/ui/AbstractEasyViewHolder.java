@@ -77,8 +77,9 @@ public abstract class AbstractEasyViewHolder<D> extends RecyclerView.ViewHolder 
     /**
      * Bind layout
      * @param data Data
+     * @param position Position
      */
-    protected abstract void bindLayout(D data);
+    protected abstract void bindLayout(D data, int position);
 
     protected <T extends View> T getView(@IdRes int id) {
         if(mViews != null && id != View.NO_ID) {

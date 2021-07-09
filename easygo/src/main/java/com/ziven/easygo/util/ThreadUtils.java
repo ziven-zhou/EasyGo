@@ -2,6 +2,7 @@ package com.ziven.easygo.util;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -327,6 +328,51 @@ public final class ThreadUtils {
                 carry.carry(times);
                 timesInterval(times - 1, interval, carry);
             }, interval);
+        }
+    }
+
+    public static TimesInterval timesInterval() {
+        return new TimesInterval();
+    }
+
+    public static class TimesInterval {
+
+        private final int mWhat;
+        private long mInterval = 1000;
+        private Carry<Integer> mCarry = r -> {};
+
+        private TimesInterval() {
+            mWhat = hashCode();
+        }
+
+        public TimesInterval interval(long interval) {
+            mInterval = interval;
+            return this;
+        }
+
+        public TimesInterval carry(@NonNull Carry<Integer> carry) {
+            mCarry = carry;
+            return this;
+        }
+
+        public TimesInterval start(int times) {
+            timesInterval(times);
+            return this;
+        }
+
+        private void timesInterval(int times) {
+            if(times >= 0) {
+                Message msg = Message.obtain(MAIN_HANDLER, () -> {
+                    mCarry.carry(times);
+                    timesInterval(times - 1);
+                });
+                msg.what = mWhat;
+                MAIN_HANDLER.sendMessageDelayed(msg, mInterval);
+            }
+        }
+
+        public void interrupt() {
+            MAIN_HANDLER.removeMessages(mWhat);
         }
     }
 }
