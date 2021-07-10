@@ -5,3 +5,5 @@ dependencies {
     implementation project(path: ':annotation')
     implementation 'com.squareup:javapoet:1.13.0'
 }
+
+apply from: rootProject.file('gradle/publish.gradle')

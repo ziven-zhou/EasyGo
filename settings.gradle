@@ -1,5 +1,4 @@
 include ':app',
         ':easygo',
         ':processor',
-        ':annotation',
-        ':testlibrary'
+        ':annotation'

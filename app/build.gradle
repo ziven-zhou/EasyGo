@@ -42,5 +42,4 @@ dependencies {
     implementation project(":easygo")
     implementation project(":annotation")
     annotationProcessor project(':processor')
-    implementation project(':testlibrary')
 }
