@@ -241,14 +241,136 @@ public final class ResourceUtils {
 
         private Sp() {}
 
-        public Sp obtainValues(@NonNull MultiCarry carry, @NonNull String... keys) {
-            final Object[] results = new Object[keys.length];
-            EasyUtils.forEach(keys, (v, p) -> results[p] = v);
+        public <T> Sp obtainValues(@NonNull Class<T> cls,
+                                   @NonNull MultiCarry<T> carry,
+                                   @NonNull String... keys) {
+            return obtainArray(cls, carry, keys);
+        }
+
+        public <T> Sp obtainArray(@NonNull Class<T> cls,
+                                   @NonNull MultiCarry<T> carry,
+                                   @NonNull String[] keys) {
+            if(cls.isAssignableFrom(String.class)) {
+                return obtainArray(cls, EasyUtils.transition(EasyUtils.EMPTY), carry, keys);
+            } else if(cls.isAssignableFrom(Boolean.class)) {
+                return obtainArray(cls, EasyUtils.transition(false), carry, keys);
+            }
+            return obtainArray(cls, EasyUtils.transition(0), carry, keys);
+        }
+
+        public <T> Sp obtainValues(@NonNull Class<T> cls,
+                                   @NonNull T def,
+                                   @NonNull MultiCarry<T> carry,
+                                   @NonNull String... keys) {
+            return obtainArray(cls, def, carry, keys);
+        }
+
+        public <T> Sp obtainArray(@NonNull Class<T> cls,
+                               @NonNull T def,
+                               @NonNull MultiCarry<T> carry,
+                               @NonNull String... keys) {
+            final SharedPreferences sp = CheckUtils.checkNull(mSp);
+            if(cls.isAssignableFrom(String.class)) {
+                final String[] results = new String[keys.length];
+                EasyUtils.forEach(keys, (v, p) -> results[p] = sp.getString(v, EasyUtils.transition(def)));
+                carry.carry(EasyUtils.transition(results));
+            } else if(cls.isAssignableFrom(Boolean.class)) {
+                final boolean[] results = new boolean[keys.length];
+                EasyUtils.forEach(keys, (v, p) -> results[p] = sp.getBoolean(v, EasyUtils.transition(def)));
+                carry.carry(EasyUtils.transition(results));
+            } else if(cls.isAssignableFrom(Integer.class)) {
+                final int[] results = new int[keys.length];
+                EasyUtils.forEach(keys, (v, p) -> results[p] = sp.getInt(v, EasyUtils.transition(def)));
+                carry.carry(EasyUtils.transition(results));
+            } else if(cls.isAssignableFrom(Long.class)) {
+                final long[] results = new long[keys.length];
+                EasyUtils.forEach(keys, (v, p) -> results[p] = sp.getLong(v, EasyUtils.transition(def)));
+                carry.carry(EasyUtils.transition(results));
+            } else if(cls.isAssignableFrom(Float.class)) {
+                final float[] results = new float[keys.length];
+                EasyUtils.forEach(keys, (v, p) -> results[p] = sp.getFloat(v, EasyUtils.transition(def)));
+                carry.carry(EasyUtils.transition(results));
+            } else {
+                throw new NullPointerException("Not is used the type:" + cls);
+            }
+            return INSTANCE;
+        }
+
+        @SafeVarargs
+        public final Sp obtainValues(@NonNull MultiCarry<Object> carry, @NonNull Pair<Class<?>, String>... pairs) {
+            return obtainArray(carry, pairs);
+        }
+
+        public Sp obtainArray(@NonNull MultiCarry<Object> carry, @NonNull Pair<Class<?>, String>[] pairs) {
+            final Object[] results = new Object[pairs.length];
+            final SharedPreferences sp = CheckUtils.checkNull(mSp);
+            EasyUtils.forEach(pairs, (pair, p) -> {
+                if(pair.first.isAssignableFrom(String.class)) {
+                    results[p] = sp.getString(pair.second, EasyUtils.EMPTY);
+                } else if(pair.first.isAssignableFrom(Boolean.class)) {
+                    results[p] = sp.getBoolean(pair.second, false);
+                } else if(pair.first.isAssignableFrom(Integer.class)) {
+                    results[p] = sp.getInt(pair.second, 0);
+                } else if(pair.first.isAssignableFrom(Long.class)) {
+                    results[p] = sp.getLong(pair.second, 0);
+                } else if(pair.first.isAssignableFrom(Float.class)) {
+                    results[p] = sp.getFloat(pair.second, 0);
+                }
+            });
             carry.carry(results);
             return INSTANCE;
         }
 
-        public Sp applyValues(@NonNull Pair<String, Object>... pairs) {
+        /**
+         * Obtain Sp Values
+         * @param carry Carry
+         * @param triple {Class<String Boolean int long float>, Key:String, Def-value:same with first param}
+         *               {Class<String Boolean int long float>, Key:String}
+         * @return Values
+         */
+        public Sp obtainValues(@NonNull MultiCarry<Object> carry, @NonNull Object[]... triple) {
+            return obtainArray(carry, triple);
+        }
+
+        /**
+         * Obtain Sp Values
+         * @param carry Carry
+         * @param triple {Class<String Boolean int long float>, Key:String, Def-value:same with first param}
+         *               or {Class<String Boolean int long float>, Key:String}
+         * @return Values
+         */
+        public Sp obtainArray(@NonNull MultiCarry<Object> carry, @NonNull Object[][] triple) {
+            final Object[] results = new Object[triple.length];
+            final SharedPreferences sp = CheckUtils.checkNull(mSp);
+            EasyUtils.forEach(triple, (object, p) -> {
+                if(object == null || object.length <= 1) {
+                    throw new NullPointerException("Position at " + p + " params not less than 2.");
+                }
+                Class<?> cls = EasyUtils.transition(object[0]);
+                String key = EasyUtils.transition(object[1]);
+                Object def = object.length > 2 ? object[3] : null;
+                if(cls.isAssignableFrom(String.class)) {
+                    results[p] = sp.getString(key, def == null ? EasyUtils.EMPTY : (String) def);
+                } else if(cls.isAssignableFrom(Boolean.class)) {
+                    results[p] = sp.getBoolean(key, def != null && (boolean) def);
+                } else if(cls.isAssignableFrom(Integer.class)) {
+                    results[p] = sp.getInt(key, def == null ? 0 : (int) def);
+                } else if(cls.isAssignableFrom(Long.class)) {
+                    results[p] = sp.getLong(key, def == null ? 0 : (long) def);
+                } else if(cls.isAssignableFrom(Float.class)) {
+                    results[p] = sp.getFloat(key, def == null ? 0 : (float) def);
+                }
+            });
+            carry.carry(results);
+            return INSTANCE;
+        }
+
+        @SafeVarargs
+        public final Sp applyValues(@NonNull Pair<String, Object>... pairs) {
+            return applyArray(pairs);
+        }
+
+        public final Sp applyArray(@NonNull Pair<String, Object>[] pairs) {
             final SharedPreferences.Editor edit = CheckUtils.checkNull(mSp).edit();
             EasyUtils.forEach(pairs, r -> EasyUtils.typeConditions(new Conditions() {
 

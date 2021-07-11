@@ -6,6 +6,9 @@ import android.os.Bundle;
 
 import com.example.myapplication.databinding.ActivityMainBinding;
 
+/**
+ * @author Ziven
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override

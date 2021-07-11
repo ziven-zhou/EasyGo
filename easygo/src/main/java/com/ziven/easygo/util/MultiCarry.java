@@ -5,10 +5,10 @@ package com.ziven.easygo.util;
  * @date :2021/7/1
  */
 @FunctionalInterface
-public interface MultiCarry {
+public interface MultiCarry<T> {
     /**
      * MultiCarry
      * @param values Values
      */
-    void carry(Object[] values);
+    void carry(T[] values);
 }

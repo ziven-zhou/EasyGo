@@ -1,6 +1,7 @@
 package com.ziven.easygo.util;
 
 import android.os.Build;
+import android.util.Pair;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +22,7 @@ import java.util.Set;
 public final class EasyUtils {
 
     private static final String TAG = "EasyUtils";
+    public static final String EMPTY = "";
 
     private EasyUtils() {
     }
@@ -142,10 +144,11 @@ public final class EasyUtils {
         }
     }
 
+    @SafeVarargs
     @NonNull
     public static <T> ArrayList<T> newList(@NonNull T... values) {
         final ArrayList<T> list = new ArrayList<>(values.length);
-        forEach(values, value -> list.add(value));
+        forEach(values, (Carry<T>) list::add);
         return list;
     }
 
@@ -153,6 +156,14 @@ public final class EasyUtils {
     public static <K, V> HashMap<K, V> newMap(@NonNull K key, @NonNull V value) {
         final HashMap<K, V> map = new HashMap<>(8);
         map.put(key, value);
+        return map;
+    }
+
+    @SafeVarargs
+    @NonNull
+    public static <K, V> HashMap<K, V> newMap(@NonNull Pair<K, V>... pairs) {
+        final HashMap<K, V> map = new HashMap<>(8);
+        forEach(pairs, pair -> map.put(pair.first, pair.second));
         return map;
     }
 
@@ -172,6 +183,14 @@ public final class EasyUtils {
     @Nullable
     public static <K, V> V getValue(@Nullable Map<K, V> map, @Nullable K key) {
         return Condition.of(map).and(key).isTrue() ? Objects.requireNonNull(map).get(key) : null;
+    }
+
+    public static <T> boolean isEmpty(@Nullable Collection<T> collection) {
+        return Condition.of(collection).isFalse();
+    }
+
+    public static <K, V> boolean isEmpty(@Nullable Map<K, V> map) {
+        return Condition.of(map).isFalse();
     }
 
     public static void trueEnd1(@NonNull final Conditions condition, @NonNull final Boolean... conditions) {
