@@ -208,6 +208,16 @@ public final class EasyGo {
         easyGo(context, new Intent(context, cls));
     }
 
+    public static void easyGo(@NonNull final Class<?> cls, @NonNull Carry<Intent> carry) {
+        easyGo(ResourceUtils.getContext(), cls, carry);
+    }
+
+    public static void easyGo(@NonNull final Context context, @NonNull final Class<?> cls, @NonNull Carry<Intent> carry) {
+        Intent intent = new Intent(context, cls);
+        carry.carry(intent);
+        easyGo(context, intent);
+    }
+
     public static void easyGo(@NonNull final Context context, @NonNull final Intent intent) {
         if(!(context instanceof Activity)) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -217,6 +227,12 @@ public final class EasyGo {
 
     public static void easyGo(@NonNull final Activity activity, @NonNull final Class<?> cls, int requestCode) {
         easyGo(activity, new Intent(activity, cls), requestCode);
+    }
+
+    public static void easyGo(@NonNull final Activity activity, @NonNull final Class<?> cls, int requestCode, @NonNull Carry<Intent> carry) {
+        Intent intent = new Intent(activity, cls);
+        carry.carry(intent);
+        easyGo(activity, intent, requestCode);
     }
 
     public static void easyGo(@NonNull final Activity activity, @NonNull final Intent intent, int requestCode) {
