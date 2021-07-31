@@ -1,10 +1,12 @@
 package com.ziven.easygo.util;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.util.Pair;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,6 +27,21 @@ public final class EasyUtils {
     public static final String EMPTY = "";
 
     private EasyUtils() {
+    }
+
+    @NonNull
+    public static <T> T instanceDo(@Nullable Object target, @NonNull Class<T> cls) {
+        if(instanceOf(target, cls)) {
+            return transition(target);
+        }
+        throw new ClassCastException("Target is:" + target + ",Class is:" + cls);
+    }
+
+    @NonNull
+    public static <T> void instanceDo(@Nullable Object target, @NonNull Class<T> cls, @NonNull Carry<T> carry) {
+        if(instanceOf(target, cls)) {
+            carry.carry(transition(target));
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -193,6 +210,22 @@ public final class EasyUtils {
         return Condition.of(map).isFalse();
     }
 
+    public static boolean isEmpty(@Nullable String s) {
+        return Condition.of(s).isFalse();
+    }
+
+    public static <T> boolean hasValue(@Nullable Collection<T> collection, @Nullable T value) {
+        return collection != null && value != null && collection.contains(value);
+    }
+
+    public static <K, V> boolean hasValue(@Nullable Map<K, V> map, @Nullable V value) {
+        return map != null && value != null && map.containsValue(value);
+    }
+
+    public static <K, V> boolean hasKey(@Nullable Map<K, V> map, @Nullable K key) {
+        return map != null && key != null && map.containsKey(key);
+    }
+
     public static void trueEnd1(@NonNull final Conditions condition, @NonNull final Boolean... conditions) {
         trueEnd2(condition, conditions);
     }
@@ -305,5 +338,10 @@ public final class EasyUtils {
                 condition.other();
                 break;
         }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public static <T extends RecyclerView.ViewHolder> void notifyDataSetChanged(@Nullable RecyclerView.Adapter<T> adapter) {
+        Nulls.of(adapter).doNotNull(RecyclerView.Adapter::notifyDataSetChanged);
     }
 }

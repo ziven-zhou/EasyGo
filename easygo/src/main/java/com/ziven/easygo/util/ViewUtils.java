@@ -35,6 +35,19 @@ public final class ViewUtils {
        }
     }
 
+    public static void forEachChild(@NonNull final View root, @NonNull final IView iView) {
+        if(root instanceof ViewGroup) {
+            ViewGroup vg = EasyUtils.transition(root);
+            int count = vg.getChildCount();
+            View view;
+            for(int i=0; i<count; i++) {
+                if((view = vg.getChildAt(i)) != null) {
+                    iView.view(view);
+                }
+            }
+        }
+    }
+
     @FunctionalInterface
     public interface IView {
         /**

@@ -20,6 +20,10 @@ public final class Nulls<T> {
         mObject = object;
     }
 
+    public static <T> Nulls<T> of() {
+        return EasyUtils.transition(NULL);
+    }
+
     public static <T> Nulls<T> of(@Nullable T object) {
         return new Nulls<>(object);
     }
@@ -59,12 +63,20 @@ public final class Nulls<T> {
         return this;
     }
 
+    public boolean isJustNull() {
+        return Condition.ofJust(mObject).isFalse();
+    }
+
     public boolean isNull() {
-        return mObject == null;
+        return Condition.of(mObject).isFalse();
+    }
+
+    public boolean isJustNotNull() {
+        return Condition.ofJust(mObject).isTrue();
     }
 
     public boolean isNotNull() {
-        return mObject != null;
+        return Condition.of(mObject).isTrue();
     }
 
     public T just() {

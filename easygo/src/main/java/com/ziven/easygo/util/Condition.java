@@ -36,12 +36,29 @@ public final class Condition {
     }
 
     @NonNull
+    public static Condition of() {
+        return ofFalse();
+    }
+
+    @NonNull
     public static Condition of(Boolean b) {
         return ofFalse().ofBoolean(b);
     }
 
     @NonNull
+    public static Condition ofJust(@Nullable Object o) {
+        return of(o != null);
+    }
+
+    @NonNull
     public static Condition of(@Nullable Object o) {
+        if(o instanceof String) {
+            return of((String) o);
+        } else if(o instanceof Collection<?>) {
+            return of((Collection<?>) o);
+        } else if(o instanceof Map<?, ?>) {
+            return of((Map<?, ?>) o);
+        }
         return ofFalse().ofNotNull(o);
     }
 
