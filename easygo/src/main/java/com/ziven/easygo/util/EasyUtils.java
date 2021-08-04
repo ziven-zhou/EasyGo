@@ -170,6 +170,16 @@ public final class EasyUtils {
     }
 
     @NonNull
+    public static <T> ArrayList<T> newList() {
+        return new ArrayList<>();
+    }
+
+    @NonNull
+    public static <K, V> HashMap<K, V> newMap() {
+        return new HashMap<>(8);
+    }
+
+    @NonNull
     public static <K, V> HashMap<K, V> newMap(@NonNull K key, @NonNull V value) {
         final HashMap<K, V> map = new HashMap<>(8);
         map.put(key, value);
@@ -202,12 +212,32 @@ public final class EasyUtils {
         return Condition.of(map).and(key).isTrue() ? Objects.requireNonNull(map).get(key) : null;
     }
 
+    public static boolean notNull(@Nullable Object object) {
+        return Condition.of(object).isTrue();
+    }
+
+    public static boolean isNull(@Nullable Object object) {
+        return Condition.of(object).isFalse();
+    }
+
+    public static <T> boolean notEmpty(@Nullable Collection<T> collection) {
+        return Condition.of(collection).isTrue();
+    }
+
     public static <T> boolean isEmpty(@Nullable Collection<T> collection) {
         return Condition.of(collection).isFalse();
     }
 
+    public static <K, V> boolean notEmpty(@Nullable Map<K, V> map) {
+        return Condition.of(map).isTrue();
+    }
+
     public static <K, V> boolean isEmpty(@Nullable Map<K, V> map) {
         return Condition.of(map).isFalse();
+    }
+
+    public static boolean notEmpty(@Nullable String s) {
+        return Condition.of(s).isTrue();
     }
 
     public static boolean isEmpty(@Nullable String s) {

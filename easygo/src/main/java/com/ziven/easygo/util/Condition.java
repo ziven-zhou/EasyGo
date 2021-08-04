@@ -52,13 +52,6 @@ public final class Condition {
 
     @NonNull
     public static Condition of(@Nullable Object o) {
-        if(o instanceof String) {
-            return of((String) o);
-        } else if(o instanceof Collection<?>) {
-            return of((Collection<?>) o);
-        } else if(o instanceof Map<?, ?>) {
-            return of((Map<?, ?>) o);
-        }
         return ofFalse().ofNotNull(o);
     }
 

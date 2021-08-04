@@ -43,24 +43,24 @@ public final class DataProvider<T> {
     }
 
     public DataProvider<T> addList(@Nullable final List<T> list) {
-        Condition.of(mList).doFalse(() -> setList(list))
+        Condition.ofJust(mList).doFalse(() -> setList(list))
                 .and(list).doTrue(() -> Objects.requireNonNull(mList)
                 .addAll(Objects.requireNonNull(list)));
         return this;
     }
 
     public DataProvider<T> add(@Nullable final T data) {
-        Condition.of(mList).and(data).doTrue(() -> Objects.requireNonNull(mList).add(data));
+        Condition.ofJust(mList).and(data).doTrue(() -> Objects.requireNonNull(mList).add(data));
         return this;
     }
 
     public DataProvider<T> addListNoDuplicates(@Nullable final List<T> list) {
-        Condition.of(list).doTrue(() -> EasyUtils.forEach(Objects.requireNonNull(list), this::addNoDuplicates));
+        Condition.ofJust(list).doTrue(() -> EasyUtils.forEach(Objects.requireNonNull(list), this::addNoDuplicates));
         return this;
     }
 
     public DataProvider<T> addNoDuplicates(@Nullable final T data) {
-        Condition.of(mList).and(data).ofData(Objects.requireNonNull(mList), Objects.requireNonNull(data)).doFalse(() -> add(data));
+        Condition.ofJust(mList).and(data).ofData(Objects.requireNonNull(mList), Objects.requireNonNull(data)).doFalse(() -> add(data));
         return this;
     }
 

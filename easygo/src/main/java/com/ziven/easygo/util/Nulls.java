@@ -63,16 +63,8 @@ public final class Nulls<T> {
         return this;
     }
 
-    public boolean isJustNull() {
-        return Condition.ofJust(mObject).isFalse();
-    }
-
     public boolean isNull() {
         return Condition.of(mObject).isFalse();
-    }
-
-    public boolean isJustNotNull() {
-        return Condition.ofJust(mObject).isTrue();
     }
 
     public boolean isNotNull() {

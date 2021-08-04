@@ -1,5 +1,6 @@
 package com.ziven.easygo.ui;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -80,6 +81,11 @@ public abstract class AbstractEasyViewHolder<D> extends RecyclerView.ViewHolder 
      * @param position Position
      */
     protected abstract void bindLayout(D data, int position);
+
+    @NonNull
+    protected Context getContext() {
+        return itemView.getContext();
+    }
 
     protected <T extends View> T getView(@IdRes int id) {
         if(mViews != null && id != View.NO_ID) {
