@@ -365,6 +365,44 @@ public final class ResourceUtils {
             return INSTANCE;
         }
 
+        public final Sp applyValue(@NonNull String key, Object value) {
+            final SharedPreferences.Editor edit = CheckUtils.checkNull(mSp).edit();
+            EasyUtils.typeConditions(new Conditions() {
+
+                @Override
+                public void condition1() {
+                    edit.putString(key, EasyUtils.transition(value));
+                }
+
+                @Override
+                public void condition2() {
+                    edit.putBoolean(key, EasyUtils.transition(value));
+                }
+
+                @Override
+                public void condition3() {
+                    edit.putInt(key, EasyUtils.transition(value));
+                }
+
+                @Override
+                public void condition4() {
+                    edit.putLong(key, EasyUtils.transition(value));
+                }
+
+                @Override
+                public void condition5() {
+                    edit.putFloat(key, EasyUtils.transition(value));
+                }
+
+                @Override
+                public void condition7() {
+                    edit.putStringSet(key, EasyUtils.transition(value));
+                }
+            }, value);
+            edit.apply();
+            return this;
+        }
+
         @SafeVarargs
         public final Sp applyValues(@NonNull Pair<String, Object>... pairs) {
             return applyArray(pairs);

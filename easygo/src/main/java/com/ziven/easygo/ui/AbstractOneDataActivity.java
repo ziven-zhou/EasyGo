@@ -2,7 +2,6 @@ package com.ziven.easygo.ui;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.ziven.easygo.design.mvp.AbstractModel;

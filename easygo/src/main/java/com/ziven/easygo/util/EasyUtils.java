@@ -161,6 +161,12 @@ public final class EasyUtils {
         }
     }
 
+    public static <T, R> ArrayList<R> transfer(@NonNull List<T> list, @NonNull Transfer<R, T> transfer) {
+        final ArrayList<R> returnList = new ArrayList<>(list.size());
+        EasyUtils.forEach(list, data -> returnList.add(transfer.transfer(data)));
+        return returnList;
+    }
+
     @SafeVarargs
     @NonNull
     public static <T> ArrayList<T> newList(@NonNull T... values) {

@@ -38,11 +38,11 @@ public final class TimeHelper {
         mStartTime = new ConcurrentHashMap<>();
     }
 
-    private void start(@NonNull String key) {
+    public void start(@NonNull String key) {
         mStartTime.put(key, System.currentTimeMillis());
     }
 
-    private long end(@NonNull String key) {
+    public long end(@NonNull String key) {
         Long start = mStartTime.remove(key);
         if(start == null) {
             LogHelper.of("TimeHelperTag").always().join(key).join("not start.").print();
@@ -51,11 +51,11 @@ public final class TimeHelper {
         return System.currentTimeMillis() - start;
     }
 
-    private void endPrint(@NonNull String key) {
+    public void endPrint(@NonNull String key) {
         endPrint("TimeEndPrint", key);
     }
 
-    private void endPrint(@NonNull String tag, @NonNull String key) {
+    public void endPrint(@NonNull String tag, @NonNull String key) {
         LogHelper.of(tag).always().join(key).join(":").join(end(key)).print();
     }
 
