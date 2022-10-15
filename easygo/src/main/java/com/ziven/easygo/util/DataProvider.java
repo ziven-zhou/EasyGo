@@ -54,6 +54,37 @@ public final class DataProvider<T> {
         return this;
     }
 
+    public DataProvider<T> add(@Nullable final T data, int position) {
+        Condition.ofJust(mList)
+                .and(data)
+                .ofMoreAndEqual(position, 0)
+                .doTrue(() -> {
+                    List<T> list = Objects.requireNonNull(mList);
+                    if(position < list.size()) {
+                        list.add(position, data);
+                    } else {
+                        list.add(data);
+                    }
+                });
+        return this;
+    }
+
+    public DataProvider<T> replace(@Nullable final T data, int position) {
+        Condition.ofJust(mList)
+                .and(data)
+                .ofMoreAndEqual(position, 0)
+                .doTrue(() -> {
+                    List<T> list = Objects.requireNonNull(mList);
+                    if(position < list.size()) {
+                        list.remove(position);
+                        list.add(position, data);
+                    } else {
+                        list.add(data);
+                    }
+                });
+        return this;
+    }
+
     public DataProvider<T> addListNoDuplicates(@Nullable final List<T> list) {
         Condition.ofJust(list).doTrue(() -> EasyUtils.forEach(Objects.requireNonNull(list), this::addNoDuplicates));
         return this;

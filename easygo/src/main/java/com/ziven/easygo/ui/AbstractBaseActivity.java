@@ -8,11 +8,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ziven.easygo.EasyGos;
 import com.ziven.easygo.util.EasyUtils;
+import com.ziven.easygo.util.ViewHelper;
 import com.ziven.easygo.util.ViewUtils;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Ziven
@@ -20,7 +19,7 @@ import java.util.Map;
  */
 public abstract class AbstractBaseActivity extends AppCompatActivity {
 
-    private Map<Integer, View> mViews;
+    private ViewProvider<View> viewProvider;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,19 +46,26 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         if(!findLayout()) {
             return;
         }
-        if(mViews == null) {
-            mViews = new HashMap<>(8);
+        if(viewProvider == null) {
+            viewProvider = ViewProvider.newInstance();
         }
         ViewUtils.forEachView(view, v -> {
             if(v.getId() != View.NO_ID) {
-                mViews.put(v.getId(), v);
+                viewProvider.putView(v.getId(), v);
             }
         });
     }
 
+    @NonNull
+    protected ViewHelper<View> getViewHelper(@IdRes int id) {
+        return viewProvider != null
+                ? viewProvider.getViewHelper(id)
+                : EasyGos.newViewHelper();
+    }
+
     protected <T extends View> T getView(@IdRes int id) {
-        if(mViews != null && id != View.NO_ID) {
-            return EasyUtils.transition(mViews.get(id));
+        if(viewProvider != null && id != View.NO_ID) {
+            return EasyUtils.transition(viewProvider.getView(id));
         }
         return null;
     }

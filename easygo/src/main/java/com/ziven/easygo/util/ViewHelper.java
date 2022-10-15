@@ -37,6 +37,10 @@ public final class ViewHelper<T extends View> {
         mView = view;
     }
 
+    public Nulls<T> getViewNulls() {
+        return Nulls.of(getView());
+    }
+
     @Nullable
     public T getView() {
         return mView;

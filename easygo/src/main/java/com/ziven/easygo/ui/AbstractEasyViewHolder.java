@@ -22,11 +22,10 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ziven.easygo.EasyGos;
 import com.ziven.easygo.util.EasyUtils;
+import com.ziven.easygo.util.ViewHelper;
 import com.ziven.easygo.util.ViewUtils;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Ziven
@@ -34,8 +33,9 @@ import java.util.Map;
  */
 public abstract class AbstractEasyViewHolder<D> extends RecyclerView.ViewHolder {
 
-    private Map<Integer, View> mViews;
+    private ViewProvider<View> mViews;
     private View mLastCacheView;
+    private OnItemClickListener<D> mListener;
 
     public AbstractEasyViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -50,11 +50,11 @@ public abstract class AbstractEasyViewHolder<D> extends RecyclerView.ViewHolder 
     private void initView() {
         if(findLayout()) {
             if(mViews == null) {
-                mViews = new HashMap<>(8);
+                mViews = EasyGos.newViewProvider();
             }
             ViewUtils.forEachView(itemView, view -> {
                 if(view.getId() != View.NO_ID) {
-                    mViews.put(view.getId(), view);
+                    mViews.putView(view.getId(), view);
                 }
             });
         }
@@ -87,11 +87,23 @@ public abstract class AbstractEasyViewHolder<D> extends RecyclerView.ViewHolder 
         return itemView.getContext();
     }
 
+    @NonNull
+    protected ViewHelper<View> getViewHelper(@IdRes int id) {
+        return mViews != null && id != View.NO_ID
+                ? mViews.getViewHelper(id)
+                : EasyGos.newViewHelper();
+    }
+
     protected <T extends View> T getView(@IdRes int id) {
         if(mViews != null && id != View.NO_ID) {
-            return EasyUtils.transition(mViews.get(id));
+            return EasyUtils.transition(mViews.getView(id));
         }
         return null;
+    }
+
+    protected <T extends AbstractEasyViewHolder<D>> T setLastCacheView(View view) {
+        mLastCacheView = view;
+        return EasyUtils.transition(this);
     }
 
     protected String getText() {
@@ -374,5 +386,30 @@ public abstract class AbstractEasyViewHolder<D> extends RecyclerView.ViewHolder 
     protected <T extends AbstractEasyViewHolder<D>> T setTag(@IdRes int id, @Nullable Object tag) {
         mLastCacheView = getView(id);
         return setTag(tag);
+    }
+
+    public <T extends AbstractEasyViewHolder<D>> T setListener(@Nullable OnItemClickListener<D> listener) {
+        mListener = listener;
+        return EasyUtils.transition(this);
+    }
+
+    protected <T extends AbstractEasyViewHolder<D>> T setOnItemClickListener(D data, int position) {
+        if(mLastCacheView != null) {
+            mLastCacheView.setOnClickListener(view -> {
+                if(mListener != null) {
+                    mListener.onItemClick(data, position);
+                }
+            });
+        }
+        return EasyUtils.transition(this);
+    }
+
+    protected <T extends AbstractEasyViewHolder<D>> T setOnItemClickListener(@IdRes int id, D data, int position) {
+        return setOnItemClickListener(getView(id), data, position);
+    }
+
+    public <T extends AbstractEasyViewHolder<D>> T setOnItemClickListener(View view, D data, int position) {
+        setLastCacheView(view);
+        return setOnItemClickListener(data, position);
     }
 }

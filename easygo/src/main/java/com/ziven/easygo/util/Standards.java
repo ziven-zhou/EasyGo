@@ -2,11 +2,6 @@ package com.ziven.easygo.util;
 
 import androidx.annotation.NonNull;
 
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
-
 /**
  * @author zhiyuan.zhou
  */
@@ -18,13 +13,13 @@ public final class Standards<T> {
         return new Standards<T>(data, null);
     }
 
-    public static <T> Standards<T> with(T data, @NonNull Supplier<T> supplier) {
-        return new Standards<T>(data, supplier);
+    public static <T> Standards<T> with(T data, @NonNull Obtain<T> obtain) {
+        return new Standards<T>(data, obtain);
     }
 
-    private Standards(T data, Supplier<T> supplier) {
-        if(data == null && supplier != null) {
-            this.data = supplier.get();
+    private Standards(T data, Obtain<T> obtain) {
+        if(data == null && obtain != null) {
+            this.data = obtain.obtain();
         } else {
             this.data = data;
         }
@@ -35,26 +30,26 @@ public final class Standards<T> {
         return this;
     }
 
-    public Standards<T> accept(@NonNull Consumer<T> consumer) {
+    public Standards<T> accept(@NonNull Carry<T> carry) {
         if(data != null) {
-            consumer.accept(data);
+            carry.carry(data);
         }
         return this;
     }
 
-    public <V> Standards<T> accept(V value, @NonNull BiConsumer<T, V> consumer) {
+    public <V> Standards<T> accept(V value, @NonNull BiCarry<T, V> biCarry) {
         if(data != null) {
-            consumer.accept(data, value);
+            biCarry.carry(data, value);
         }
         return this;
     }
 
-    public <R> R apply(@NonNull Function<T, R> function) {
-        return function.apply(data);
+    public <R> R apply(@NonNull Transfer<R, T> transfer) {
+        return transfer.transfer(data);
     }
 
-    public <R> R get(@NonNull Supplier<R> supplier) {
-        return supplier.get();
+    public <R> R get(@NonNull Obtain<R> obtain) {
+        return obtain.obtain();
     }
 
     public T value() {

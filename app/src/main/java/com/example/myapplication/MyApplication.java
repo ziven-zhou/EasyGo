@@ -2,8 +2,7 @@ package com.example.myapplication;
 
 import androidx.multidex.MultiDexApplication;
 
-import com.ziven.easygo.util.LogHelper;
-import com.ziven.easygo.util.ResourceUtils;
+import com.ziven.easygo.EasyGos;
 
 /**
  * @author :zhiyuan.zhou
@@ -14,7 +13,6 @@ public class MyApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        ResourceUtils.init(this);
-        LogHelper.setLog(true);
+        EasyGos.initLog(this);
     }
 }

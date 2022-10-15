@@ -30,15 +30,19 @@ public final class EasyUtils {
     }
 
     @NonNull
-    public static <T> T instanceDo(@Nullable Object target, @NonNull Class<T> cls) {
+    public static <T> T newIfNull(T instance, @NonNull Obtain<T> obtain) {
+        return instance == null ? obtain.obtain() : instance;
+    }
+
+    @NonNull
+    public static <T> T instanceDo(@NonNull Object target, @NonNull Class<T> cls) {
         if(instanceOf(target, cls)) {
             return transition(target);
         }
         throw new ClassCastException("Target is:" + target + ",Class is:" + cls);
     }
 
-    @NonNull
-    public static <T> void instanceDo(@Nullable Object target, @NonNull Class<T> cls, @NonNull Carry<T> carry) {
+    public static <T> void instanceDo(@NonNull Object target, @NonNull Class<T> cls, @NonNull Carry<T> carry) {
         if(instanceOf(target, cls)) {
             carry.carry(transition(target));
         }

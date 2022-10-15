@@ -2,11 +2,6 @@ package com.ziven.easygo.util;
 
 import androidx.annotation.NonNull;
 
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
-
 /**
  * @author zhiyuan.zhou
  */
@@ -25,49 +20,49 @@ public interface Standard {
 
     /**
      * accept
-     * @param consumer Consumer
+     * @param carry Carry
      * @param <T> Myself
      * @return Myself
      */
-    default <T extends Standard> T accept(@NonNull Consumer<T> consumer) {
+    default <T extends Standard> T accept(@NonNull Carry<T> carry) {
         T parent = parent();
-        consumer.accept(parent);
+        carry.carry(parent);
         return parent;
     }
 
     /**
      * accept
      * @param value Value
-     * @param consumer Consumer
+     * @param biCarry BiCarry
      * @param <T1> Myself
      * @param <T2> Value
      * @return Myself
      */
-    default <T1 extends Standard, T2> T1 accept(T2 value, @NonNull BiConsumer<T1, T2> consumer) {
+    default <T1 extends Standard, T2> T1 accept(T2 value, @NonNull BiCarry<T1, T2> biCarry) {
         T1 parent = parent();
-        consumer.accept(parent, value);
+        biCarry.carry(parent, value);
         return parent;
     }
 
     /**
      * apply
-     * @param function Function
+     * @param transfer Transfer
      * @param <T> Myself
      * @param <R> Value
      * @return Value
      */
-    default <T extends Standard, R> R apply(@NonNull Function<T, R> function) {
-        return function.apply(parent());
+    default <T extends Standard, R> R apply(@NonNull Transfer<R, T> transfer) {
+        return transfer.transfer(parent());
     }
 
     /**
      * get
-     * @param supplier Supplier
+     * @param obtain Obtain
      * @param <T> Value
      * @return Value
      */
-    default <T> T get(@NonNull Supplier<T> supplier) {
-        return supplier.get();
+    default <T> T get(@NonNull Obtain<T> obtain) {
+        return obtain.obtain();
     }
 
     /**
