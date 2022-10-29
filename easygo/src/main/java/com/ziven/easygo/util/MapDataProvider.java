@@ -14,6 +14,12 @@ public class MapDataProvider<K, V> {
         return new MapDataProvider<>(new HashMap<>(0));
     }
 
+    public static <K, V> MapDataProvider<K, V> of(@NonNull K key, V value) {
+        Map<K, V> map = new HashMap<>();
+        map.put(key, value);
+        return of(map);
+    }
+
     public static <K, V> MapDataProvider<K, V> of(@NonNull Map<K, V> map) {
         return new MapDataProvider<>(map);
     }

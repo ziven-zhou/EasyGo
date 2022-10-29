@@ -17,6 +17,12 @@ public final class DataProvider<T> {
 
     private List<T> mList;
 
+    public static <T> DataProvider<T> ofData(T data) {
+        List<T> list = new ArrayList<>();
+        list.add(data);
+        return of(list);
+    }
+
     public static <T> DataProvider<T> ofNull() {
         return new DataProvider<>(null);
     }
