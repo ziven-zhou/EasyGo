@@ -19,6 +19,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * @author Ziven
@@ -318,9 +319,29 @@ public final class ViewHelper<T extends View> {
         return this;
     }
 
-
     /**
      *-------------------------------LinearLayout end---------------------
+     *
+     *-------------------------------RecyclerView start-------------------
+     */
+
+
+    public ViewHelper<T> setLayoutManager(@Nullable RecyclerView.LayoutManager manager) {
+        if(mView instanceof RecyclerView) {
+            ((RecyclerView) mView).setLayoutManager(manager);
+        }
+        return this;
+    }
+
+    public ViewHelper<T> setAdapter(@Nullable RecyclerView.Adapter<?> adapter) {
+        if(mView instanceof RecyclerView) {
+            ((RecyclerView) mView).setAdapter(adapter);
+        }
+        return this;
+    }
+
+    /**
+     *-------------------------------RecyclerView end---------------------
      *
      *-------------------------------Other start--------------------------
      */
