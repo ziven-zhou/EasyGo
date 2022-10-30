@@ -7,6 +7,9 @@ import androidx.annotation.NonNull;
 import com.ziven.easygo.ui.AbstractEasyAdapter;
 import com.ziven.easygo.ui.AbstractEasyViewHolder;
 
+/**
+ * @author Ziven
+ */
 public class TestAdapter extends AbstractEasyAdapter<String, TestAdapter.TestHolder> {
 
     @NonNull

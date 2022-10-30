@@ -12,6 +12,9 @@ import com.ziven.easygo.design.mvp.AbstractOneData;
 import com.ziven.easygo.ui.AbstractOneDataActivity;
 import com.ziven.easygo.util.EasyUtils;
 
+/**
+ * @author Ziven
+ */
 @EasyGoActivity(path = "com.example.myapplication.TestActivity")
 public class TestActivity extends AbstractOneDataActivity {
 

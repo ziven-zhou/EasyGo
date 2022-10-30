@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.example.myapplication.databinding.ActivityMainBinding;
 import com.ziven.easygo.EasyGos;
 import com.ziven.easygo.annotation.EasyGoMethod;
+import com.ziven.easygo.util.LogHelper;
 
 /**
  * @author Ziven
@@ -23,6 +24,11 @@ public class MainActivity extends AppCompatActivity {
 
         binding.test.setOnClickListener(v -> EasyGos.getEasyGo().easyGo(this, "com.example.myapplication.TestActivity"));
         EasyGos.getEasyGo().register(this);
+
+        EasyGos.getDispatch()
+                .setView(data -> LogHelper.of("OverallDispatch").always().join(data).print())
+                .getPresenter()
+                .obtainOneData();
     }
 
     @EasyGoMethod(path = "com.example.myapplication.MainActivity.testMethod")

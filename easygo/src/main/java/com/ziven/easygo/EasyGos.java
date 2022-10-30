@@ -7,6 +7,9 @@ import androidx.annotation.NonNull;
 
 import com.ziven.easygo.autowired.EasyGo;
 import com.ziven.easygo.design.funnel.FilterHelper;
+import com.ziven.easygo.overall.IDispatch;
+import com.ziven.easygo.overall.IOverall;
+import com.ziven.easygo.overall.OverallModel;
 import com.ziven.easygo.simply.EasyGoReceiver;
 import com.ziven.easygo.ui.ViewProvider;
 import com.ziven.easygo.util.DataProvider;
@@ -19,6 +22,9 @@ import com.ziven.easygo.util.ViewHelper;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Ziven
+ */
 public final class EasyGos {
     private EasyGos() {}
 
@@ -33,6 +39,14 @@ public final class EasyGos {
     public static void init(@NonNull Context context, boolean log) {
         ResourceUtils.init(context);
         LogHelper.setLog(log);
+    }
+
+    @NonNull
+    public static IDispatch getDispatch() {
+        Context context = ResourceUtils.getContext();
+        return context instanceof IOverall<?>
+                ? ((IOverall<? extends IDispatch>) context).getDispatch()
+                : () -> OverallModel.EMPTY;
     }
 
     public static EasyGo getEasyGo() {

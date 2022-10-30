@@ -21,6 +21,22 @@ public class OnePresenter extends AbstractPresenter<IOneView, OneModel> implemen
     private boolean mClearAfterObtain = true;
     private boolean mRunOnWorkThread = false;
 
+    public OnePresenter() {
+
+    }
+
+    public OnePresenter(@Nullable IOneView view) {
+        super(view);
+    }
+
+    public OnePresenter(@Nullable OneModel model) {
+        super(model);
+    }
+
+    public OnePresenter(@Nullable IOneView view, @Nullable OneModel model) {
+        super(view, model);
+    }
+
     /**
      * Getting OneData
      *

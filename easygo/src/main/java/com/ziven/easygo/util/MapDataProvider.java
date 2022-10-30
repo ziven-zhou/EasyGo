@@ -6,6 +6,9 @@ import androidx.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Ziven
+ */
 public class MapDataProvider<K, V> {
 
     private final Map<K, V> provider;
@@ -15,7 +18,7 @@ public class MapDataProvider<K, V> {
     }
 
     public static <K, V> MapDataProvider<K, V> of(@NonNull K key, V value) {
-        Map<K, V> map = new HashMap<>();
+        Map<K, V> map = new HashMap<>(8);
         map.put(key, value);
         return of(map);
     }
@@ -49,6 +52,16 @@ public class MapDataProvider<K, V> {
 
     public Nulls<V> getNulls(K key) {
         return Nulls.of(get(key));
+    }
+
+    public V getIfNullObtain(K key, @NonNull Obtain<V> obtain) {
+        V value = get(key);
+        if(value != null) {
+            return value;
+        }
+        value = obtain.obtain();
+        put(key, value);
+        return value;
     }
 
     @NonNull
