@@ -28,6 +28,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.core.content.res.ResourcesCompat;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -365,8 +367,40 @@ public final class ResourceUtils {
             return INSTANCE;
         }
 
-        public final Sp applyValue(@NonNull String key, Object value) {
+        public Sp applyValue(@NonNull String key, Object value) {
             final SharedPreferences.Editor edit = CheckUtils.checkNull(mSp).edit();
+            applyValue(edit, key, value);
+            edit.apply();
+            return this;
+        }
+
+        @SafeVarargs
+        public final Sp applyValues(@NonNull Pair<String, Object>... pairs) {
+            return applyArray(pairs);
+        }
+
+        public Sp applyValues(@NonNull List<Pair<String, Object>> pairs) {
+            final SharedPreferences.Editor edit = CheckUtils.checkNull(mSp).edit();
+            EasyUtils.forEach(pairs, p -> applyValue(edit, p.first, p.second));
+            edit.apply();
+            return INSTANCE;
+        }
+
+        public Sp applyValues(@NonNull Map<String, Object> pairs) {
+            final SharedPreferences.Editor edit = CheckUtils.checkNull(mSp).edit();
+            EasyUtils.forEach(pairs, (k, v) -> applyValue(edit, k, v));
+            edit.apply();
+            return INSTANCE;
+        }
+
+        public Sp applyArray(@NonNull Pair<String, Object>[] pairs) {
+            final SharedPreferences.Editor edit = CheckUtils.checkNull(mSp).edit();
+            EasyUtils.forEach(pairs, p -> applyValue(edit, p.first, p.second));
+            edit.apply();
+            return INSTANCE;
+        }
+
+        private void applyValue(@NonNull SharedPreferences.Editor edit, @NonNull String key, Object value) {
             EasyUtils.typeConditions(new Conditions() {
 
                 @Override
@@ -399,51 +433,6 @@ public final class ResourceUtils {
                     edit.putStringSet(key, EasyUtils.transition(value));
                 }
             }, value);
-            edit.apply();
-            return this;
-        }
-
-        @SafeVarargs
-        public final Sp applyValues(@NonNull Pair<String, Object>... pairs) {
-            return applyArray(pairs);
-        }
-
-        public final Sp applyArray(@NonNull Pair<String, Object>[] pairs) {
-            final SharedPreferences.Editor edit = CheckUtils.checkNull(mSp).edit();
-            EasyUtils.forEach(pairs, r -> EasyUtils.typeConditions(new Conditions() {
-
-                @Override
-                public void condition1() {
-                    edit.putString(r.first, EasyUtils.transition(r.second));
-                }
-
-                @Override
-                public void condition2() {
-                    edit.putBoolean(r.first, EasyUtils.transition(r.second));
-                }
-
-                @Override
-                public void condition3() {
-                    edit.putInt(r.first, EasyUtils.transition(r.second));
-                }
-
-                @Override
-                public void condition4() {
-                    edit.putLong(r.first, EasyUtils.transition(r.second));
-                }
-
-                @Override
-                public void condition5() {
-                    edit.putFloat(r.first, EasyUtils.transition(r.second));
-                }
-
-                @Override
-                public void condition7() {
-                    edit.putStringSet(r.first, EasyUtils.transition(r.second));
-                }
-            }, r.second));
-            edit.apply();
-            return INSTANCE;
         }
 
         public Sp removeValues(@NonNull String... keys) {

@@ -384,4 +384,16 @@ public final class EasyUtils {
     public static <T extends RecyclerView.ViewHolder> void notifyDataSetChanged(@Nullable RecyclerView.Adapter<T> adapter) {
         Nulls.of(adapter).doNotNull(RecyclerView.Adapter::notifyDataSetChanged);
     }
+
+    public static void runSafety(@NonNull Runnable runnable) {
+        runSafety(runnable, "runSafety");
+    }
+
+    public static void runSafety(@NonNull Runnable runnable, @NonNull String logTag) {
+        try {
+            runnable.run();
+        } catch (Throwable th) {
+            LogHelper.of(logTag).always().throwable(th).print();
+        }
+    }
 }
