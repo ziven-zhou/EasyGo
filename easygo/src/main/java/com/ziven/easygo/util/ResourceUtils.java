@@ -28,6 +28,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.core.content.res.ResourcesCompat;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -244,13 +245,13 @@ public final class ResourceUtils {
         private Sp() {}
 
         public <T> Sp obtainValues(@NonNull Class<T> cls,
-                                   @NonNull MultiCarry<T> carry,
+                                   @NonNull ListMultiCarry<T> carry,
                                    @NonNull String... keys) {
             return obtainArray(cls, carry, keys);
         }
 
         public <T> Sp obtainArray(@NonNull Class<T> cls,
-                                   @NonNull MultiCarry<T> carry,
+                                   @NonNull ListMultiCarry<T> carry,
                                    @NonNull String[] keys) {
             if(cls.isAssignableFrom(String.class)) {
                 return obtainArray(cls, EasyUtils.transition(EasyUtils.EMPTY), carry, keys);
@@ -262,39 +263,31 @@ public final class ResourceUtils {
 
         public <T> Sp obtainValues(@NonNull Class<T> cls,
                                    @NonNull T def,
-                                   @NonNull MultiCarry<T> carry,
+                                   @NonNull ListMultiCarry<T> carry,
                                    @NonNull String... keys) {
             return obtainArray(cls, def, carry, keys);
         }
 
         public <T> Sp obtainArray(@NonNull Class<T> cls,
                                @NonNull T def,
-                               @NonNull MultiCarry<T> carry,
-                               @NonNull String... keys) {
+                               @NonNull ListMultiCarry<T> carry,
+                               @NonNull String[] keys) {
+            final List<T> results = new ArrayList<>(keys.length);
             final SharedPreferences sp = CheckUtils.checkNull(mSp);
             if(cls.isAssignableFrom(String.class)) {
-                final String[] results = new String[keys.length];
-                EasyUtils.forEach(keys, (v, p) -> results[p] = sp.getString(v, EasyUtils.transition(def)));
-                carry.carry(EasyUtils.transition(results));
+                EasyUtils.forEach(keys, (v, p) -> results.add(EasyUtils.transition(sp.getString(v, EasyUtils.transition(def)))));
             } else if(cls.isAssignableFrom(Boolean.class)) {
-                final boolean[] results = new boolean[keys.length];
-                EasyUtils.forEach(keys, (v, p) -> results[p] = sp.getBoolean(v, EasyUtils.transition(def)));
-                carry.carry(EasyUtils.transition(results));
+                EasyUtils.forEach(keys, (v, p) -> results.add(EasyUtils.transition(sp.getBoolean(v, EasyUtils.transition(def)))));
             } else if(cls.isAssignableFrom(Integer.class)) {
-                final int[] results = new int[keys.length];
-                EasyUtils.forEach(keys, (v, p) -> results[p] = sp.getInt(v, EasyUtils.transition(def)));
-                carry.carry(EasyUtils.transition(results));
+                EasyUtils.forEach(keys, (v, p) -> results.add(EasyUtils.transition(sp.getInt(v, EasyUtils.transition(def)))));
             } else if(cls.isAssignableFrom(Long.class)) {
-                final long[] results = new long[keys.length];
-                EasyUtils.forEach(keys, (v, p) -> results[p] = sp.getLong(v, EasyUtils.transition(def)));
-                carry.carry(EasyUtils.transition(results));
+                EasyUtils.forEach(keys, (v, p) -> results.add(EasyUtils.transition(sp.getLong(v, EasyUtils.transition(def)))));
             } else if(cls.isAssignableFrom(Float.class)) {
-                final float[] results = new float[keys.length];
-                EasyUtils.forEach(keys, (v, p) -> results[p] = sp.getFloat(v, EasyUtils.transition(def)));
-                carry.carry(EasyUtils.transition(results));
+                EasyUtils.forEach(keys, (v, p) -> results.add(EasyUtils.transition(sp.getFloat(v, EasyUtils.transition(def)))));
             } else {
                 throw new NullPointerException("Not is used the type:" + cls);
             }
+            carry.carry(results);
             return INSTANCE;
         }
 
