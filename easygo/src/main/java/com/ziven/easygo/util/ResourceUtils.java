@@ -29,6 +29,7 @@ import androidx.annotation.StringRes;
 import androidx.core.content.res.ResourcesCompat;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -269,25 +270,86 @@ public final class ResourceUtils {
         }
 
         public <T> Sp obtainArray(@NonNull Class<T> cls,
-                               @NonNull T def,
-                               @NonNull ListMultiCarry<T> carry,
-                               @NonNull String[] keys) {
-            final List<T> results = new ArrayList<>(keys.length);
+                                  @NonNull T def,
+                                  @NonNull ListMultiCarry<T> carry,
+                                  @NonNull String[] keys) {
+            return obtainArray(cls, def, carry, null, keys);
+        }
+
+        public <T> Sp obtainValues(@NonNull Class<T> cls,
+                                   @NonNull MapMultiCarry<String, T> mapCarry,
+                                   @NonNull String... keys) {
+            return obtainArray(cls, mapCarry, keys);
+        }
+
+        public <T> Sp obtainArray(@NonNull Class<T> cls,
+                                  @NonNull MapMultiCarry<String, T> mapCarry,
+                                  @NonNull String[] keys) {
+            if(cls.isAssignableFrom(String.class)) {
+                return obtainArray(cls, EasyUtils.transition(EasyUtils.EMPTY), mapCarry, keys);
+            } else if(cls.isAssignableFrom(Boolean.class)) {
+                return obtainArray(cls, EasyUtils.transition(false), mapCarry, keys);
+            }
+            return obtainArray(cls, EasyUtils.transition(0), mapCarry, keys);
+        }
+
+        public <T> Sp obtainValues(@NonNull Class<T> cls,
+                                   @NonNull T def,
+                                   @NonNull MapMultiCarry<String, T> mapCarry,
+                                   @NonNull String... keys) {
+            return obtainArray(cls, def, mapCarry, keys);
+        }
+
+        public <T> Sp obtainArray(@NonNull Class<T> cls,
+                                  @NonNull T def,
+                                  @NonNull MapMultiCarry<String, T> mapCarry,
+                                  @NonNull String[] keys) {
+            return obtainArray(cls, def, null, mapCarry, keys);
+        }
+
+        public <T> Sp obtainArray(@NonNull Class<T> cls,
+                                  @NonNull T def,
+                                  @Nullable ListMultiCarry<T> carry,
+                                  @Nullable MapMultiCarry<String, T> mapCarry,
+                                  @NonNull String[] keys) {
+            final List<T> results = carry != null ? new ArrayList<>(keys.length) : null;
+            final Map<String, T> mapResults = mapCarry != null ? new HashMap<>(keys.length) : null;
             final SharedPreferences sp = CheckUtils.checkNull(mSp);
             if(cls.isAssignableFrom(String.class)) {
-                EasyUtils.forEach(keys, (v, p) -> results.add(EasyUtils.transition(sp.getString(v, EasyUtils.transition(def)))));
+                EasyUtils.forEach(keys, (v, p) -> {
+                    T result = EasyUtils.transition(sp.getString(v, EasyUtils.transition(def)));
+                    EasyUtils.addValue(results, result);
+                    EasyUtils.addValue(mapResults, keys[p], result);
+                });
             } else if(cls.isAssignableFrom(Boolean.class)) {
-                EasyUtils.forEach(keys, (v, p) -> results.add(EasyUtils.transition(sp.getBoolean(v, EasyUtils.transition(def)))));
+                EasyUtils.forEach(keys, (v, p) -> {
+                    T result = EasyUtils.transition(sp.getBoolean(v, EasyUtils.transition(def)));
+                    EasyUtils.addValue(results, result);
+                    EasyUtils.addValue(mapResults, keys[p], result);
+                });
             } else if(cls.isAssignableFrom(Integer.class)) {
-                EasyUtils.forEach(keys, (v, p) -> results.add(EasyUtils.transition(sp.getInt(v, EasyUtils.transition(def)))));
+                EasyUtils.forEach(keys, (v, p) -> {
+                    T result = EasyUtils.transition(sp.getInt(v, EasyUtils.transition(def)));
+                    EasyUtils.addValue(results, result);
+                    EasyUtils.addValue(mapResults, keys[p], result);
+                });
             } else if(cls.isAssignableFrom(Long.class)) {
-                EasyUtils.forEach(keys, (v, p) -> results.add(EasyUtils.transition(sp.getLong(v, EasyUtils.transition(def)))));
+                EasyUtils.forEach(keys, (v, p) -> {
+                    T result = EasyUtils.transition(sp.getLong(v, EasyUtils.transition(def)));
+                    EasyUtils.addValue(results, result);
+                    EasyUtils.addValue(mapResults, keys[p], result);
+                });
             } else if(cls.isAssignableFrom(Float.class)) {
-                EasyUtils.forEach(keys, (v, p) -> results.add(EasyUtils.transition(sp.getFloat(v, EasyUtils.transition(def)))));
+                EasyUtils.forEach(keys, (v, p) -> {
+                    T result = EasyUtils.transition(sp.getFloat(v, EasyUtils.transition(def)));
+                    EasyUtils.addValue(results, result);
+                    EasyUtils.addValue(mapResults, keys[p], result);
+                });
             } else {
                 throw new NullPointerException("Not is used the type:" + cls);
             }
-            carry.carry(results);
+            Nulls.of(carry).doNotNull(c -> c.carry(results));
+            Nulls.of(mapCarry).doNotNull(c -> c.carry(mapResults));
             return INSTANCE;
         }
 

@@ -75,7 +75,10 @@ public final class EasyUtils {
         return null;
     }
 
-    public static <T> void forEach(@NonNull Collection<T> collection, @NonNull Carry<T> carry) {
+    public static <T> void forEach(@Nullable Collection<T> collection, @NonNull Carry<T> carry) {
+        if(collection == null || collection.isEmpty()) {
+            return;
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             collection.forEach(carry::carry);
         } else {
@@ -85,7 +88,10 @@ public final class EasyUtils {
         }
     }
 
-    public static <T> void forEachBreak(@NonNull Collection<T> collection, @NonNull Transfer<Boolean, T> transfer) {
+    public static <T> void forEachBreak(@Nullable Collection<T> collection, @NonNull Transfer<Boolean, T> transfer) {
+        if(collection == null || collection.isEmpty()) {
+            return;
+        }
         for(T data : collection) {
             if(!transfer.transfer(data)) {
                 break;
@@ -93,13 +99,19 @@ public final class EasyUtils {
         }
     }
 
-    public static <T> void forEach(@NonNull List<T> list, @NonNull BiCarry<T, Integer> carry) {
+    public static <T> void forEach(@Nullable List<T> list, @NonNull BiCarry<T, Integer> carry) {
+        if(list == null || list.isEmpty()) {
+            return;
+        }
         for(int i=0; i<list.size(); i++) {
             carry.carry(list.get(i), i);
         }
     }
 
-    public static <T> void forEachBreak(@NonNull List<T> list, @NonNull BiTransfer<Boolean, T, Integer> transfer) {
+    public static <T> void forEachBreak(@Nullable List<T> list, @NonNull BiTransfer<Boolean, T, Integer> transfer) {
+        if(list == null || list.isEmpty()) {
+            return;
+        }
         for(int i=0; i<list.size(); i++) {
             if(!transfer.transfer(list.get(i), i)) {
                 break;
@@ -107,7 +119,10 @@ public final class EasyUtils {
         }
     }
 
-    public static <K, V> void forEach(@NonNull Map<K, V> map, @NonNull Carry<V> carry) {
+    public static <K, V> void forEach(@Nullable Map<K, V> map, @NonNull Carry<V> carry) {
+        if(map == null || map.isEmpty()) {
+            return;
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             map.forEach((key, value) -> carry.carry(value));
         } else {
@@ -117,7 +132,10 @@ public final class EasyUtils {
         }
     }
 
-    public static <K, V> void forEachKey(@NonNull Map<K, V> map, @NonNull Carry<K> carry) {
+    public static <K, V> void forEachKey(@Nullable Map<K, V> map, @NonNull Carry<K> carry) {
+        if(map == null || map.isEmpty()) {
+            return;
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             map.forEach((key, value) -> carry.carry(key));
         } else {
@@ -127,7 +145,10 @@ public final class EasyUtils {
         }
     }
 
-    public static <K, V> void forEach(@NonNull Map<K, V> map, @NonNull BiCarry<K, V> carry) {
+    public static <K, V> void forEach(@Nullable Map<K, V> map, @NonNull BiCarry<K, V> carry) {
+        if(map == null || map.isEmpty()) {
+            return;
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             map.forEach(carry::carry);
         } else {
@@ -137,13 +158,19 @@ public final class EasyUtils {
         }
     }
 
-    public static <T> void forEach(@NonNull T[] values, @NonNull Carry<T> carry) {
+    public static <T> void forEach(@Nullable T[] values, @NonNull Carry<T> carry) {
+        if(values == null || values.length == 0) {
+            return;
+        }
         for(T data : values) {
             carry.carry(data);
         }
     }
 
-    public static <T> void forEachBreak(@NonNull T[] values, @NonNull Transfer<Boolean, T> transfer) {
+    public static <T> void forEachBreak(@Nullable T[] values, @NonNull Transfer<Boolean, T> transfer) {
+        if(values == null || values.length == 0) {
+            return;
+        }
         for(T data : values) {
             if(!transfer.transfer(data)) {
                 break;
@@ -151,13 +178,19 @@ public final class EasyUtils {
         }
     }
 
-    public static <T> void forEach(@NonNull T[] values, @NonNull BiCarry<T, Integer> carry) {
+    public static <T> void forEach(@Nullable T[] values, @NonNull BiCarry<T, Integer> carry) {
+        if(values == null || values.length == 0) {
+            return;
+        }
         for (int i=0; i<values.length; i++) {
             carry.carry(values[i], i);
         }
     }
 
-    public static <T> void forEachBreak(@NonNull T[] values, @NonNull BiTransfer<Boolean, T, Integer> transfer) {
+    public static <T> void forEachBreak(@Nullable T[] values, @NonNull BiTransfer<Boolean, T, Integer> transfer) {
+        if(values == null || values.length == 0) {
+            return;
+        }
         for (int i=0; i<values.length; i++) {
             if(!transfer.transfer(values[i], i)) {
                 break;
@@ -212,9 +245,21 @@ public final class EasyUtils {
         forEach(add, data -> addNoDuplicates(list, data));
     }
 
+    public static <T> void addValue(@Nullable List<T> list, T data) {
+        Condition.ofJust(list).and(data).doTrue(() -> Objects.requireNonNull(list).add(data));
+    }
+
     @Nullable
     public static <T> T getValue(@Nullable List<T> list, int position) {
         return list != null && position >= 0 && position < list.size() ? list.get(position): null;
+    }
+
+    public static <K, V> void addValue(@Nullable Map<K, V> map, @Nullable K key, @Nullable V value) {
+        Condition.ofJust(map).and(key).and(value).doTrue(() -> Objects.requireNonNull(map).put(key, value));
+    }
+
+    public static <K, V> void removeValue(@Nullable Map<K, V> map, @Nullable K key) {
+        Condition.of(map).and(key).doTrue(() -> Objects.requireNonNull(map).remove(key));
     }
 
     @Nullable
