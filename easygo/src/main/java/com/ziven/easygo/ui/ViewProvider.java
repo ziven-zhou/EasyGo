@@ -10,6 +10,9 @@ import com.ziven.easygo.util.MapDataProvider;
 import com.ziven.easygo.util.Nulls;
 import com.ziven.easygo.util.ViewHelper;
 
+/**
+ * @author Ziven
+ */
 public final class ViewProvider<T extends View> {
 
     private final MapDataProvider<Integer, ViewHelper<T>> provider;
