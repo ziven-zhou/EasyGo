@@ -4,9 +4,11 @@ import android.graphics.Bitmap;
 import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -50,6 +52,20 @@ public final class ViewHelper<T extends View> {
     /**
      *-------------------------------View start-----------------------------
      */
+
+    public ViewHelper<T> setClipToOutline() {
+        if(mView != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mView.setClipToOutline(true);
+        }
+        return this;
+    }
+
+    public ViewHelper<T> setOutlineProvider(@NonNull ViewOutlineProvider provider) {
+        if(mView != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mView.setOutlineProvider(provider);
+        }
+        return this;
+    }
 
     public ViewHelper<T> setBackgroundResource(@DrawableRes int resId) {
         if(mView != null) {
@@ -336,6 +352,13 @@ public final class ViewHelper<T extends View> {
     public ViewHelper<T> setAdapter(@Nullable RecyclerView.Adapter<?> adapter) {
         if(mView instanceof RecyclerView) {
             ((RecyclerView) mView).setAdapter(adapter);
+        }
+        return this;
+    }
+
+    public ViewHelper<T> notifyDataSetChanged() {
+        if(mView instanceof RecyclerView) {
+            EasyUtils.notifyDataSetChanged((RecyclerView.Adapter<? extends RecyclerView.ViewHolder>) ((RecyclerView) mView).getAdapter());
         }
         return this;
     }

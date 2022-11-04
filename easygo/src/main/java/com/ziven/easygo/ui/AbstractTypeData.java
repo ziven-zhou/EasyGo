@@ -7,10 +7,21 @@ package com.ziven.easygo.ui;
 public abstract class AbstractTypeData {
 
     public static final int TYPE_NO = -1;
+    private int mViewType = TYPE_NO;
+
+    /**
+     * Set view type
+     * @param viewType View type
+     */
+    public void setViewType(int viewType) {
+        mViewType = viewType;
+    }
 
     /**
      * Get view type
      * @return View type
      */
-    protected abstract int getViewType();
+    public int getViewType() {
+        return mViewType;
+    }
 }

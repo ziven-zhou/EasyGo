@@ -69,6 +69,14 @@ public final class EasyGos {
         return DataProvider.of(list);
     }
 
+    public static <T>  DataProvider<T> newDataProviderEmpty() {
+        return newDataProvider(true);
+    }
+
+    public static <T>  DataProvider<T> newDataProviderNull() {
+        return newDataProvider(false);
+    }
+
     public static <T>  DataProvider<T> newDataProvider(boolean isEmpty) {
         return isEmpty
                 ? DataProvider.ofEmpty()

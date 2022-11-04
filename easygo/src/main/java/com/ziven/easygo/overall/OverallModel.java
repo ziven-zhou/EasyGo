@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public abstract class OverallModel extends OneModel {
 
-    public static OverallModel EMPTY = new OverallModel() {
+    public static final OverallModel EMPTY = new OverallModel() {
         @Override
         protected void obtainOneData(@Nullable Context c, @Nullable Map<Object, Object> params) {
             LogHelper.of("EMPTY : Application implements IOverall.");
