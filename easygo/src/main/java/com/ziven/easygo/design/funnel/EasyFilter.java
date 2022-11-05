@@ -3,6 +3,7 @@ package com.ziven.easygo.design.funnel;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.ziven.easygo.util.Carry;
 import com.ziven.easygo.util.EasyUtils;
 
 import java.util.ArrayList;
@@ -25,17 +26,36 @@ public final class EasyFilter {
     }
 
     public EasyFilter add(@Nullable IFilter<? extends AbstractFilterGrain> filter) {
-        mFilters.add(filter);
+        synchronized (mFilters) {
+            if(filter != null) {
+                mFilters.add(filter);
+            }
+        }
+        return this;
+    }
+
+    public EasyFilter addAll(@Nullable IFilter<? extends AbstractFilterGrain>... filters) {
+        synchronized (mFilters) {
+            EasyUtils.forEach(filters, (Carry<IFilter<? extends AbstractFilterGrain>>) mFilters::add);
+        }
         return this;
     }
 
     public EasyFilter remove(@Nullable IFilter<? extends AbstractFilterGrain> filter) {
-        mFilters.remove(filter);
+        synchronized (mFilters) {
+            if(filter != null) {
+                mFilters.remove(filter);
+            }
+        }
         return this;
     }
 
     public EasyFilter filter(@NonNull AbstractFilterGrain grain) {
-        for(IFilter<? extends AbstractFilterGrain> filter : mFilters) {
+        final List<IFilter<? extends AbstractFilterGrain>> filters;
+        synchronized (mFilters) {
+            filters = new ArrayList<>(mFilters);
+        }
+        for(IFilter<? extends AbstractFilterGrain> filter : filters) {
             if(grain.isEnd()) {
                 return this;
             }
@@ -45,7 +65,14 @@ public final class EasyFilter {
     }
 
     public EasyFilter clear() {
-        mFilters.clear();
+        synchronized (mFilters) {
+            mFilters.clear();
+        }
         return this;
+    }
+
+    @NonNull
+    public FilterHelper filterHelper() {
+        return FilterHelper.get();
     }
 }

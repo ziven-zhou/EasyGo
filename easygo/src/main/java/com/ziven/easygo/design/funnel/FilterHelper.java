@@ -2,8 +2,10 @@ package com.ziven.easygo.design.funnel;
 
 import androidx.annotation.NonNull;
 
-import java.util.HashMap;
+import com.ziven.easygo.util.Obtain;
+
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Ziven
@@ -14,7 +16,7 @@ public final class FilterHelper {
     private final Map<Object, EasyFilter> mEasyFilters;
 
     private FilterHelper() {
-        mEasyFilters = new HashMap<>(8);
+        mEasyFilters = new ConcurrentHashMap<>(8);
     }
 
     private static class Instance {
@@ -36,6 +38,15 @@ public final class FilterHelper {
 
     public EasyFilter get(@NonNull Object key) {
         return mEasyFilters.get(key);
+    }
+
+    public EasyFilter getIfNullObtain(@NonNull Object key, @NonNull Obtain<EasyFilter> obtain) {
+        EasyFilter filter = get(key);
+        return filter != null ? filter : obtain.obtain();
+    }
+
+    public EasyFilter getIfNullObtainEmpty(@NonNull Object key) {
+        return getIfNullObtain(key, () -> withEmpty(key));
     }
 
     public EasyFilter withFilter() {
