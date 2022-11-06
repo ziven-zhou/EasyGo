@@ -3,6 +3,7 @@ package com.ziven.easygo.ui;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -10,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import com.ziven.easygo.design.mvp.IOneView;
 import com.ziven.easygo.design.mvp.OneModel;
 import com.ziven.easygo.design.mvp.OnePresenter;
+import com.ziven.easygo.util.EasyUtils;
+import com.ziven.easygo.util.ViewHelper;
 
 /**
  * @author zhiyuan.zhou
@@ -17,9 +20,43 @@ import com.ziven.easygo.design.mvp.OnePresenter;
 public abstract class AbstractOneDataFragment extends Fragment implements IOneView {
 
     private OnePresenter mOnePresenter;
+    private ViewProvider<View> mViewProvider;
 
     public AbstractOneDataFragment(int contentLayoutId) {
         super(contentLayoutId);
+    }
+
+    private ViewProvider<View> getViewProvider() {
+        if(mViewProvider == null) {
+            mViewProvider = ViewProvider.newInstance();
+        }
+        return mViewProvider;
+    }
+
+    @NonNull
+    protected ViewHelper<View> getViewHelper(@IdRes int id) {
+        ViewHelper<View> helper = getViewProvider().getViewHelperNullable(id);
+        if(helper != null) {
+            return helper;
+        }
+        getView2(id);
+        return getViewProvider().getViewHelper(id);
+    }
+
+    protected <T extends View> T getView2(@IdRes int id) {
+        if(id == View.NO_ID) {
+            return null;
+        }
+        View view = getViewProvider().getView(id);
+        if(view != null) {
+            return EasyUtils.transition(view);
+        }
+        View parent = getView();
+        if(parent == null || (view = parent.findViewById(id)) == null) {
+            return null;
+        }
+        getViewProvider().putViewNonNull(id, view);
+        return EasyUtils.transition(view);
     }
 
     /**
