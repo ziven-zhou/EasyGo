@@ -42,32 +42,47 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         return null;
     }
 
-    private void findView(@NonNull View view) {
-        if(!findLayout()) {
-            return;
-        }
+    @NonNull
+    private ViewProvider<View> getViewProvider() {
         if(viewProvider == null) {
             viewProvider = ViewProvider.newInstance();
         }
-        ViewUtils.forEachView(view, v -> {
-            if(v.getId() != View.NO_ID) {
-                viewProvider.putView(v.getId(), v);
-            }
-        });
+        return viewProvider;
+    }
+
+    private void findView(@NonNull View view) {
+        if(findLayout()) {
+            ViewUtils.forEachView(view, v -> {
+                if(v.getId() != View.NO_ID) {
+                    getViewProvider().putView(v.getId(), v);
+                }
+            });
+        }
     }
 
     @NonNull
     protected ViewHelper<View> getViewHelper(@IdRes int id) {
-        return viewProvider != null
-                ? viewProvider.getViewHelper(id)
-                : EasyGos.newViewHelper();
+        if(id == View.NO_ID) {
+            return EasyGos.newViewHelper();
+        }
+        ViewHelper<View> helper = getViewProvider().getViewHelperNullable(id);
+        if(helper != null) {
+            return helper;
+        }
+        getView(id);
+        return getViewProvider().getViewHelper(id);
     }
 
     protected <T extends View> T getView(@IdRes int id) {
-        if(viewProvider != null && id != View.NO_ID) {
-            return EasyUtils.transition(viewProvider.getView(id));
+        if(id == View.NO_ID) {
+            return null;
         }
-        return null;
+        View view = getViewProvider().getView(id);
+        if(view == null) {
+            view = findViewById(id);
+            getViewProvider().putViewNonNull(id, view);
+        }
+        return EasyUtils.transition(view);
     }
 
     /**
@@ -81,7 +96,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
      * @return Find
      */
     protected boolean findLayout() {
-        return true;
+        return false;
     }
 
     /**

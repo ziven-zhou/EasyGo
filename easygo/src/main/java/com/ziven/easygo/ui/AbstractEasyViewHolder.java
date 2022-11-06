@@ -33,25 +33,24 @@ import com.ziven.easygo.util.ViewUtils;
  */
 public abstract class AbstractEasyViewHolder<D> extends RecyclerView.ViewHolder {
 
-    private ViewProvider<View> mViews;
+    private final ViewProvider<View> mViews;
     private View mLastCacheView;
     private OnItemClickListener<D> mListener;
 
     public AbstractEasyViewHolder(@NonNull View itemView) {
         super(itemView);
+        mViews = EasyGos.newViewProvider();
         initView();
     }
 
     public AbstractEasyViewHolder(@NonNull ViewGroup parent, @LayoutRes int layoutId) {
         super(LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false));
+        mViews = EasyGos.newViewProvider();
         initView();
     }
 
     private void initView() {
         if(findLayout()) {
-            if(mViews == null) {
-                mViews = EasyGos.newViewProvider();
-            }
             ViewUtils.forEachView(itemView, view -> {
                 if(view.getId() != View.NO_ID) {
                     mViews.putView(view.getId(), view);
@@ -66,7 +65,7 @@ public abstract class AbstractEasyViewHolder<D> extends RecyclerView.ViewHolder 
      * @return Find
      */
     protected boolean findLayout() {
-        return true;
+        return false;
     }
 
     /**
@@ -89,16 +88,27 @@ public abstract class AbstractEasyViewHolder<D> extends RecyclerView.ViewHolder 
 
     @NonNull
     protected ViewHelper<View> getViewHelper(@IdRes int id) {
-        return mViews != null && id != View.NO_ID
-                ? mViews.getViewHelper(id)
-                : EasyGos.newViewHelper();
+        if(id == View.NO_ID) {
+            return EasyGos.newViewHelper();
+        }
+        ViewHelper<View> helper = mViews.getViewHelperNullable(id);
+        if(helper != null) {
+            return helper;
+        }
+        getView(id);
+        return mViews.getViewHelper(id);
     }
 
     protected <T extends View> T getView(@IdRes int id) {
-        if(mViews != null && id != View.NO_ID) {
-            return EasyUtils.transition(mViews.getView(id));
+        if(id == View.NO_ID) {
+            return null;
         }
-        return null;
+        View view = mViews.getView(id);
+        if(view == null) {
+            view = itemView.findViewById(id);
+            mViews.putViewNonNull(id, view);
+        }
+        return EasyUtils.transition(view);
     }
 
     protected <T extends AbstractEasyViewHolder<D>> T setLastCacheView(View view) {
