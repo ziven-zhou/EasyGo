@@ -1,7 +1,9 @@
 package com.ziven.easygo.ui;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
@@ -13,6 +15,7 @@ import com.ziven.easygo.design.mvp.OneModel;
 import com.ziven.easygo.design.mvp.OnePresenter;
 import com.ziven.easygo.util.EasyUtils;
 import com.ziven.easygo.util.ViewHelper;
+import com.ziven.easygo.util.ViewUtils;
 
 /**
  * @author zhiyuan.zhou
@@ -21,6 +24,14 @@ public abstract class AbstractOneDataFragment extends Fragment implements IOneVi
 
     private OnePresenter mOnePresenter;
     private ViewProvider<View> mViewProvider;
+
+    public static <T extends AbstractOneDataFragment> T newInstance(@NonNull Class<T> cls) {
+        return EasyUtils.newInstance(cls);
+    }
+
+    public AbstractOneDataFragment() {
+        super();
+    }
 
     public AbstractOneDataFragment(int contentLayoutId) {
         super(contentLayoutId);
@@ -59,6 +70,24 @@ public abstract class AbstractOneDataFragment extends Fragment implements IOneVi
         return EasyUtils.transition(view);
     }
 
+    private void findView(@NonNull View view) {
+        if(findLayout()) {
+            ViewUtils.forEachView(view, v -> {
+                if(v.getId() != View.NO_ID) {
+                    getViewProvider().putView(v.getId(), v);
+                }
+            });
+        }
+    }
+
+    /**
+     * Find layout
+     * @return Find
+     */
+    protected boolean findLayout() {
+        return false;
+    }
+
     /**
      * Obtain Model Class
      * @return Model Class
@@ -93,9 +122,33 @@ public abstract class AbstractOneDataFragment extends Fragment implements IOneVi
      */
     protected void createdActivity() {}
 
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        return view != null ? view : getLayout(inflater, container);
+    }
+
+    private View getLayout(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
+        Object layout = obtainLayout();
+        if(layout instanceof Integer) {
+            return inflater.inflate((int) layout, container, false);
+        } else if(layout instanceof View) {
+            return EasyUtils.transition(layout);
+        }
+        return null;
+    }
+
+    /**
+     * Obtain layout
+     * @return Layout id or View
+     */
+    protected abstract  Object obtainLayout();
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        findView(view);
         createdView(view);
     }
 
