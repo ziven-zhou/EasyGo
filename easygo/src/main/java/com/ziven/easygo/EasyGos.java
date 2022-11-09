@@ -32,8 +32,22 @@ public final class EasyGos {
         init(context, false);
     }
 
+    /**
+     * For Debug: Log Tag = "LogHelper"
+     * @param context Context
+     */
     public static void initLog(@NonNull Context context) {
         init(context, true);
+    }
+
+    /**
+     * For Debug
+     * @param context Context
+     * @param tag Log Tag
+     */
+    public static void initLog(@NonNull Context context, @NonNull String tag) {
+        ResourceUtils.init(context);
+        LogHelper.setLog(true, tag);
     }
 
     public static void init(@NonNull Context context, boolean log) {
