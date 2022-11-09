@@ -2,18 +2,21 @@ package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.myapplication.databinding.ActivityMainBinding;
 import com.ziven.easygo.EasyGos;
 import com.ziven.easygo.annotation.EasyGoMethod;
+import com.ziven.easygo.simply.EasyGoReceiver;
 import com.ziven.easygo.ui.AbstractOneDataFragment;
 import com.ziven.easygo.util.LogHelper;
 
 /**
  * @author Ziven
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements EasyGoReceiver.IReceiver {
 
     ActivityMainBinding binding;
     TestFragment testFragment;
@@ -28,9 +31,17 @@ public class MainActivity extends AppCompatActivity {
         EasyGos.getEasyGo().register(this);
 
         EasyGos.getDispatch()
-                .setView(data -> LogHelper.of("OverallDispatch").always().join(data).print())
+                .setView(data -> LogHelper.of("OverallDispatch").join(data).print())
                 .getPresenter()
                 .obtainOneData();
+
+        EasyGos.getEasyGoReceiver()
+                .setAction(() -> new String[] {
+                        Intent.ACTION_SCREEN_OFF,
+                        Intent.ACTION_SCREEN_ON,
+                })
+                .setReceiverReturnThis(this, Intent.ACTION_SCREEN_OFF)
+                .register(this);
 
         binding.test2.setOnClickListener(v -> {
             if(testFragment != null && testFragment.isAdded()) {
@@ -51,8 +62,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void received(Context context, Intent intent, String action) {
+        LogHelper.of("EasyGoReceiverTag").join("received:").join(action).print();
+    }
+
+    @Override
     protected void onDestroy() {
         EasyGos.getEasyGo().unregister(this);
+        EasyGos.getEasyGoReceiver().removeReceiver(this);
+        EasyGos.getEasyGoReceiver().unregister(this);
         super.onDestroy();
     }
 }

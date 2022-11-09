@@ -57,7 +57,9 @@ public class EasyGoReceiver extends BroadcastReceiver {
                 .doNull(() -> {
                     if (context instanceof IAction) {
                         mAction = EasyUtils.transition(context);
-                 }}).justNext(mAction)
+                    }
+                })
+                .justNext(mAction)
                 .notNullNext(IAction::actions)
                 .doNotNull(a -> {
                     final IntentFilter filter = new IntentFilter();
@@ -67,11 +69,22 @@ public class EasyGoReceiver extends BroadcastReceiver {
                 });
     }
 
+    public void unregister() {
+        unregister(ResourceUtils.getContext());
+    }
+
     public void unregister(@NonNull final Context context) {
         Condition.of(mRegister).doTrue(() -> {
             context.unregisterReceiver(this);
             mRegister = false;
         });
+        EasyUtils.forEach(mReceivers, (key, value) -> value.clear());
+        mReceivers.clear();
+    }
+
+    public EasyGoReceiver setReceiverReturnThis(@NonNull IReceiver receiver, @NonNull String... actions) {
+        setReceiver(receiver, actions);
+        return this;
     }
 
     public IReceiver setReceiver(@NonNull IReceiver receiver, @NonNull String... actions) {
@@ -88,6 +101,7 @@ public class EasyGoReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         final String action = intent.getAction();
+        LogHelper.of("EasyGoReceiverTag").join(action).print();
         Nulls.of(mReceivers.get(action)).doNotNull(list -> EasyUtils.forEach(list, r -> r.received(context, intent, action)));
     }
 

@@ -114,7 +114,7 @@ public final class TimeHelper {
     public static boolean doubleClick(long duration) {
         long end = TimeHelper.get().end(DOUBLE_CLICK_KEY);
         if(end > 0 && end < duration) {
-            LogHelper.of("TimeHelperTag").always().join("Double click.").print();
+            LogHelper.of("TimeHelperTag").join("Double click.").print();
             return true;
         }
         TimeHelper.get().start(DOUBLE_CLICK_KEY);

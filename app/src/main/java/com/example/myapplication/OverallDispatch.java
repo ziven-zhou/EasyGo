@@ -24,7 +24,7 @@ public class OverallDispatch implements IDispatch {
         return new OverallModel() {
             @Override
             protected void obtainOneData(@Nullable Context c, @Nullable Map<Object, Object> params) {
-                LogHelper.of("OverallDispatch").always().join("obtainOneData").print();
+                LogHelper.of("OverallDispatch").join("obtainOneData").print();
                 obtainedOneData(OneData.of("I am OverallDispatch"));
             }
         };
