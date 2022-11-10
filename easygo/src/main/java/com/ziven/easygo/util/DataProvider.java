@@ -18,9 +18,9 @@ public final class DataProvider<T> {
     private List<T> mList;
 
     public static <T> DataProvider<T> ofData(T data) {
-        List<T> list = new ArrayList<>();
-        list.add(data);
-        return of(list);
+        DataProvider<T> p = ofEmpty();
+        p.add(data);
+        return p;
     }
 
     public static <T> DataProvider<T> ofNull() {
@@ -44,19 +44,38 @@ public final class DataProvider<T> {
         return this;
     }
 
+    @Nullable
     public List<T> getList() {
         return mList;
     }
 
+    @NonNull
+    public Nulls<List<T>> getListNulls() {
+        return Nulls.of(getList());
+    }
+
+    @NonNull
+    public List<T> getListIfNullObtainEmpty() {
+        return getListIfNullObtain(EasyUtils::newList);
+    }
+
+    @NonNull
+    public List<T> getListIfNullObtain(@NonNull Obtain<List<T>> list) {
+        return mList != null ? mList : list.obtain();
+    }
+
     public DataProvider<T> addList(@Nullable final List<T> list) {
-        Condition.ofJust(mList).doFalse(() -> setList(list))
-                .and(list).doTrue(() -> Objects.requireNonNull(mList)
-                .addAll(Objects.requireNonNull(list)));
+        Condition.ofJust(mList)
+                .doFalse(() -> setList(list))
+                .and(list)
+                .doTrue(() -> Objects.requireNonNull(mList).addAll(Objects.requireNonNull(list)));
         return this;
     }
 
     public DataProvider<T> add(@Nullable final T data) {
-        Condition.ofJust(mList).and(data).doTrue(() -> Objects.requireNonNull(mList).add(data));
+        Condition.ofJust(mList)
+                .and(data)
+                .doTrue(() -> Objects.requireNonNull(mList).add(data));
         return this;
     }
 
@@ -92,17 +111,22 @@ public final class DataProvider<T> {
     }
 
     public DataProvider<T> addListNoDuplicates(@Nullable final List<T> list) {
-        Condition.ofJust(list).doTrue(() -> EasyUtils.forEach(Objects.requireNonNull(list), this::addNoDuplicates));
+        Condition.ofJust(list)
+                .doTrue(() -> EasyUtils.forEach(Objects.requireNonNull(list), this::addNoDuplicates));
         return this;
     }
 
     public DataProvider<T> addNoDuplicates(@Nullable final T data) {
-        Condition.ofJust(mList).and(data).ofData(Objects.requireNonNull(mList), Objects.requireNonNull(data)).doFalse(() -> add(data));
+        Condition.ofJust(mList)
+                .and(data)
+                .ofData(Objects.requireNonNull(mList), Objects.requireNonNull(data))
+                .doFalse(() -> add(data));
         return this;
     }
 
     public DataProvider<T> sort(@Nullable Comparator<T> comparator) {
-        Condition.of(mList).doTrue(() -> Collections.sort( Objects.requireNonNull(mList), comparator));
+        Condition.of(mList)
+                .doTrue(() -> Collections.sort( Objects.requireNonNull(mList), comparator));
         return this;
     }
 
@@ -138,19 +162,39 @@ public final class DataProvider<T> {
 
     public boolean remove(T data) {
         if(Condition.of(data).and(mList).isTrue()) {
-            return Objects.requireNonNull(mList).remove(Objects.requireNonNull(data));
+            return Objects
+                    .requireNonNull(mList)
+                    .remove(Objects.requireNonNull(data));
         }
         return false;
     }
 
     public boolean remove(@NonNull List<T> list) {
         if(Condition.of(list).and(mList).isTrue()) {
-            return Objects.requireNonNull(mList).removeAll(Objects.requireNonNull(list));
+            return Objects
+                    .requireNonNull(mList)
+                    .removeAll(Objects.requireNonNull(list));
         }
         return false;
     }
 
     public void clear() {
-        Condition.of(mList).doTrue(() -> Objects.requireNonNull(mList).clear());
+        Condition.of(mList)
+                .doTrue(() -> Objects.requireNonNull(mList).clear());
+    }
+
+    public DataProvider<T> forEach(@NonNull BiCarry<T, Integer> carry) {
+        EasyUtils.forEach(getList(), carry);
+        return this;
+    }
+
+    public DataProvider<T> forEach(@NonNull Carry<T> carry) {
+        EasyUtils.forEach(getList(), carry);
+        return this;
+    }
+
+    public DataProvider<T> forEachBreak(@NonNull BiTransfer<Boolean, T, Integer> transfer) {
+        EasyUtils.forEachBreak(getList(), transfer);
+        return this;
     }
 }

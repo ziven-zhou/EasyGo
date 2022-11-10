@@ -449,4 +449,25 @@ public final class ViewHelper<T extends View> {
         }
         return this;
     }
+
+    public ViewHelper<T> forEachChild(@NonNull final ViewUtils.IView iView) {
+        if(mView != null) {
+            ViewUtils.forEachChild(mView, iView);
+        }
+        return this;
+    }
+
+    public ViewHelper<T> forEachView(@NonNull final ViewUtils.IView iView) {
+        if(mView != null) {
+            ViewUtils.forEachView(mView, iView);
+        }
+        return this;
+    }
+
+    public ViewHelper<T> forEachParent(@NonNull final ViewUtils.IView iView) {
+        if(mView != null) {
+            ViewUtils.forEachParent(mView, iView);
+        }
+        return this;
+    }
 }
