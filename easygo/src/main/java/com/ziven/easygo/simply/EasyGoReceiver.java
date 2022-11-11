@@ -88,9 +88,12 @@ public class EasyGoReceiver extends BroadcastReceiver {
     }
 
     public IReceiver setReceiver(@NonNull IReceiver receiver, @NonNull String... actions) {
-        ThreadUtils.runOnMainThread(() -> EasyUtils.forEach(actions, a -> Nulls.of(mReceivers.get(a))
-                .doNull(() -> mReceivers.put(a, EasyUtils.newList(receiver)))
-                .doNotNull(list -> EasyUtils.addNoDuplicates(list, receiver))));
+        ThreadUtils.runOnMainThread(
+                () -> EasyUtils.forEach(actions,
+                a -> Nulls
+                        .of(mReceivers.get(a))
+                        .doNull(() -> mReceivers.put(a, EasyUtils.newList(receiver)))
+                        .doNotNull(list -> EasyUtils.addNoDuplicates(list, receiver))));
         return receiver;
     }
 
@@ -102,7 +105,8 @@ public class EasyGoReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         final String action = intent.getAction();
         LogHelper.of("EasyGoReceiverTag").join(action).print();
-        Nulls.of(mReceivers.get(action)).doNotNull(list -> EasyUtils.forEach(list, r -> r.received(context, intent, action)));
+        Nulls.of(mReceivers.get(action))
+                .doNotNull(list -> EasyUtils.forEach(list, r -> r.received(context, intent, action)));
     }
 
     public interface IAction {

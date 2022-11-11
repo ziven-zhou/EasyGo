@@ -61,7 +61,9 @@ public class OnePresenter extends AbstractPresenter<IOneView, OneModel> implemen
 
     public void obtainOneData(@Nullable final Context c, @Nullable Map<Object, Object> params) {
         final Map<Object, Object> copy = new HashMap<>(params == null ? new HashMap<>(0) : params);
-        Condition.of(mClearAfterObtain).doTrue(this::clearParam);
+        Condition
+                .of(mClearAfterObtain)
+                .doTrue(this::clearParam);
         if(mRunOnWorkThread) {
             ThreadUtils.runOnWorkerThread(() -> doNotNullModel(() -> getModel().obtainOneData(c, copy)));
         } else {

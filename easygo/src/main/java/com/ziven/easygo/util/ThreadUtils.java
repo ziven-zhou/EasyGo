@@ -34,11 +34,16 @@ public final class ThreadUtils {
     }
 
     public static boolean isOnMainThread() {
-        return Condition.ofFalse().ofJustEqual(Thread.currentThread(), Looper.getMainLooper().getThread()).isTrue();
+        return Condition
+                .ofFalse()
+                .ofJustEqual(Thread.currentThread(), Looper.getMainLooper().getThread())
+                .isTrue();
     }
 
     public static void runOnMainThread(@NonNull final Runnable runnable) {
-        Condition.ofFalse().ofJustEqual(Thread.currentThread(), Looper.getMainLooper().getThread())
+        Condition
+                .ofFalse()
+                .ofJustEqual(Thread.currentThread(), Looper.getMainLooper().getThread())
                 .doTrue(runnable::run)
                 .doFalse(() -> MAIN_HANDLER.post(runnable));
     }
@@ -52,7 +57,9 @@ public final class ThreadUtils {
     }
 
     public static void runOnWorkerThread(@NonNull final Runnable runnable) {
-        Condition.ofFalse().ofJustNotEqual(Thread.currentThread(), Looper.getMainLooper().getThread())
+        Condition
+                .ofFalse()
+                .ofJustNotEqual(Thread.currentThread(), Looper.getMainLooper().getThread())
                 .doTrue(runnable::run)
                 .doFalse(() -> EASY_EXECUTOR.execute(runnable));
     }
