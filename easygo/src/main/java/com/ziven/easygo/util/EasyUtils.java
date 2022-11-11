@@ -365,6 +365,60 @@ public final class EasyUtils {
         });
     }
 
+    public static void typeConditions(@NonNull final TypeConditions condition, Object value) {
+        typeConditions(new Conditions() {
+            @Override
+            public void condition1() {
+                condition.condition1(EasyUtils.transition(value));
+            }
+
+            @Override
+            public void condition2() {
+                condition.condition2(EasyUtils.transition(value));
+            }
+
+            @Override
+            public void condition3() {
+                condition.condition3(EasyUtils.transition(value));
+            }
+
+            @Override
+            public void condition4() {
+                condition.condition4(EasyUtils.transition(value));
+            }
+
+            @Override
+            public void condition5() {
+                condition.condition5(EasyUtils.transition(value));
+            }
+
+            @Override
+            public void condition6() {
+                condition.condition6(EasyUtils.transition(value));
+            }
+
+            @Override
+            public void condition7() {
+                condition.condition7(EasyUtils.transition(value));
+            }
+
+            @Override
+            public void condition8() {
+                condition.condition8(EasyUtils.transition(value));
+            }
+
+            @Override
+            public void condition9() {
+                condition.condition9(EasyUtils.transition(value));
+            }
+
+            @Override
+            public void other() {
+                condition.other(value);
+            }
+        }, value);
+    }
+
     public static void typeConditions(@NonNull final Conditions condition, Object value) {
         if(value instanceof String) {
             conditions(condition, Conditions.CONDITION1);
