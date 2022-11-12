@@ -45,6 +45,11 @@ public class MapDataProvider<K, V> {
         return this;
     }
 
+    public MapDataProvider<K, V> clear() {
+        getProvider().clear();
+        return this;
+    }
+
     @Nullable
     public V get(K key) {
         return key != null ? getProvider().get(key) : null;
