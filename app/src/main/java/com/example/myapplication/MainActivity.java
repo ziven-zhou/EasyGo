@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -9,6 +10,8 @@ import android.os.Bundle;
 import com.example.myapplication.databinding.ActivityMainBinding;
 import com.ziven.easygo.EasyGos;
 import com.ziven.easygo.annotation.EasyGoMethod;
+import com.ziven.easygo.process.ProcessCommunication;
+import com.ziven.easygo.process.ProcessReceiver;
 import com.ziven.easygo.simply.EasyGoReceiver;
 import com.ziven.easygo.ui.AbstractOneDataFragment;
 import com.ziven.easygo.util.LogHelper;
@@ -52,6 +55,23 @@ public class MainActivity extends AppCompatActivity implements EasyGoReceiver.IR
                     .beginTransaction()
                     .add(R.id.test_container, testFragment)
                     .commitNow();
+
+            ProcessCommunication.clientSender().sendString("I am client.");
+            ProcessCommunication.serverSender().sendString("I am server.");
+        });
+
+        ProcessCommunication.server(new ProcessReceiver() {
+            @Override
+            public void receiveString(int what, @NonNull String message) {
+                ProcessCommunication.log("server receiveString:" + message);
+            }
+        });
+
+        ProcessCommunication.client(new ProcessReceiver() {
+            @Override
+            public void receiveString(int what, @NonNull String message) {
+                ProcessCommunication.log("client receiveString:" + message);
+            }
         });
     }
 
@@ -71,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements EasyGoReceiver.IR
         EasyGos.getEasyGo().unregister(this);
         EasyGos.getEasyGoReceiver().removeReceiver(this);
         EasyGos.getEasyGoReceiver().unregister(this);
+        ProcessCommunication.unbindService();
         super.onDestroy();
     }
 }
