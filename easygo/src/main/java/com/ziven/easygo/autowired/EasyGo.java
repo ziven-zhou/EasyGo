@@ -15,6 +15,7 @@ import com.ziven.easygo.annotation.IEasyGoMethod;
 import com.ziven.easygo.util.Carry;
 import com.ziven.easygo.util.LogHelper;
 import com.ziven.easygo.util.Nulls;
+import com.ziven.easygo.util.Obtain;
 import com.ziven.easygo.util.ResourceUtils;
 import com.ziven.easygo.util.ThreadUtils;
 
@@ -163,8 +164,30 @@ public final class EasyGo {
         });
     }
 
+    public void easyGo(@NonNull final String activityPath) {
+        easyGo(ResourceUtils.getContext(), activityPath);
+    }
+
     public void easyGo(@NonNull final Context context, @NonNull final String activityPath) {
         easyGo(context, activityPath, new Intent());
+    }
+
+    public void easyGo(@NonNull final String activityPath, @NonNull Obtain<Intent> obtain) {
+        easyGo(ResourceUtils.getContext(), activityPath, obtain);
+    }
+
+    public void easyGo(@NonNull final Context context, @NonNull final String activityPath, @NonNull Obtain<Intent> obtain) {
+        easyGo(context, activityPath, obtain.obtain());
+    }
+
+    public void easyGo2(@NonNull final String activityPath, @NonNull Carry<Intent> carry) {
+        easyGo(ResourceUtils.getContext(), activityPath, carry);
+    }
+
+    public void easyGo(@NonNull final Context context, @NonNull final String activityPath, @NonNull Carry<Intent> carry) {
+        Intent intent = new Intent();
+        carry.carry(intent);
+        easyGo(context, activityPath, intent);
     }
 
     public void easyGo(@NonNull final Context context, @NonNull final String activityPath, @NonNull final Intent intent) {

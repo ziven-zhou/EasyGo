@@ -21,6 +21,8 @@
         </activity>
 
         <activity android:name=".TestActivity"/>
+        <activity android:name=".activity.ReceiverTestActivity" />
+        <activity android:name=".activity.MethodTestActivity" />
 
         <service
             android:name="com.ziven.easygo.process.server.ServerService"

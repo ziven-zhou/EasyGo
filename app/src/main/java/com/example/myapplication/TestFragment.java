@@ -1,33 +1,37 @@
 package com.example.myapplication;
 
-import android.content.Context;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.ziven.easygo.EasyGos;
 import com.ziven.easygo.design.mvp.AbstractOneData;
-import com.ziven.easygo.design.mvp.OneData;
 import com.ziven.easygo.design.mvp.OneModel;
 import com.ziven.easygo.ui.AbstractOneDataFragment;
+import com.ziven.easygo.util.EasyUtils;
 import com.ziven.easygo.util.LogHelper;
-
-import java.util.Map;
 
 /**
  * @author Ziven
  */
 public class TestFragment extends AbstractOneDataFragment {
 
+    private final TestAdapter testAdapter = new TestAdapter();
+
     @Override
     public void layoutOneData(@NonNull AbstractOneData data) {
-        getViewHelper(R.id.test).setText(data.getOneData());
+        testAdapter
+                .getDataProvider()
+                .setList(data.getOneData());
+
+        EasyUtils.notifyDataSetChanged(testAdapter);
     }
 
     @NonNull
     @Override
     protected Class<? extends OneModel> obtainOneModelClass() {
-        return TestFragmentModel.class;
+        return TestModel.class;
     }
 
     @Override
@@ -42,23 +46,29 @@ public class TestFragment extends AbstractOneDataFragment {
 
     @Override
     protected void createdView(@NonNull View root) {
-        getViewHelper(R.id.test).setOnClickListener(v
-                -> getOnePresenter().obtainOneData());
+        testAdapter.setListener((data, position) -> {
+            LogHelper.of("TestFragmentTag")
+                    .join("position=" + position)
+                    .join("data=" + data);
+
+            EasyGos.getDispatch()
+                    .setView(value -> EasyGos.getEasyGo()
+                            .easyGo(root.getContext(),
+                                    (String) value.getOneData(),
+                                    intent -> intent.putExtra("title_name", (String) value.getOneData())))
+                    .getPresenter()
+                    .setParam(OverallDispatch.ACTIVITY_PATH_TAG, position)
+                    .obtainOneData();
+        });
+
+        getViewHelper(R.id.recycler_view)
+                .setLayoutManager(new LinearLayoutManager(root.getContext()))
+                .setAdapter(testAdapter);
+        getOnePresenter().obtainOneData();
     }
 
     @Override
     protected void destroyView() {
 
-    }
-
-    public static class TestFragmentModel extends OneModel {
-
-        private int count = 0;
-
-        @Override
-        protected void obtainOneData(@Nullable Context c, @Nullable Map<Object, Object> params) {
-            LogHelper.of("TestFragmentTag").join("Obtain data").print();
-            obtainedOneData(OneData.of("Obtained data:" + count++));
-        }
     }
 }
