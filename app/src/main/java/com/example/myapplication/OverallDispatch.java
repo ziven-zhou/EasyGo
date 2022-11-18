@@ -20,7 +20,7 @@ import java.util.Map;
 public class OverallDispatch implements IDispatch {
 
     public static final String ACTIVITY_PATH_TAG = "ACTIVITY_PATH";
-    private static final String[] ACTIVITY_PATH = {
+    public static final String[] ACTIVITY_PATH = {
             ReceiverTestActivity.class.getSimpleName(),
             MethodTestActivity.class.getSimpleName(),
             ServerTestActivity.class.getSimpleName()

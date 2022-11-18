@@ -28,6 +28,6 @@ public class ReceiverTestActivity extends BaseTestActivity implements EasyGoRece
 
     @Override
     protected void destroyLayout() {
-        EasyGos.getEasyGoReceiver().unregister(this);
+        EasyGos.getEasyGoReceiver().removeReceiver(this);
     }
 }

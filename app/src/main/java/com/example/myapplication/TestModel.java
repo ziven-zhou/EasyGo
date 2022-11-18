@@ -8,6 +8,8 @@ import com.ziven.easygo.design.mvp.OneData;
 import com.ziven.easygo.design.mvp.OneModel;
 import com.ziven.easygo.util.EasyUtils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +22,8 @@ public class TestModel extends OneModel {
 
     @Override
     protected void obtainOneData(@Nullable Context c, @Nullable Map<Object, Object> params) {
-        obtainedOneData(OneData.of(list));
+        List<String> l = new ArrayList<>(Arrays.asList(OverallDispatch.ACTIVITY_PATH));
+        l.addAll(list);
+        obtainedOneData(OneData.of(l));
     }
 }
