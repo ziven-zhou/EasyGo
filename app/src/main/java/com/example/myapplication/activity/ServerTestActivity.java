@@ -47,49 +47,49 @@ public class ServerTestActivity extends BaseTestActivity
             public void condition1() {
                 ProcessCommunication
                         .serverSender()
-                        .sendString("I am server.");
+                        .sendString(100, "I am server.");
             }
 
             @Override
             public void condition2() {
                 ProcessCommunication
                         .serverSender()
-                        .sendBoolean(false);
+                        .sendBoolean(101, false);
             }
 
             @Override
             public void condition3() {
                 ProcessCommunication
                         .serverSender()
-                        .sendInt(10);
+                        .sendInt(102, 10);
             }
 
             @Override
             public void condition4() {
                 ProcessCommunication
                         .serverSender()
-                        .sendLong(11L);
+                        .sendLong(103, 11L);
             }
 
             @Override
             public void condition5() {
                 ProcessCommunication
                         .serverSender()
-                        .sendFloat(12.5F);
+                        .sendFloat(104, 12.5F);
             }
 
             @Override
             public void condition6() {
                 ProcessCommunication
                         .serverSender()
-                        .sendDouble(13.5D);
+                        .sendDouble(105, 13.5D);
             }
 
             @Override
             public void condition7() {
                 ProcessCommunication
                         .serverSender()
-                        .notifyDataChanged(14);
+                        .notifyDataChanged(105);
             }
         }, receivedCount++);
     }

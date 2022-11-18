@@ -65,10 +65,11 @@ public abstract class ProcessHandler extends Handler {
     protected abstract boolean dispatchMessage(int what, @NonNull Object message);
 
     private void dispatchOtherMessage(int what, @NonNull ProcessParcelable message) {
+        if(what == ProcessCommunication.WHAT_NOTIFY) {
+            receiver.notifyDataChanged(message.getIntMessage());
+            return;
+        }
         switch (message.getWhat()) {
-            case ProcessCommunication.WHAT_NOTIFY:
-                receiver.notifyDataChanged(message.getIntMessage());
-                break;
             case ProcessCommunication.WHAT_STRING:
                 receiver.receiveString(what, message.getStringMessage());
                 break;
