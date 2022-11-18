@@ -1,5 +1,6 @@
 package com.ziven.easygo.process;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -8,9 +9,6 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import com.ziven.easygo.util.EasyUtils;
-import com.ziven.easygo.util.TypeConditions;
 
 /**
  * @author Ziver
@@ -45,8 +43,16 @@ public abstract class ProcessHandler extends Handler {
     @Override
     public void handleMessage(@NonNull Message msg) {
         ProcessCommunication.log("receive message: what=" + msg.what, "message=" + msg.obj);
-        if(!dispatchMessage(msg.what, msg.obj)) {
-            dispatchOtherMessage(msg.what, msg.obj);
+        Bundle bundle = msg.getData();
+        bundle.setClassLoader(ProcessParcelable.class.getClassLoader());
+        Parcelable parcelable = bundle.getParcelable(ProcessCommunication.KEY);
+        if(dispatchMessage(msg.what, parcelable)) {
+            return;
+        }
+        if(parcelable instanceof ProcessParcelable) {
+            dispatchOtherMessage(msg.what, (ProcessParcelable) parcelable);
+        } else {
+            receiver.receiveParcelable(msg.what, parcelable);
         }
     }
 
@@ -58,46 +64,31 @@ public abstract class ProcessHandler extends Handler {
      */
     protected abstract boolean dispatchMessage(int what, @NonNull Object message);
 
-    private void dispatchOtherMessage(int what, @NonNull Object message) {
-        if(what == ProcessCommunication.WHAT_NOTIFY) {
-            receiver.notifyDataChanged((int) message);
-        } else {
-            EasyUtils.typeConditions(new TypeConditions() {
-                @Override
-                public void condition1(@NonNull String value) {
-                    receiver.receiveString(what, value);
-                }
-
-                @Override
-                public void condition2(boolean value) {
-                    receiver.receiveBoolean(what, value);
-                }
-
-                @Override
-                public void condition3(int value) {
-                    receiver.receiveInt(what, value);
-                }
-
-                @Override
-                public void condition4(long value) {
-                    receiver.receiveLong(what, value);
-                }
-
-                @Override
-                public void condition5(float value) {
-                    receiver.receiveFloat(what, value);
-                }
-
-                @Override
-                public void condition6(double value) {
-                    receiver.receiveDouble(what, value);
-                }
-
-                @Override
-                public void other(Object value) {
-                    receiver.receiveParcelable(what, (Parcelable) value);
-                }
-            }, message);
+    private void dispatchOtherMessage(int what, @NonNull ProcessParcelable message) {
+        switch (message.getWhat()) {
+            case ProcessCommunication.WHAT_NOTIFY:
+                receiver.notifyDataChanged(message.getIntMessage());
+                break;
+            case ProcessCommunication.WHAT_STRING:
+                receiver.receiveString(what, message.getStringMessage());
+                break;
+            case ProcessCommunication.WHAT_BOOLEAN:
+                receiver.receiveBoolean(what, message.isBooleanMessage());
+                break;
+            case ProcessCommunication.WHAT_INT:
+                receiver.receiveInt(what, message.getIntMessage());
+                break;
+            case ProcessCommunication.WHAT_LONG:
+                receiver.receiveLong(what, message.getLongMessage());
+                break;
+            case ProcessCommunication.WHAT_FLOAT:
+                receiver.receiveFloat(what, message.getFloatMessage());
+                break;
+            case ProcessCommunication.WHAT_DOUBLE:
+                receiver.receiveDouble(what, message.getDoubleMessage());
+                break;
+            default:
+                break;
         }
     }
 }

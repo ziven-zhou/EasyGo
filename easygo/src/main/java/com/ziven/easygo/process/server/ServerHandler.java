@@ -14,7 +14,7 @@ public class ServerHandler extends ProcessHandler {
 
     @Override
     protected boolean dispatchMessage(int what, @NonNull Object message) {
-        if(what == ProcessCommunication.WHAT_MESSENGER) {
+        if(what == ProcessCommunication.WHAT_MESSENGER && message instanceof Messenger) {
             setSender((Messenger) message);
             return true;
         }

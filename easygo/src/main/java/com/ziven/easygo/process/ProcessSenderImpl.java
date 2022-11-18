@@ -1,5 +1,6 @@
 package com.ziven.easygo.process;
 
+import android.os.Bundle;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.Parcelable;
@@ -20,10 +21,12 @@ public class ProcessSenderImpl implements ProcessSender {
     }
 
     @NonNull
-    private Message obtainMessage(int what, @NonNull Object message) {
+    private Message obtainMessage(int what, @NonNull Parcelable message) {
         Message msg = Message.obtain();
         msg.what = what;
-        msg.obj = message;
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(ProcessCommunication.KEY, message);
+        msg.setData(bundle);
         return msg;
     }
 
@@ -32,7 +35,7 @@ public class ProcessSenderImpl implements ProcessSender {
      * @param what What
      * @param message Message
      */
-    private void sendMessage(int what, @NonNull Object message) {
+    private void sendMessage(int what, @NonNull Parcelable message) {
         if(sender == null) {
             ProcessCommunication.log("messenger is null.");
             return;
@@ -47,32 +50,32 @@ public class ProcessSenderImpl implements ProcessSender {
 
     @Override
     public void sendString(int what, @NonNull String message) {
-        sendMessage(what, message);
+        sendMessage(what, new ProcessParcelable(ProcessCommunication.WHAT_STRING).setMessage(message));
     }
 
     @Override
     public void sendBoolean(int what, boolean message) {
-        sendMessage(what, message);
+        sendMessage(what, new ProcessParcelable(ProcessCommunication.WHAT_BOOLEAN).setMessage(message));
     }
 
     @Override
     public void sendInt(int what, int message) {
-        sendMessage(what, message);
+        sendMessage(what, new ProcessParcelable(ProcessCommunication.WHAT_INT).setMessage(message));
     }
 
     @Override
     public void sendLong(int what, long message) {
-        sendMessage(what, message);
+        sendMessage(what, new ProcessParcelable(ProcessCommunication.WHAT_LONG).setMessage(message));
     }
 
     @Override
     public void sendFloat(int what, float message) {
-        sendMessage(what, message);
+        sendMessage(what, new ProcessParcelable(ProcessCommunication.WHAT_FLOAT).setMessage(message));
     }
 
     @Override
     public void sendDouble(int what, double message) {
-        sendMessage(what, message);
+        sendMessage(what, new ProcessParcelable(ProcessCommunication.WHAT_DOUBLE).setMessage(message));
     }
 
     @Override

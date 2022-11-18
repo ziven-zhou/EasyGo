@@ -18,12 +18,7 @@ public class ReceiverTestActivity extends BaseTestActivity implements EasyGoRece
     @Override
     protected void initLayout2() {
         EasyGos.getEasyGoReceiver()
-                .setAction(() -> new String[] {
-                        Intent.ACTION_SCREEN_OFF,
-                        Intent.ACTION_SCREEN_ON,
-                })
-                .setReceiverReturnThis(this, Intent.ACTION_SCREEN_OFF)
-                .register(this);
+                .setReceiverReturnThis(this, Intent.ACTION_SCREEN_OFF);
     }
 
     @Override

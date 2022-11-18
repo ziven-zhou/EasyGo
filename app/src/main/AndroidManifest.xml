@@ -23,6 +23,9 @@
         <activity android:name=".TestActivity"/>
         <activity android:name=".activity.ReceiverTestActivity" />
         <activity android:name=".activity.MethodTestActivity" />
+        <activity android:name=".activity.ServerTestActivity" />
+        <activity android:name=".activity.ClientTestActivity"
+            android:process=":client_test_activity"/>
 
         <service
             android:name="com.ziven.easygo.process.server.ServerService"

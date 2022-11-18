@@ -4,6 +4,7 @@ import com.ziven.easygo.ui.AbstractBaseActivity;
 
 import com.ziven.easygo.util.Conditions;
 import com.ziven.easygo.util.EasyUtils;
+import com.ziven.easygo.util.LogHelper;
 
 /**
  * @author Ziven
@@ -25,11 +26,23 @@ public abstract class BaseTestActivity extends AbstractBaseActivity implements C
                 .setOnClickListener(
                         v -> EasyUtils.conditions(this, clickCount++));
 
+        getView(R.id.button2)
+                .setOnClickListener(
+                        v -> button2Click());
+
         initLayout2();
     }
+
+    protected void button2Click() {}
 
     /**
      * Init Layout2
      */
     protected abstract void initLayout2();
+
+    protected void log(Object... logs) {
+        LogHelper helper = LogHelper.of("BaseTestActivityTag");
+        EasyUtils.forEach(logs, helper::join);
+        helper.print();
+    }
 }

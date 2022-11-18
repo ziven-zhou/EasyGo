@@ -17,6 +17,7 @@ import com.ziven.easygo.util.ResourceUtils;
 public final class ProcessCommunication {
 
     private static final String TAG = "ProcessCommunication:";
+    public static final String KEY = "ProcessParcelableKey";
     public static final int WHAT_MESSENGER = -1000;
     public static final int WHAT_NOTIFY = -1001;
     public static final int WHAT_STRING = -1002;

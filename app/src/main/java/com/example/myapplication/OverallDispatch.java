@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.myapplication.activity.MethodTestActivity;
+import com.example.myapplication.activity.ServerTestActivity;
 import com.example.myapplication.activity.ReceiverTestActivity;
 import com.ziven.easygo.design.mvp.OneData;
 import com.ziven.easygo.overall.IDispatch;
@@ -21,7 +22,8 @@ public class OverallDispatch implements IDispatch {
     public static final String ACTIVITY_PATH_TAG = "ACTIVITY_PATH";
     private static final String[] ACTIVITY_PATH = {
             ReceiverTestActivity.class.getSimpleName(),
-            MethodTestActivity.class.getSimpleName()
+            MethodTestActivity.class.getSimpleName(),
+            ServerTestActivity.class.getSimpleName()
     };
 
     private static int checkIndex(int index) {
