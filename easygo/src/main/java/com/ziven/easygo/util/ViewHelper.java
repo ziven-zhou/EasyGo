@@ -128,7 +128,96 @@ public final class ViewHelper<T extends View> {
     }
 
     public ViewHelper<T> setPadding(int left, int right) {
-        return setPadding(left, 0, right, 0);
+        if(mView == null) {
+            return this;
+        }
+        return setPadding(
+                left,
+                mView.getPaddingTop(),
+                right,
+                mView.getPaddingBottom()
+            );
+    }
+
+    public ViewHelper<T> setPaddingTopBottom(int topBottom) {
+        return setTopBottomPadding(topBottom, topBottom);
+    }
+
+    public ViewHelper<T> setTopBottomPadding(int top, int bottom) {
+        if(mView == null) {
+            return this;
+        }
+        return setPadding(
+                mView.getPaddingLeft(),
+                top,
+                mView.getPaddingRight(),
+                bottom
+            );
+    }
+
+    public ViewHelper<T> setPaddingLeft(int left) {
+        if(mView == null) {
+            return this;
+        }
+        return setPadding(
+                left,
+                mView.getPaddingTop(),
+                mView.getPaddingRight(),
+                mView.getPaddingBottom());
+    }
+
+    public ViewHelper<T> setPaddingTop(int top) {
+        if(mView == null) {
+            return this;
+        }
+        return setPadding(
+                mView.getPaddingLeft(),
+                top,
+                mView.getPaddingRight(),
+                mView.getPaddingBottom());
+    }
+
+    public ViewHelper<T> setPaddingRight(int right) {
+        if(mView == null) {
+            return this;
+        }
+        return setPadding(
+                mView.getPaddingLeft(),
+                mView.getPaddingTop(),
+                right,
+                mView.getPaddingBottom());
+    }
+
+    public ViewHelper<T> setPaddingBottom(int bottom) {
+        if(mView == null) {
+            return this;
+        }
+        return setPadding(
+                mView.getPaddingLeft(),
+                mView.getPaddingTop(),
+                mView.getPaddingRight(),
+                bottom);
+    }
+
+    public ViewHelper<T> invalidate() {
+        if(mView != null) {
+            mView.invalidate();
+        }
+        return this;
+    }
+
+    public ViewHelper<T> requestFocus() {
+        if(mView != null) {
+            mView.requestFocus();
+        }
+        return this;
+    }
+
+    public ViewHelper<T> requestLayout() {
+        if(mView != null) {
+            mView.requestLayout();
+        }
+        return this;
     }
 
 
@@ -320,6 +409,14 @@ public final class ViewHelper<T extends View> {
         return this;
     }
 
+    public <V extends View> ViewHelper<T> findViewById(int id, @NonNull Carry<V> carry) {
+        V child = mView != null ? mView.findViewById(id) : null;
+        if(child != null) {
+            carry.carry(child);
+        }
+        return this;
+    }
+
 
     /**
      *-------------------------------ViewGroup end-----------------------------
@@ -385,6 +482,21 @@ public final class ViewHelper<T extends View> {
         return this;
     }
 
+    public ViewHelper<T> setWidth(int width) {
+        if(mView != null && mView.getLayoutParams() != null) {
+            ViewGroup.LayoutParams params = mView.getLayoutParams();
+            params.width = width;
+        }
+        return this;
+    }
+
+    public ViewHelper<T> setHeight(int height) {
+        if(mView != null && mView.getLayoutParams() != null) {
+            ViewGroup.LayoutParams params = mView.getLayoutParams();
+            params.height = height;
+        }
+        return this;
+    }
 
     public ViewHelper<T> setWidthAndHeight(int width, int height) {
         if(mView != null && mView.getLayoutParams() != null) {
@@ -404,6 +516,90 @@ public final class ViewHelper<T extends View> {
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mView.getLayoutParams();
             params.leftMargin = left;
             params.topMargin = top;
+        }
+        return this;
+    }
+
+    public ViewHelper<T> setBottomRightMargin(int right, int bottom) {
+        if(mView != null &&  mView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mView.getLayoutParams();
+            params.rightMargin = right;
+            params.bottomMargin = bottom;
+        }
+        return this;
+    }
+
+    public ViewHelper<T> setLeftRightMargin(int left, int right) {
+        if(mView != null &&  mView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mView.getLayoutParams();
+            params.leftMargin = left;
+            params.rightMargin = right;
+        }
+        return this;
+    }
+
+    public ViewHelper<T> setTopBottomMargin(int top, int bottom) {
+        if(mView != null &&  mView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mView.getLayoutParams();
+            params.topMargin = top;
+            params.bottomMargin = bottom;
+        }
+        return this;
+    }
+
+    public ViewHelper<T> setStartEndMargin(int start, int end) {
+        if(mView != null &&  mView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mView.getLayoutParams();
+            params.setMarginStart(start);
+            params.setMarginEnd(end);
+        }
+        return this;
+    }
+
+    public ViewHelper<T> setTopMargin(int top) {
+        if(mView != null &&  mView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mView.getLayoutParams();
+            params.topMargin = top;
+        }
+        return this;
+    }
+
+    public ViewHelper<T> setBottomMargin(int bottom) {
+        if(mView != null &&  mView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mView.getLayoutParams();
+            params.bottomMargin = bottom;
+        }
+        return this;
+    }
+
+    public ViewHelper<T> setLeftMargin(int left) {
+        if(mView != null &&  mView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mView.getLayoutParams();
+            params.leftMargin = left;
+        }
+        return this;
+    }
+
+    public ViewHelper<T> setRightMargin(int right) {
+        if(mView != null &&  mView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mView.getLayoutParams();
+            params.rightMargin = right;
+        }
+        return this;
+    }
+
+    public ViewHelper<T> setStartMargin(int start) {
+        if(mView != null &&  mView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mView.getLayoutParams();
+            params.setMarginStart(start);
+        }
+        return this;
+    }
+
+    public ViewHelper<T> setEndMargin(int end) {
+        if(mView != null &&  mView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mView.getLayoutParams();
+            params.setMarginEnd(end);
         }
         return this;
     }

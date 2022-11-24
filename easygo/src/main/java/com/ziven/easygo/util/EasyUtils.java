@@ -42,10 +42,12 @@ public final class EasyUtils {
         throw new ClassCastException("Target is:" + target + ",Class is:" + cls);
     }
 
-    public static <T> void instanceDo(@NonNull Object target, @NonNull Class<T> cls, @NonNull Carry<T> carry) {
+    public static <T> boolean instanceDo(@NonNull Object target, @NonNull Class<T> cls, @NonNull Carry<T> carry) {
         if(instanceOf(target, cls)) {
             carry.carry(transition(target));
+            return true;
         }
+        return false;
     }
 
     @SuppressWarnings("unchecked")
