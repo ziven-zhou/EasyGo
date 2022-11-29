@@ -336,6 +336,9 @@ public final class ViewHelper<T extends View> {
     }
 
     public ViewHelper<T> setTextSizeId(@DimenRes int sizeId) {
+        if(mView == null) {
+            return this;
+        }
         return setTextSize(TypedValue.COMPLEX_UNIT_PX, mView.getResources().getDimensionPixelSize(sizeId));
     }
 
