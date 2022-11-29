@@ -21,6 +21,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
@@ -231,6 +232,16 @@ public final class ViewHelper<T extends View> {
     public ViewHelper<T> setText(@StringRes int resId) {
         if(mView instanceof TextView) {
             ((TextView) mView).setText(resId);
+            return this;
+        }
+        if(mView instanceof Toolbar) {
+            ((Toolbar) mView).setTitle(resId);
+            return this;
+        }
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if(mView instanceof android.widget.Toolbar) {
+                ((android.widget.Toolbar) mView).setTitle(resId);
+            }
         }
         return this;
     }
@@ -238,6 +249,16 @@ public final class ViewHelper<T extends View> {
     public ViewHelper<T> setText(CharSequence text) {
         if(mView instanceof TextView) {
             ((TextView) mView).setText(text);
+            return this;
+        }
+        if(mView instanceof Toolbar) {
+            ((Toolbar) mView).setTitle(text);
+            return this;
+        }
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if(mView instanceof android.widget.Toolbar) {
+                ((android.widget.Toolbar) mView).setTitle(text);
+            }
         }
         return this;
     }
@@ -245,6 +266,16 @@ public final class ViewHelper<T extends View> {
     public ViewHelper<T> setText(CharSequence text, TextView.BufferType type) {
         if(mView instanceof TextView) {
             ((TextView) mView).setText(text, type);
+            return this;
+        }
+        if(mView instanceof Toolbar) {
+            ((Toolbar) mView).setTitle(text);
+            return this;
+        }
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if(mView instanceof android.widget.Toolbar) {
+                ((android.widget.Toolbar) mView).setTitle(text);
+            }
         }
         return this;
     }
@@ -252,6 +283,16 @@ public final class ViewHelper<T extends View> {
     public ViewHelper<T> setText(@StringRes int resId, TextView.BufferType type) {
         if(mView instanceof TextView) {
             ((TextView) mView).setText(resId, type);
+            return this;
+        }
+        if(mView instanceof Toolbar) {
+            ((Toolbar) mView).setTitle(resId);
+            return this;
+        }
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if(mView instanceof android.widget.Toolbar) {
+                ((android.widget.Toolbar) mView).setTitle(resId);
+            }
         }
         return this;
     }
@@ -259,6 +300,16 @@ public final class ViewHelper<T extends View> {
     public ViewHelper<T> setTextColor(@ColorInt int color) {
         if(mView instanceof TextView) {
             ((TextView) mView).setTextColor(color);
+            return this;
+        }
+        if(mView instanceof Toolbar) {
+            ((Toolbar) mView).setTitleTextColor(color);
+            return this;
+        }
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if(mView instanceof android.widget.Toolbar) {
+                ((android.widget.Toolbar) mView).setTitleTextColor(color);
+            }
         }
         return this;
     }
@@ -348,6 +399,183 @@ public final class ViewHelper<T extends View> {
 
     /**
      *-------------------------------ImageView end-----------------------------
+     *
+     *-------------------------------Toolbar start-----------------------------
+     */
+
+
+    public ViewHelper<T> setSubtitle(@StringRes int resId) {
+        if(mView instanceof Toolbar) {
+            ((Toolbar) mView).setSubtitle(resId);
+            return this;
+        }
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if(mView instanceof android.widget.Toolbar) {
+                ((android.widget.Toolbar) mView).setSubtitle(resId);
+            }
+        }
+        return this;
+    }
+
+    public ViewHelper<T> setSubtitle(String subtitle) {
+        if(mView instanceof Toolbar) {
+            ((Toolbar) mView).setSubtitle(subtitle);
+            return this;
+        }
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if(mView instanceof android.widget.Toolbar) {
+                ((android.widget.Toolbar) mView).setSubtitle(subtitle);
+            }
+        }
+        return this;
+    }
+
+    public ViewHelper<T> setSubtitleTextColor(@ColorInt int color) {
+        if(mView instanceof Toolbar) {
+            ((Toolbar) mView).setSubtitleTextColor(color);
+            return this;
+        }
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if(mView instanceof android.widget.Toolbar) {
+                ((android.widget.Toolbar) mView).setSubtitleTextColor(color);
+            }
+        }
+        return this;
+    }
+
+    public ViewHelper<T> setTitleMargin(int start, int top, int end, int bottom) {
+        if(mView instanceof Toolbar) {
+            ((Toolbar) mView).setTitleMargin(start, top, end, bottom);
+            return this;
+        }
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            if(mView instanceof android.widget.Toolbar) {
+                ((android.widget.Toolbar) mView).setTitleMargin(start, top, end, bottom);
+            }
+        }
+        return this;
+    }
+
+    public ViewHelper<T> setTitleMarginTop(int margin) {
+        if(mView instanceof Toolbar) {
+            ((Toolbar) mView).setTitleMarginTop(margin);
+            return this;
+        }
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            if(mView instanceof android.widget.Toolbar) {
+                ((android.widget.Toolbar) mView).setTitleMarginTop(margin);
+            }
+        }
+        return this;
+    }
+
+    public ViewHelper<T> setTitleMarginBottom(int margin) {
+        if(mView instanceof Toolbar) {
+            ((Toolbar) mView).setTitleMarginBottom(margin);
+            return this;
+        }
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            if(mView instanceof android.widget.Toolbar) {
+                ((android.widget.Toolbar) mView).setTitleMarginBottom(margin);
+            }
+        }
+        return this;
+    }
+
+    public ViewHelper<T> setTitleMarginStart(int margin) {
+        if(mView instanceof Toolbar) {
+            ((Toolbar) mView).setTitleMarginStart(margin);
+            return this;
+        }
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            if(mView instanceof android.widget.Toolbar) {
+                ((android.widget.Toolbar) mView).setTitleMarginStart(margin);
+            }
+        }
+        return this;
+    }
+
+    public ViewHelper<T> setTitleMarginEnd(int margin) {
+        if(mView instanceof Toolbar) {
+            ((Toolbar) mView).setTitleMarginEnd(margin);
+            return this;
+        }
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            if(mView instanceof android.widget.Toolbar) {
+                ((android.widget.Toolbar) mView).setTitleMarginEnd(margin);
+            }
+        }
+        return this;
+    }
+
+    public ViewHelper<T> setNavigationIcon(@DrawableRes int resId) {
+        if(mView instanceof Toolbar) {
+            ((Toolbar) mView).setNavigationIcon(resId);
+            return this;
+        }
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if(mView instanceof android.widget.Toolbar) {
+                ((android.widget.Toolbar) mView).setNavigationIcon(resId);
+            }
+        }
+        return this;
+    }
+
+    public ViewHelper<T> setNavigationIcon(@Nullable Drawable icon) {
+        if(mView instanceof Toolbar) {
+            ((Toolbar) mView).setNavigationIcon(icon);
+            return this;
+        }
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if(mView instanceof android.widget.Toolbar) {
+                ((android.widget.Toolbar) mView).setNavigationIcon(icon);
+            }
+        }
+        return this;
+    }
+
+    public ViewHelper<T> setCollapseIcon(@DrawableRes int resId) {
+        if(mView instanceof Toolbar) {
+            ((Toolbar) mView).setCollapseIcon(resId);
+            return this;
+        }
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if(mView instanceof android.widget.Toolbar) {
+                ((android.widget.Toolbar) mView).setCollapseIcon(resId);
+            }
+        }
+        return this;
+    }
+
+    public ViewHelper<T> setCollapseIcon(@Nullable Drawable icon) {
+        if(mView instanceof Toolbar) {
+            ((Toolbar) mView).setCollapseIcon(icon);
+            return this;
+        }
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if(mView instanceof android.widget.Toolbar) {
+                ((android.widget.Toolbar) mView).setCollapseIcon(icon);
+            }
+        }
+        return this;
+    }
+
+    public ViewHelper<T> setOverflowIcon(@Nullable Drawable icon) {
+        if(mView instanceof Toolbar) {
+            ((Toolbar) mView).setOverflowIcon(icon);
+            return this;
+        }
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if(mView instanceof android.widget.Toolbar) {
+                ((android.widget.Toolbar) mView).setOverflowIcon(icon);
+            }
+        }
+        return this;
+    }
+
+
+    /**
+     *-------------------------------Toolbar end------------------------------
      *
      *-------------------------------ViewGroup start--------------------------
      */

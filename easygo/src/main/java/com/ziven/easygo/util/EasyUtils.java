@@ -2,6 +2,7 @@ package com.ziven.easygo.util;
 
 import android.annotation.SuppressLint;
 import android.os.Build;
+import android.text.TextUtils;
 import android.util.Pair;
 
 import androidx.annotation.NonNull;
@@ -68,11 +69,26 @@ public final class EasyUtils {
         return cls.isInstance(target);
     }
 
+    @Nullable
     public static <T> T newInstance(@NonNull Class<T> cls) {
         try {
             return cls.newInstance();
         } catch (IllegalAccessException | InstantiationException e) {
             LogHelper.of(TAG).always().throwable(e).print();
+        }
+        return null;
+    }
+
+    @Nullable
+    @SuppressWarnings("unchecked")
+    public static <T> T newInstance(String clsName) {
+        if(TextUtils.isEmpty(clsName)) {
+            return null;
+        }
+        try {
+            return (T) Class.forName(clsName).newInstance();
+        } catch (IllegalAccessException | InstantiationException | ClassNotFoundException e) {
+            e.printStackTrace();
         }
         return null;
     }
