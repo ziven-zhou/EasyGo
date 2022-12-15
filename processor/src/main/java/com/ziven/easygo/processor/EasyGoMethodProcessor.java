@@ -30,6 +30,8 @@ import static com.ziven.easygo.processor.Constant.PATH_AUTOWIRED;
 import static com.ziven.easygo.processor.Constant.TYPE_EASY_GO_TYPE;
 import static javax.lang.model.element.Modifier.PUBLIC;
 
+import androidx.annotation.Keep;
+
 /**
  * @author Ziven
  * @date 2021/6/2
@@ -60,6 +62,7 @@ public class EasyGoMethodProcessor extends AbstractEasyGoProcessor {
             String newClassName = className + CLASS_SEPARATOR + suffix;
 
             TypeSpec.Builder classBuilder = TypeSpec.classBuilder(newClassName)
+                    .addAnnotation(Keep.class)
                     .addModifiers(PUBLIC);
 
             ClassName easyGoType = ClassName.get(PATH_ANNOTATION, TYPE_EASY_GO_TYPE);
@@ -130,7 +133,9 @@ public class EasyGoMethodProcessor extends AbstractEasyGoProcessor {
             for(int i=0; i<fieldCount; i++) {
                 params.append(String.format(getLocale(), "(%s) params.get(%d), ", fieldAll[i], i));
             }
-            params.append(String.format(getLocale(), "(%s) params.get(%d)", fieldAll[fieldCount], fieldCount));
+            if(fieldAll[fieldCount] != null && !fieldAll[fieldCount].isEmpty()) {
+                params.append(String.format(getLocale(), "(%s) params.get(%d)", fieldAll[fieldCount], fieldCount));
+            }
         }
         return params.toString();
     }
@@ -144,11 +149,7 @@ public class EasyGoMethodProcessor extends AbstractEasyGoProcessor {
         List<Element> elementList;
         for (Element element : elements) {
             enclosingElement = element.getEnclosingElement();
-            elementList = categories.get(enclosingElement);
-            if(elementList == null) {
-                elementList = new ArrayList<>();
-                categories.put(enclosingElement, elementList);
-            }
+            elementList = categories.computeIfAbsent(enclosingElement, k -> new ArrayList<>());
             elementList.add(element);
         }
         return categories;

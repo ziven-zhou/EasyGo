@@ -1,11 +1,14 @@
 package com.ziven.easygo.annotation;
 
+import androidx.annotation.Keep;
+
 import java.util.List;
 
 /**
  * @author :Ziven
  * @date :2021/6/2
  */
+@Keep
 public interface IEasyGoMethod {
     /**
      * Obtain EasyGoType

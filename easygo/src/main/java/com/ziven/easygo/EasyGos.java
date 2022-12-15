@@ -3,6 +3,7 @@ package com.ziven.easygo;
 import android.content.Context;
 import android.view.View;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
 import com.ziven.easygo.autowired.EasyGo;
@@ -25,6 +26,7 @@ import java.util.Map;
 /**
  * @author Ziven
  */
+@Keep
 public final class EasyGos {
     private EasyGos() {}
 

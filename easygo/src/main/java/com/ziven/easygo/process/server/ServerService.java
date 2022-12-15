@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.os.Messenger;
 
+import androidx.annotation.Keep;
 import androidx.annotation.Nullable;
 
 import com.ziven.easygo.process.ProcessCommunication;
@@ -12,6 +13,7 @@ import com.ziven.easygo.process.ProcessCommunication;
 /**
  * @author zhiyuan.zhou
  */
+@Keep
 public class ServerService extends Service {
 
     private Messenger messenger;

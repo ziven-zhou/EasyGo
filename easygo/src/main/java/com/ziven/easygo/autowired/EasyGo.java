@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
 import com.ziven.easygo.annotation.EasyGoActivity;
@@ -30,6 +31,7 @@ import java.util.Map;
  * @author :Ziven
  * @date :2021/6/2
  */
+@Keep
 public final class EasyGo {
     private static final String TAG = "EasyGoTag";
     private static final String PATH_AUTOWIRED = "com.ziven.easygo.autowired.";

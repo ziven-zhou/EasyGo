@@ -4,6 +4,12 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(path: ':annotation')
     implementation 'com.squareup:javapoet:1.13.0'
+    implementation 'androidx.annotation:annotation:1.5.0'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 apply from: rootProject.file('gradle/publish.gradle')
