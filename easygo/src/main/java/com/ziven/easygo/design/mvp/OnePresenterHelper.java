@@ -1,5 +1,6 @@
 package com.ziven.easygo.design.mvp;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -7,6 +8,7 @@ import androidx.annotation.Nullable;
  * @author Ziven
  * @date 2022/1/9
  */
+@Keep
 public class OnePresenterHelper implements IOneView {
 
     private final OnePresenter onePresenter;

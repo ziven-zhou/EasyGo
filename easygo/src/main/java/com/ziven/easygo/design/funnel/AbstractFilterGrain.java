@@ -1,5 +1,6 @@
 package com.ziven.easygo.design.funnel;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -9,6 +10,7 @@ import com.ziven.easygo.util.EasyUtils;
  * @author Ziven
  * @date 2021/5/29
  */
+@Keep
 public abstract class AbstractFilterGrain {
 
     private Object mGrain;

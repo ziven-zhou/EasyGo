@@ -1,5 +1,6 @@
 package com.ziven.easygo.overall;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
 import com.ziven.easygo.design.mvp.IOneView;
@@ -14,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author :zhiyuan.zhou
  * @date :2022/10/29
  */
+@Keep
 public interface IDispatch {
 
     MapDataProvider<String, OverallModel> PROVIDER = MapDataProvider.of(new ConcurrentHashMap<>());

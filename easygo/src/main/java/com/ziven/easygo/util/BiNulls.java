@@ -1,5 +1,6 @@
 package com.ziven.easygo.util;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -7,6 +8,7 @@ import androidx.annotation.Nullable;
  * @author Ziven
  * @date 2021/7/31
  */
+@Keep
 public final class BiNulls<K, V> {
 
     private final K first;

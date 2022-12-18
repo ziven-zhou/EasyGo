@@ -5,6 +5,7 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.util.Pair;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +23,7 @@ import java.util.Set;
  * @author :zhiyuan.zhou
  * @date :2021/5/27
  */
+@Keep
 public final class EasyUtils {
 
     private static final String TAG = "EasyUtils";

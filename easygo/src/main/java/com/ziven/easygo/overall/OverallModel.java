@@ -2,6 +2,7 @@ package com.ziven.easygo.overall;
 
 import android.content.Context;
 
+import androidx.annotation.Keep;
 import androidx.annotation.Nullable;
 
 import com.ziven.easygo.design.mvp.OneModel;
@@ -13,6 +14,7 @@ import java.util.Map;
 /**
  * @author zhiyuan.zhou
  */
+@Keep
 public abstract class OverallModel extends OneModel {
 
     public static final OverallModel EMPTY = new OverallModel() {

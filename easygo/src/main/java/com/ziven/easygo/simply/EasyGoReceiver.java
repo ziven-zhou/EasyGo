@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
 import com.ziven.easygo.util.Condition;
@@ -21,6 +22,7 @@ import java.util.List;
  * @author :zhiyuan.zhou
  * @date :2021/7/2
  */
+@Keep
 public class EasyGoReceiver extends BroadcastReceiver {
 
     private final HashMap<String, List<IReceiver>> mReceivers;

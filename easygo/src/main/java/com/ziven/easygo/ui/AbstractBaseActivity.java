@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.IdRes;
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import com.ziven.easygo.util.ViewUtils;
  * @author Ziven
  * @date 2021/5/28
  */
+@Keep
 public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     private ViewProvider<View> viewProvider;

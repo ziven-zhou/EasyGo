@@ -1,10 +1,13 @@
 package com.ziven.easygo.util;
 
+import androidx.annotation.Keep;
+
 import java.util.List;
 
 /**
  * @author Ziven
  */
+@Keep
 @FunctionalInterface
 public interface ListMultiCarry<T> {
     /**

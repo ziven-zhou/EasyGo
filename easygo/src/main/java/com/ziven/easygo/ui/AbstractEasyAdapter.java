@@ -1,5 +1,6 @@
 package com.ziven.easygo.ui;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,6 +12,7 @@ import com.ziven.easygo.util.EasyUtils;
  * @author Ziven
  * @date 2021/5/29
  */
+@Keep
 public abstract class AbstractEasyAdapter<D, T extends AbstractEasyViewHolder<D>> extends RecyclerView.Adapter<T> {
 
     private final DataProvider<D> mDataProvider;

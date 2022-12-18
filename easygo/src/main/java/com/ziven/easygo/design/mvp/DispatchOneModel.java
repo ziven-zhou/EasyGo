@@ -2,6 +2,7 @@ package com.ziven.easygo.design.mvp;
 
 import android.content.Context;
 
+import androidx.annotation.Keep;
 import androidx.annotation.Nullable;
 
 import com.ziven.easygo.util.Conditions;
@@ -12,6 +13,7 @@ import java.util.Map;
  * @author Ziven
  * @date 2022/1/12
  */
+@Keep
 public abstract class DispatchOneModel extends OneModel implements Conditions {
 
     @Override

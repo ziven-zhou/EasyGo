@@ -1,5 +1,6 @@
 package com.ziven.easygo.process;
 
+import androidx.annotation.Keep;
 import androidx.annotation.Nullable;
 
 import com.ziven.easygo.process.client.ClientHandler;
@@ -11,6 +12,7 @@ import java.util.Objects;
 /**
  * @author Ziven
  */
+@Keep
 class ServerClientDispatch {
 
     private ProcessHandler handler;

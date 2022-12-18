@@ -2,6 +2,7 @@ package com.ziven.easygo.process.server;
 
 import android.os.Messenger;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
 import com.ziven.easygo.process.ProcessCommunication;
@@ -10,6 +11,7 @@ import com.ziven.easygo.process.ProcessHandler;
 /**
  * @author Ziven
  */
+@Keep
 public class ServerHandler extends ProcessHandler {
 
     @Override

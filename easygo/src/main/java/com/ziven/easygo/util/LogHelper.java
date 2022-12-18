@@ -2,6 +2,7 @@ package com.ziven.easygo.util;
 
 import android.util.Log;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -9,6 +10,7 @@ import androidx.annotation.Nullable;
  * @author Ziven
  * @date 2021/5/22
  */
+@Keep
 public final class LogHelper {
 
     private static String TAG = "LogHelper";

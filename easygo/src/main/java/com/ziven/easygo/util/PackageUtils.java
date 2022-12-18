@@ -6,12 +6,14 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
 /**
  * @author :zhiyuan.zhou
  * @date :2021/7/2
  */
+@Keep
 public final class PackageUtils {
     private PackageUtils() {}
 

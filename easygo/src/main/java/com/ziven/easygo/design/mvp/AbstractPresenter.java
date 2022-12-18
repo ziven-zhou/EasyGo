@@ -1,6 +1,7 @@
 package com.ziven.easygo.design.mvp;
 
 import androidx.annotation.CallSuper;
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -12,6 +13,7 @@ import com.ziven.easygo.util.LogHelper;
  * @author :zhiyuan.zhou
  * @date :2019/10/12
  */
+@Keep
 public abstract class AbstractPresenter<V extends IView, M extends AbstractModel<? extends IPresenter>> {
 
     private static final String TAG = "AbstractPresenter";

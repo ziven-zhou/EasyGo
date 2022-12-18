@@ -1,5 +1,6 @@
 package com.ziven.easygo.util;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -9,6 +10,7 @@ import java.util.Map;
 /**
  * @author Ziven
  */
+@Keep
 public class MapDataProvider<K, V> {
 
     private final Map<K, V> provider;

@@ -5,6 +5,7 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.os.Messenger;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
 import com.ziven.easygo.process.ProcessCommunication;
@@ -12,6 +13,7 @@ import com.ziven.easygo.process.ProcessCommunication;
 /**
  * @author Ziven
  */
+@Keep
 public class ClientConnection implements ServiceConnection {
 
     private final Messenger messenger;

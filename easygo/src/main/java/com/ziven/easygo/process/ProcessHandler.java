@@ -7,12 +7,14 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.Parcelable;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 /**
  * @author Ziver
  */
+@Keep
 public abstract class ProcessHandler extends Handler {
 
     private final ProcessSenderImpl sender;

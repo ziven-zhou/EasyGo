@@ -1,11 +1,13 @@
 package com.ziven.easygo.design.mvp;
 
+import androidx.annotation.Keep;
 import androidx.annotation.Nullable;
 
 /**
  * @author Ziven
  * @date 2021/5/28
  */
+@Keep
 public class OneData extends AbstractOneData {
 
     public static OneData of() {

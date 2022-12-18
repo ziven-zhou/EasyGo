@@ -1,5 +1,6 @@
 package com.ziven.easygo.util;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
 import java.text.SimpleDateFormat;
@@ -13,6 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author :zhiyuan.zhou
  * @date :2021/7/1
  */
+@Keep
 public final class TimeHelper {
 
     public static final long MILLI1000 = 1000;

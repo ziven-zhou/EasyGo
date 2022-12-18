@@ -23,10 +23,13 @@ import static com.ziven.easygo.processor.Constant.PATH_AUTOWIRED;
 import static com.ziven.easygo.processor.Constant.PROJECT;
 import static javax.lang.model.element.Modifier.PUBLIC;
 
+import androidx.annotation.Keep;
+
 /**
  * @author :zhiyuan.zhou
  * @date :2021/6/21
  */
+@Keep
 public class EasyGoActivityProcessor extends AbstractEasyGoProcessor {
     /**
      * Parse Process

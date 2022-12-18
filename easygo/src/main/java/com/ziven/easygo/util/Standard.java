@@ -1,10 +1,12 @@
 package com.ziven.easygo.util;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
 /**
  * @author zhiyuan.zhou
  */
+@Keep
 public interface Standard {
 
     /**

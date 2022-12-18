@@ -2,6 +2,7 @@ package com.ziven.easygo.design.mvp;
 
 import android.content.Context;
 
+import androidx.annotation.Keep;
 import androidx.annotation.Nullable;
 
 import java.util.Map;
@@ -10,6 +11,7 @@ import java.util.Map;
  * @author Ziven
  * @date 2022/1/9
  */
+@Keep
 public abstract class CacheOneModel extends OneModel {
 
     @Override

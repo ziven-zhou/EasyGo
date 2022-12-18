@@ -1,5 +1,6 @@
 package com.ziven.easygo.design.funnel;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
 import com.ziven.easygo.util.Obtain;
@@ -11,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Ziven
  * @date 2021/5/29
  */
+@Keep
 public final class FilterHelper {
 
     private final Map<Object, EasyFilter> mEasyFilters;

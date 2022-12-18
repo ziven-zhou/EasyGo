@@ -1,5 +1,7 @@
 package com.ziven.easygo.processor;
 
+import androidx.annotation.Keep;
+
 import javax.annotation.processing.Messager;
 import javax.tools.Diagnostic;
 
@@ -7,6 +9,7 @@ import javax.tools.Diagnostic;
  * @author :zhiyuan.zhou
  * @date :2021/5/31
  */
+@Keep
 class Logger {
     private final Messager messager;
 

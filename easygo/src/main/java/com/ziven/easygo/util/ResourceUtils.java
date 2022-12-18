@@ -21,6 +21,7 @@ import androidx.annotation.AnimRes;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DimenRes;
 import androidx.annotation.DrawableRes;
+import androidx.annotation.Keep;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
@@ -38,6 +39,7 @@ import java.util.Objects;
  * @author Ziven
  * @date 2021/5/29
  */
+@Keep
 @MainThread
 public final class ResourceUtils {
 

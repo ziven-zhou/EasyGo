@@ -3,12 +3,14 @@ package com.ziven.easygo.util;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
 /**
  * @author Ziven
  * @date 2021/5/22
  */
+@Keep
 public final class ViewUtils {
 
     private ViewUtils() {

@@ -1,5 +1,6 @@
 package com.ziven.easygo.util;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -9,6 +10,7 @@ import java.util.Objects;
  * @author Ziven
  * @date 2021/5/30
  */
+@Keep
 public final class Nulls<T> {
 
     private static final Nulls<?> NULL = of(null);

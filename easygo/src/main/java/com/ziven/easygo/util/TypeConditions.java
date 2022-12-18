@@ -1,5 +1,6 @@
 package com.ziven.easygo.util;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.Set;
 /**
  * @author Ziven
  */
+@Keep
 public interface TypeConditions {
 
     /**

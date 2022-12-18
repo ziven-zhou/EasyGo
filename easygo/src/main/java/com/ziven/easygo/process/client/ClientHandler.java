@@ -3,6 +3,7 @@ package com.ziven.easygo.process.client;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
 import com.ziven.easygo.process.ProcessHandler;
@@ -11,6 +12,7 @@ import com.ziven.easygo.util.ResourceUtils;
 /**
  * @author Ziven
  */
+@Keep
 public class ClientHandler extends ProcessHandler {
 
     private final ClientConnection connection;

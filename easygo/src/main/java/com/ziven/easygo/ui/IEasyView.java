@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleableRes;
@@ -15,6 +16,7 @@ import androidx.annotation.StyleableRes;
  * @author Ziven
  * @date 2021/7/25
  */
+@Keep
 public interface IEasyView {
 
     /**

@@ -1,7 +1,11 @@
 package com.ziven.easygo.util;
 
+import android.view.View;
+
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,6 +17,7 @@ import java.util.Objects;
  * @author Ziven
  * @date 2021/5/29
  */
+@Keep
 public final class DataProvider<T> {
 
     private List<T> mList;
@@ -196,5 +201,14 @@ public final class DataProvider<T> {
     public DataProvider<T> forEachBreak(@NonNull BiTransfer<Boolean, T, Integer> transfer) {
         EasyUtils.forEachBreak(getList(), transfer);
         return this;
+    }
+
+    public DataProvider<T> notifyDataSetChanged(@Nullable RecyclerView.Adapter<?> adapter) {
+        EasyUtils.notifyDataSetChanged(adapter);
+        return this;
+    }
+
+    public <V extends View> ViewHelper<V> viewHelper(@NonNull V view) {
+        return ViewHelper.create(view);
     }
 }

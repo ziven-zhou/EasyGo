@@ -9,6 +9,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
+import android.widget.Checkable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -48,6 +49,10 @@ public final class ViewHelper<T extends View> {
     @Nullable
     public T getView() {
         return mView;
+    }
+
+    public <V extends View> ViewHelper<V> with(@Nullable V view) {
+        return create(view);
     }
 
     /**
@@ -217,6 +222,20 @@ public final class ViewHelper<T extends View> {
     public ViewHelper<T> requestLayout() {
         if(mView != null) {
             mView.requestLayout();
+        }
+        return this;
+    }
+
+    public ViewHelper<T> setEnabled(boolean enabled) {
+        if(mView != null) {
+            mView.setEnabled(enabled);
+        }
+        return this;
+    }
+
+    public ViewHelper<T> setChecked(boolean checked) {
+        if(mView instanceof Checkable) {
+            ((Checkable) mView).setChecked(checked);
         }
         return this;
     }

@@ -4,6 +4,7 @@ import android.util.SparseArray;
 import android.view.View;
 
 import androidx.annotation.IdRes;
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
 import com.ziven.easygo.EasyGos;
@@ -14,6 +15,7 @@ import com.ziven.easygo.util.ViewHelper;
 /**
  * @author Ziven
  */
+@Keep
 public final class ViewProvider<T extends View> {
 
     private final SparseArray<ViewHelper<T>> provider;

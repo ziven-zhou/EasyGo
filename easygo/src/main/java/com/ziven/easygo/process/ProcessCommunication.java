@@ -2,6 +2,7 @@ package com.ziven.easygo.process;
 
 import android.content.Intent;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
 import com.ziven.easygo.process.client.ClientHandler;
@@ -14,6 +15,7 @@ import com.ziven.easygo.util.ResourceUtils;
 /**
  * @author zhiyuan.zhou
  */
+@Keep
 public final class ProcessCommunication {
 
     private static final String TAG = "ProcessCommunication:";

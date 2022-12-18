@@ -2,6 +2,7 @@ package com.ziven.easygo.ui;
 
 import android.os.Bundle;
 
+import androidx.annotation.Keep;
 import androidx.annotation.Nullable;
 
 import com.ziven.easygo.design.mvp.AbstractModel;
@@ -13,6 +14,7 @@ import com.ziven.easygo.design.mvp.OnePresenter;
  * @author Ziven
  * @date 2021/5/29
  */
+@Keep
 public abstract class AbstractOneDataActivity extends AbstractBaseActivity implements IOneView {
 
     private OnePresenter mOnePresenter;

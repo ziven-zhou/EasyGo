@@ -1,6 +1,7 @@
 package com.ziven.easygo.design.mvp;
 
 import androidx.annotation.CallSuper;
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -11,6 +12,7 @@ import com.ziven.easygo.util.EasyUtils;
  * @author :zhiyuan.zhou
  * @date :2019/10/14
  */
+@Keep
 public abstract class AbstractModel<P extends IPresenter> {
 
     private P mPresenter;

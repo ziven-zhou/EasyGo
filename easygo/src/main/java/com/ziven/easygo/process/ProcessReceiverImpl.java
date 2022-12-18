@@ -2,6 +2,7 @@ package com.ziven.easygo.process;
 
 import android.os.Parcelable;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -10,6 +11,7 @@ import com.ziven.easygo.util.Nulls;
 /**
  * @author Ziven
  */
+@Keep
 public class ProcessReceiverImpl implements ProcessReceiver {
 
     private ProcessReceiver receiver;

@@ -1,9 +1,12 @@
 package com.ziven.easygo.util;
 
+import androidx.annotation.Keep;
+
 /**
  * @author :zhiyuan.zhou
  * @date :2021/7/1
  */
+@Keep
 @FunctionalInterface
 public interface BiTransfer<R, V1, V2> {
     /**

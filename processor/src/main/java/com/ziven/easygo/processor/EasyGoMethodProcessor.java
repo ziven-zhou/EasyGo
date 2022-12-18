@@ -36,6 +36,7 @@ import androidx.annotation.Keep;
  * @author Ziven
  * @date 2021/6/2
  */
+@Keep
 public class EasyGoMethodProcessor extends AbstractEasyGoProcessor {
 
     @Override

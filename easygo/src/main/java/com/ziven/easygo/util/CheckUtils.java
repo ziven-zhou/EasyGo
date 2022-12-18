@@ -1,11 +1,13 @@
 package com.ziven.easygo.util;
 
+import androidx.annotation.Keep;
 import androidx.annotation.Nullable;
 
 /**
  * @author :zhiyuan.zhou
  * @date :2021/6/30
  */
+@Keep
 public final class CheckUtils {
     private CheckUtils() {
     }

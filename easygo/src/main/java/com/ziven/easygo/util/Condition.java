@@ -1,5 +1,6 @@
 package com.ziven.easygo.util;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -11,6 +12,7 @@ import java.util.Map;
  * @date :2020/11/25
  * @since V1.0
  */
+@Keep
 public final class Condition {
     private static final Condition TRUE_CONDITION = Condition.newCondition(true);
     private static final Condition FALSE_CONDITION = Condition.newCondition(false);

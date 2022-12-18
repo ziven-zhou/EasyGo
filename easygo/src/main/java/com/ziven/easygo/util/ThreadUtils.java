@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -20,6 +21,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Ziven
  * @date 2021/5/28
  */
+@Keep
 public final class ThreadUtils {
 
     private ThreadUtils() {

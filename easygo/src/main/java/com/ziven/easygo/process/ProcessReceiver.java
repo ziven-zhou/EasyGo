@@ -2,12 +2,14 @@ package com.ziven.easygo.process;
 
 import android.os.Parcelable;
 
+import androidx.annotation.Keep;
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 
 /**
  * @author zhiyuan.zhou
  */
+@Keep
 public interface ProcessReceiver {
     /**
      * Receive Message:String

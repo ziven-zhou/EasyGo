@@ -1,5 +1,7 @@
 package com.ziven.easygo.processor;
 
+import androidx.annotation.Keep;
+
 import com.ziven.easygo.annotation.EasyGoActivity;
 import com.ziven.easygo.annotation.EasyGoMethod;
 
@@ -7,6 +9,7 @@ import com.ziven.easygo.annotation.EasyGoMethod;
  * @author :zhiyuan.zhou
  * @date :2021/5/31
  */
+@Keep
 final class Constant {
     private Constant() {
     }

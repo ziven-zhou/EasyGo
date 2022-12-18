@@ -6,12 +6,14 @@ import android.os.Messenger;
 import android.os.Parcelable;
 import android.os.RemoteException;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 /**
  * @author Ziven
  */
+@Keep
 public class ProcessSenderImpl implements ProcessSender {
 
     private Messenger sender;

@@ -16,6 +16,7 @@ import androidx.annotation.ColorRes;
 import androidx.annotation.DimenRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
+import androidx.annotation.Keep;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,6 +32,7 @@ import com.ziven.easygo.util.ViewUtils;
  * @author Ziven
  * @date 2021/5/29
  */
+@Keep
 public abstract class AbstractEasyViewHolder<D> extends RecyclerView.ViewHolder {
 
     private final ViewProvider<View> mViews;
@@ -407,7 +409,7 @@ public abstract class AbstractEasyViewHolder<D> extends RecyclerView.ViewHolder 
         if(mLastCacheView != null) {
             mLastCacheView.setOnClickListener(view -> {
                 if(mListener != null) {
-                    mListener.onItemClick(data, position);
+                    mListener.onItemClick(view, data, position);
                 }
             });
         }

@@ -1,5 +1,7 @@
 package com.ziven.easygo.processor;
 
+import androidx.annotation.Keep;
+
 import java.lang.annotation.Annotation;
 import java.util.LinkedHashSet;
 import java.util.Locale;
@@ -21,6 +23,7 @@ import javax.lang.model.util.Types;
  * @author :zhiyuan.zhou
  * @date :2021/5/31
  */
+@Keep
 public abstract class AbstractEasyGoProcessor extends AbstractProcessor {
 
     protected Filer filer;

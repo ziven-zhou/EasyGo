@@ -1,5 +1,6 @@
 package com.ziven.easygo.design.funnel;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -13,6 +14,7 @@ import java.util.List;
  * @author Ziven
  * @date 2021/5/29
  */
+@Keep
 public final class EasyFilter {
 
     private final List<IFilter<? extends AbstractFilterGrain>> mFilters;
