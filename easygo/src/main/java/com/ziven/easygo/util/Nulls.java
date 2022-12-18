@@ -77,6 +77,7 @@ public final class Nulls<T> {
         return mObject;
     }
 
+    @Keep
     @FunctionalInterface
     public interface Goo<T> {
         /**
@@ -86,6 +87,7 @@ public final class Nulls<T> {
         void goo(@NonNull T object);
     }
 
+    @Keep
     @FunctionalInterface
     public interface Oee<T, O> {
         /**
@@ -96,6 +98,7 @@ public final class Nulls<T> {
         O oee(@NonNull T object);
     }
 
+    @Keep
     @FunctionalInterface
     public interface Nee<O> {
         /**

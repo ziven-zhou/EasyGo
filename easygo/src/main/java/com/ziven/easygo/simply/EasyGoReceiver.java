@@ -111,6 +111,7 @@ public class EasyGoReceiver extends BroadcastReceiver {
                 .doNotNull(list -> EasyUtils.forEach(list, r -> r.received(context, intent, action)));
     }
 
+    @Keep
     public interface IAction {
         /**
          * Filter Actions
@@ -119,6 +120,7 @@ public class EasyGoReceiver extends BroadcastReceiver {
         String[] actions();
     }
 
+    @Keep
     public interface IReceiver {
         /**
          * Receiver Broadcast

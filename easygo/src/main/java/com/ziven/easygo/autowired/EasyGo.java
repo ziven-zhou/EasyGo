@@ -130,6 +130,7 @@ public final class EasyGo {
         }
     }
 
+    @Keep
     public final static class Transition {
         private final String pathName;
         private final List<Object> params;

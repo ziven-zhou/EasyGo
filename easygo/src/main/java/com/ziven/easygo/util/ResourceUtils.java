@@ -239,6 +239,7 @@ public final class ResourceUtils {
         return Sp.INSTANCE;
     }
 
+    @Keep
     public static final class Sp {
         private static final String NAME = "sp_easy_go_config";
         private static final Sp INSTANCE = new Sp();

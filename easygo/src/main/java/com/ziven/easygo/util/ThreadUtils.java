@@ -80,6 +80,7 @@ public final class ThreadUtils {
                 new EasyThreadFactory());
     }
 
+    @Keep
     private static class EasyThreadFactory implements ThreadFactory {
         private static final AtomicInteger POOL_NUMBER = new AtomicInteger(1);
         private final AtomicInteger mThreadNumber;
@@ -106,6 +107,7 @@ public final class ThreadUtils {
         }
     }
 
+    @Keep
     public static class ThreadEasyGo {
 
         private int mCount = 0;
@@ -250,6 +252,7 @@ public final class ThreadUtils {
         }
     }
 
+    @Keep
     private static class ThreadEasyGoTransfer {
         private static final int THREAD_MODE_MAIN = 0;
         private static final int THREAD_MODE_WORKER = 1;
@@ -297,6 +300,7 @@ public final class ThreadUtils {
         }
     }
 
+    @Keep
     public static abstract class MultipleTransfer implements Transfer<Object, Object>  {
         @Override
         public Object transfer(Object value) {
@@ -344,6 +348,7 @@ public final class ThreadUtils {
         return new TimesInterval();
     }
 
+    @Keep
     public static class TimesInterval {
 
         private final int mWhat;

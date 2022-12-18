@@ -43,6 +43,7 @@ public class EasyGoType {
         this.target = target;
     }
 
+    @Keep
     public enum ThreadMode {
         /**
          * CURRENT: Current Thread,Main or Worker
