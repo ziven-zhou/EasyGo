@@ -16,6 +16,7 @@ public final class LogHelper {
     private static String TAG = "LogHelper";
     private static boolean OPEN = false;
     private static String SEPARATOR = " ";
+    private static LogHelper logHelper;
 
     private boolean isAlways = false;
 
@@ -23,11 +24,56 @@ public final class LogHelper {
     private String mSeparator = SEPARATOR;
 
     @NonNull
-    private final String mTag;
+    private String mTag;
 
-    private final StringBuilder mLog;
+    @NonNull
+    private StringBuilder mLog;
 
     private int mLevel = Log.DEBUG;
+
+    public static void log(@NonNull String key,
+                           Object... logs) {
+        if(OPEN) {
+            StringBuilder sb = new StringBuilder();
+            EasyUtils.forEach(logs, sb::append);
+            Log.d(key, sb.toString());
+        }
+    }
+
+    public static void log(Object... logs) {
+        log(TAG, logs);
+    }
+
+    public static void log(@NonNull String key, String log) {
+        if(OPEN) {
+            Log.d(key, log);
+        }
+    }
+
+    public static void log(String log) {
+        log(TAG, log);
+    }
+
+    public static void log(@NonNull String key,
+                            @NonNull String msg,
+                            Throwable th) {
+        if(OPEN) {
+            Log.e(key, msg, th);
+        }
+    }
+
+    public static void log(@NonNull String key,
+                            Throwable th) {
+        log(key, "", th);
+    }
+
+    public static void log(Throwable th) {
+        log(TAG, th);
+    }
+
+    public static void log() {
+        log(new Throwable());
+    }
 
     private LogHelper(@NonNull String tag) {
         mTag = tag;
@@ -61,6 +107,23 @@ public final class LogHelper {
     @NonNull
     public static LogHelper of(@NonNull Object tag) {
         return new LogHelper(tag.getClass().getSimpleName());
+    }
+
+    public static LogHelper obtain(@NonNull String tag) {
+        if(logHelper == null) {
+            logHelper = LogHelper.of();
+        } else {
+            logHelper.mTag = tag;
+            logHelper.mLog = new StringBuilder();
+            logHelper.mLevel = Log.DEBUG;
+            logHelper.mSeparator = SEPARATOR;
+            logHelper.isAlways = false;
+        }
+        return logHelper;
+    }
+
+    public static LogHelper obtain() {
+        return obtain(TAG);
     }
 
     @NonNull

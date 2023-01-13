@@ -18,6 +18,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import androidx.annotation.AnimRes;
+import androidx.annotation.ArrayRes;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DimenRes;
 import androidx.annotation.DrawableRes;
@@ -95,6 +96,15 @@ public final class ResourceUtils {
     public static String getText(@NonNull Context context, @StringRes int stringId) {
         init(context);
         return getText(stringId);
+    }
+
+    public static String[] getTextArray(@ArrayRes int stringArrayId) {
+        return getContext().getResources().getStringArray(stringArrayId);
+    }
+
+    public static String[] getTextArray(@NonNull Context context, @ArrayRes int stringArrayId) {
+        init(context);
+        return getTextArray(stringArrayId);
     }
 
     public static Animation getAnim(@AnimRes int animId) {

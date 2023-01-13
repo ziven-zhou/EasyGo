@@ -107,6 +107,77 @@ public final class ThreadUtils {
         }
     }
 
+    public static void workerToMain(@NonNull Runnable worker,
+                                    @NonNull Runnable main) {
+        newThreadEasyGo().workerThread(worker).mainThread(main).serial();
+    }
+
+    public static void workerToMain(@NonNull Runnable main,
+                                    @NonNull Runnable... workers) {
+        ThreadEasyGo threadEasyGo = ThreadEasyGo.of();
+        EasyUtils.forEach(workers, threadEasyGo::workerThread);
+        threadEasyGo.mainThread(main).serial();
+    }
+
+    public static <R> void workerToMain(@NonNull Runnable main,
+                                        @NonNull Obtain<R> worker,
+                                        @NonNull Runnable... workers) {
+        ThreadEasyGo threadEasyGo = ThreadEasyGo.of();
+        EasyUtils.forEach(workers, threadEasyGo::workerThread);
+        threadEasyGo
+                .workerThread(worker)
+                .mainThread(main)
+                .serial();
+    }
+
+    public static <R, V> void workerToMain(@NonNull Obtain<R> worker,
+                                           @NonNull Carry<V> main) {
+        newThreadEasyGo()
+                .workerThread(worker)
+                .mainThread(main)
+                .serial();
+    }
+
+    public static <R, V> void workerToMain(@NonNull Carry<V> main,
+                                           @NonNull Obtain<R>... workers) {
+        ThreadEasyGo threadEasyGo = ThreadEasyGo.of();
+        EasyUtils.forEach(workers, threadEasyGo::workerThread);
+        threadEasyGo.mainThread(main).serial();
+    }
+
+    public static <R> void workerToMain(@NonNull Runnable main,
+                                        @NonNull Obtain<R>... workers) {
+        ThreadEasyGo threadEasyGo = ThreadEasyGo.of();
+        EasyUtils.forEach(workers, threadEasyGo::workerThread);
+        threadEasyGo.mainThread(main).serial();
+    }
+
+    public static <R1, R2, V> void workerToMain(@NonNull Obtain<R1> worker1,
+                                                @NonNull Obtain<R2> worker2,
+                                                @NonNull Carry<V> main) {
+        newThreadEasyGo()
+                .workerThread(worker1)
+                .workerThread(worker2)
+                .mainThread(main)
+                .serial();
+    }
+
+    public static <R1, R2, R3, V> void workerToMain(@NonNull Obtain<R1> worker1,
+                                                    @NonNull Obtain<R2> worker2,
+                                                    @NonNull Obtain<R3> worker3,
+                                                    @NonNull Carry<V> main) {
+        newThreadEasyGo()
+                .workerThread(worker1)
+                .workerThread(worker2)
+                .workerThread(worker3)
+                .mainThread(main)
+                .serial();
+    }
+
+    public static ThreadEasyGo newThreadEasyGo() {
+        return ThreadEasyGo.of();
+    }
+
     @Keep
     public static class ThreadEasyGo {
 
@@ -123,8 +194,50 @@ public final class ThreadUtils {
             return new ThreadEasyGo();
         }
 
+        public ThreadEasyGo workerThread(@NonNull Runnable runnable) {
+            setTransfer(value -> {
+                runnable.run();
+                return null;
+            }, ThreadEasyGoTransfer.THREAD_MODE_WORKER);
+            return this;
+        }
+
+        public <R> ThreadEasyGo workerThread(@NonNull Obtain<R> obtain) {
+            setTransfer(value -> obtain.obtain(), ThreadEasyGoTransfer.THREAD_MODE_WORKER);
+            return this;
+        }
+
+        public <R, V> ThreadEasyGo workerThread(@NonNull Carry<V> obtain) {
+            setTransfer((Transfer<R, V>) value -> {
+                obtain.carry(value);
+                return null;
+            }, ThreadEasyGoTransfer.THREAD_MODE_WORKER);
+            return this;
+        }
+
         public <R, V> ThreadEasyGo workerThread(@NonNull Transfer<R, V> transfer) {
             setTransfer(transfer, ThreadEasyGoTransfer.THREAD_MODE_WORKER);
+            return this;
+        }
+
+        public ThreadEasyGo mainThread(@NonNull Runnable runnable) {
+            setTransfer(value -> {
+                runnable.run();
+                return null;
+            }, ThreadEasyGoTransfer.THREAD_MODE_MAIN);
+            return this;
+        }
+
+        public <R> ThreadEasyGo mainThread(@NonNull Obtain<R> obtain) {
+            setTransfer(value -> obtain.obtain(), ThreadEasyGoTransfer.THREAD_MODE_MAIN);
+            return this;
+        }
+
+        public <R, V> ThreadEasyGo mainThread(@NonNull Carry<V> obtain) {
+            setTransfer((Transfer<R, V>) value -> {
+                obtain.carry(value);
+                return null;
+            }, ThreadEasyGoTransfer.THREAD_MODE_MAIN);
             return this;
         }
 

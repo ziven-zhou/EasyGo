@@ -17,6 +17,7 @@ import com.ziven.easygo.util.DataProvider;
 import com.ziven.easygo.util.LogHelper;
 import com.ziven.easygo.util.MapDataProvider;
 import com.ziven.easygo.util.ResourceUtils;
+import com.ziven.easygo.util.ThreadUtils;
 import com.ziven.easygo.util.TimeHelper;
 import com.ziven.easygo.util.ViewHelper;
 
@@ -67,6 +68,10 @@ public final class EasyGos {
 
     public static EasyGo getEasyGo() {
         return EasyGo.get();
+    }
+
+    public static ThreadUtils.ThreadEasyGo newThreadEasyGo() {
+        return ThreadUtils.newThreadEasyGo();
     }
 
     public static TimeHelper getTimeHelper() {

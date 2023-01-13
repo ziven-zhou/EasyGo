@@ -504,15 +504,136 @@ public final class EasyUtils {
         Nulls.of(adapter).doNotNull(RecyclerView.Adapter::notifyDataSetChanged);
     }
 
-    public static void runSafety(@NonNull Runnable runnable) {
+    public static void runSafety(@Nullable Runnable runnable) {
         runSafety(runnable, "runSafety");
     }
 
-    public static void runSafety(@NonNull Runnable runnable, @NonNull String logTag) {
-        try {
-            runnable.run();
-        } catch (Throwable th) {
-            LogHelper.of(logTag).always().throwable(th).print();
+    public static void runSafety(@Nullable Runnable runnable, @NonNull String logTag) {
+        if(runnable != null) {
+            try {
+                runnable.run();
+            } catch (Throwable th) {
+                LogHelper.of(logTag).always().throwable(th).print();
+            }
         }
+    }
+
+    @NonNull
+    public static <T> Runnable carryToRunnable(@NonNull Carry<T> carry, T data) {
+        return () -> carry.carry(data);
+    }
+
+    @NonNull
+    public static <T> Runnable carryToRunnable(@NonNull Carry<T> carry) {
+        return carryToRunnable(carry, null);
+    }
+
+    @NonNull
+    public static <R, V> Runnable transferToRunnable(@NonNull Transfer<R, V> transfer, V data) {
+        return () -> transfer.transfer(data);
+    }
+
+    @NonNull
+    public static <R, V> Runnable transferToRunnable(@NonNull Transfer<R, V> transfer) {
+        return transferToRunnable(transfer, null);
+    }
+
+    @NonNull
+    public static <R, V> Obtain<R> transferToObtain(@NonNull Transfer<R, V> transfer, V data) {
+        return () -> transfer.transfer(data);
+    }
+
+    @NonNull
+    public static <R, V> Obtain<R> transferToObtain(@NonNull Transfer<R, V> transfer) {
+        return transferToObtain(transfer, null);
+    }
+
+    @NonNull
+    public static <R, V> Carry<R> transferToCarry(@NonNull Transfer<R, V> transfer, V data) {
+        return value -> transfer.transfer(data);
+    }
+
+    @NonNull
+    public static <R, V> Carry<R> transferToCarry(@NonNull Transfer<R, V> transfer) {
+        return transferToCarry(transfer, null);
+    }
+
+    @NonNull
+    public static <R, V> Transfer<R, V> runnableToTransfer(@NonNull Runnable runnable) {
+        return value -> {
+            runnable.run();
+            return null;
+        };
+    }
+
+    @NonNull
+    public static <R, V> Transfer<R, V> carryToTransfer(@NonNull Carry<V> carry) {
+        return value -> {
+            carry.carry(value);
+            return null;
+        };
+    }
+
+    @NonNull
+    public static <R, V> Transfer<R, V> obtainToTransfer(@NonNull Obtain<R> obtain) {
+        return value -> obtain.obtain();
+    }
+
+    @NonNull
+    public static <T> Carry<T> runnableToCarry(@NonNull Runnable runnable) {
+        return data -> runnable.run();
+    }
+
+    @NonNull
+    public static <T> Obtain<T> runnableToObtain(@NonNull Runnable runnable, T data) {
+        return () -> {
+            runnable.run();
+            return data;
+        };
+    }
+
+    @NonNull
+    public static <T> Obtain<T> runnableToObtain(@NonNull Runnable runnable) {
+        return runnableToObtain(runnable, null);
+    }
+
+    @NonNull
+    public static <T> Carry<T> obtainToCarry1(@NonNull Obtain<T> obtain) {
+        return obtainToCarry(obtain);
+    }
+
+    @NonNull
+    public static <C, O> Carry<C> obtainToCarry(@NonNull Obtain<O> obtain) {
+        return data -> obtain.obtain();
+    }
+
+    @NonNull
+    public static <T> Obtain<T> carryToObtain(@NonNull Carry<T> carry, T data) {
+        return carryToObtain(carry, data, data);
+    }
+
+    @NonNull
+    public static <O, C> Obtain<O> carryToObtain(@NonNull Carry<C> carry) {
+        return carryToObtain(carry, null, null);
+    }
+
+    @NonNull
+    public static <O, C> Obtain<O> carryToObtain1(@NonNull Carry<C> carry, C data) {
+        return carryToObtain(carry, null, data);
+    }
+
+    @NonNull
+    public static <O, C> Obtain<O> carryToObtain2(@NonNull Carry<C> carry, O data) {
+        return carryToObtain(carry, data, null);
+    }
+
+    @NonNull
+    public static <O, C> Obtain<O> carryToObtain(@NonNull Carry<C> carry,
+                                                 O obtainData,
+                                                 C carryData) {
+        return () -> {
+            carry.carry(carryData);
+            return obtainData;
+        };
     }
 }
