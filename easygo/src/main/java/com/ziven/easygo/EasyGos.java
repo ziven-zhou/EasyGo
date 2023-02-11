@@ -124,6 +124,14 @@ public final class EasyGos {
         return ViewProvider.newInstance();
     }
 
+    public static LogHelper obtainLogHelper() {
+        return LogHelper.obtain();
+    }
+
+    public static LogHelper obtainLogHelper(@NonNull String tag) {
+        return LogHelper.obtain(tag);
+    }
+
     public static LogHelper newLogHelper() {
         return LogHelper.of();
     }

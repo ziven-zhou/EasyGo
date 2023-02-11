@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Objects;
 
 /**
@@ -57,6 +58,16 @@ public final class DataProvider<T> {
     @NonNull
     public Nulls<List<T>> getListNulls() {
         return Nulls.of(getList());
+    }
+
+    @Nullable
+    public ListIterator<T> listIterator() {
+        return mList == null ? null : mList.listIterator();
+    }
+
+    @NonNull
+    public Nulls<ListIterator<T>> listIteratorNulls() {
+        return Nulls.of(listIterator());
     }
 
     @NonNull
@@ -139,14 +150,29 @@ public final class DataProvider<T> {
         return mList == null ? 0 : mList.size();
     }
 
+    @NonNull
+    public Nulls<T> getFirstDataNulls() {
+        return Nulls.of(getFirstData());
+    }
+
     @Nullable
     public T getFirstData() {
         return getData(0);
     }
 
+    @NonNull
+    public Nulls<T> getLastDataNulls() {
+        return Nulls.of(getLastData());
+    }
+
     @Nullable
     public T getLastData() {
         return getData(getCount() - 1);
+    }
+
+    @NonNull
+    public Nulls<T> getDataNulls(int position) {
+        return Nulls.of(getData(position));
     }
 
     @Nullable
@@ -201,6 +227,36 @@ public final class DataProvider<T> {
     public DataProvider<T> forEachBreak(@NonNull BiTransfer<Boolean, T, Integer> transfer) {
         EasyUtils.forEachBreak(getList(), transfer);
         return this;
+    }
+
+    @NonNull
+    public Nulls<T> findFirstNulls(@NonNull IsTransfer<T> transfer) {
+        return Nulls.of(findFirst(transfer));
+    }
+
+    @Nullable
+    public T findFirst(@NonNull IsTransfer<T> transfer) {
+        if(mList != null) {
+            for(T value : mList) {
+                if(transfer.transfer(value)) {
+                    return value;
+                }
+            }
+        }
+        return null;
+    }
+
+    @NonNull
+    public List<T> findAll(@NonNull IsTransfer<T> transfer) {
+        List<T> list = new ArrayList<>();
+        if(mList != null) {
+            for(T value : mList) {
+                if(transfer.transfer(value)) {
+                    list.add(value);
+                }
+            }
+        }
+        return list;
     }
 
     public DataProvider<T> notifyDataSetChanged(@Nullable RecyclerView.Adapter<?> adapter) {

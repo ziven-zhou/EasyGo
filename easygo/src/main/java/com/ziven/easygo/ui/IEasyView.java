@@ -67,6 +67,8 @@ public interface IEasyView {
             ViewGroup.LayoutParams layoutParams = getChildLayoutParams();
             if(layoutParams != null) {
                 ((ViewGroup) this).addView(view, layoutParams);
+            } else {
+                ((ViewGroup) this).addView(view);
             }
         }
         initView(context, view);

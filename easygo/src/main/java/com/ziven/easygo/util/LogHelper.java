@@ -31,27 +31,30 @@ public final class LogHelper {
 
     private int mLevel = Log.DEBUG;
 
+    public static void log(Object... logs) {
+        log(TAG, logs);
+    }
+
     public static void log(@NonNull String key,
                            Object... logs) {
         if(OPEN) {
             StringBuilder sb = new StringBuilder();
-            EasyUtils.forEach(logs, sb::append);
-            Log.d(key, sb.toString());
+            EasyUtils.forEach(logs, log -> {
+                sb.append(log);
+                sb.append(SEPARATOR);
+            });
+            log(key, sb.toString());
         }
     }
 
-    public static void log(Object... logs) {
-        log(TAG, logs);
+    public static void log(String log) {
+        log(TAG, log);
     }
 
     public static void log(@NonNull String key, String log) {
         if(OPEN) {
             Log.d(key, log);
         }
-    }
-
-    public static void log(String log) {
-        log(TAG, log);
     }
 
     public static void log(@NonNull String key,
@@ -69,6 +72,10 @@ public final class LogHelper {
 
     public static void log(Throwable th) {
         log(TAG, th);
+    }
+
+    public static void logE(@NonNull String key) {
+        log(key, new Throwable());
     }
 
     public static void log() {

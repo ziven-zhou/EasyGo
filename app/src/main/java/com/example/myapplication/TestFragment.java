@@ -10,6 +10,7 @@ import com.ziven.easygo.design.mvp.AbstractOneData;
 import com.ziven.easygo.design.mvp.OneModel;
 import com.ziven.easygo.ui.AbstractOneDataFragment;
 import com.ziven.easygo.util.EasyUtils;
+import com.ziven.easygo.util.LazyInit;
 import com.ziven.easygo.util.LogHelper;
 
 /**
@@ -17,15 +18,15 @@ import com.ziven.easygo.util.LogHelper;
  */
 public class TestFragment extends AbstractOneDataFragment {
 
-    private final TestAdapter testAdapter = new TestAdapter();
+    private final LazyInit<TestAdapter> lazy = LazyInit.lazy(TestAdapter::new);
 
     @Override
     public void layoutOneData(@NonNull AbstractOneData data) {
-        testAdapter
+        lazy.value()
                 .getDataProvider()
                 .setList(data.getOneData());
 
-        EasyUtils.notifyDataSetChanged(testAdapter);
+        EasyUtils.notifyDataSetChanged(lazy.value());
     }
 
     @NonNull
@@ -46,7 +47,7 @@ public class TestFragment extends AbstractOneDataFragment {
 
     @Override
     protected void createdView(@NonNull View root) {
-        testAdapter.setListener((data, position) -> {
+        lazy.value().setListener((data, position) -> {
             LogHelper.of("TestFragmentTag")
                     .join("position=" + position)
                     .join("data=" + data);
@@ -63,7 +64,7 @@ public class TestFragment extends AbstractOneDataFragment {
 
         getViewHelper(R.id.recycler_view)
                 .setLayoutManager(new LinearLayoutManager(root.getContext()))
-                .setAdapter(testAdapter);
+                .setAdapter(lazy.value());
         getOnePresenter().obtainOneData();
     }
 

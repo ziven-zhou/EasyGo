@@ -38,6 +38,16 @@ public final class EasyUtils {
     }
 
     @NonNull
+    public static <T> T newIfNull(T instance, @NonNull Class<T> cls) {
+        return instance == null ? Objects.requireNonNull(newInstance(cls)) : instance;
+    }
+
+    @NonNull
+    public static <T> T newIfNull(T instance, String cls) {
+        return instance == null ? Objects.requireNonNull(newInstance(cls)) : instance;
+    }
+
+    @NonNull
     public static <T> T instanceDo(@NonNull Object target, @NonNull Class<T> cls) {
         if(instanceOf(target, cls)) {
             return transition(target);
@@ -174,6 +184,17 @@ public final class EasyUtils {
         } else {
             for (Map.Entry<K, V> entry : map.entrySet()) {
                 carry.carry(entry.getKey(), entry.getValue());
+            }
+        }
+    }
+
+    public static <K, V> void forEachBreak(@Nullable Map<K, V> map, @NonNull BiTransfer<Boolean, K, V> transfer) {
+        if(map == null || map.isEmpty()) {
+            return;
+        }
+        for (Map.Entry<K, V> entry : map.entrySet()) {
+            if(!transfer.transfer(entry.getKey(), entry.getValue())) {
+                return;
             }
         }
     }

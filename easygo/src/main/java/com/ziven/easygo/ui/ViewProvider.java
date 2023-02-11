@@ -9,8 +9,12 @@ import androidx.annotation.NonNull;
 
 import com.ziven.easygo.EasyGos;
 import com.ziven.easygo.util.Carry;
+import com.ziven.easygo.util.IsTransfer;
 import com.ziven.easygo.util.Nulls;
 import com.ziven.easygo.util.ViewHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Ziven
@@ -65,12 +69,16 @@ public final class ViewProvider<T extends View> {
         return this;
     }
 
+    public int size() {
+        return provider.size();
+    }
+
     public SparseArray<ViewHelper<T>> getProvider() {
         return provider;
     }
 
     public ViewProvider<T> forEach(@NonNull Carry<ViewHelper<T>> carry) {
-        int size = provider.size();
+        int size = size();
         ViewHelper<T> helper;
         for(int i=0; i<size; i++) {
             helper = provider.valueAt(i);
@@ -88,5 +96,32 @@ public final class ViewProvider<T extends View> {
                 carry.carry(view);
             }
         });
+    }
+
+    @NonNull
+    public List<ViewHelper<T>> findAllViewHelper(@NonNull IsTransfer<T> transfer) {
+        int size = provider.size();
+        List<ViewHelper<T>> list = new ArrayList<>();
+        ViewHelper<T> helper;
+        for(int i=0; i<size; i++) {
+            helper = provider.valueAt(i);
+            if(helper != null && transfer.transfer(helper.getView())) {
+                list.add(helper);
+            }
+        }
+        return list;
+    }
+
+    @NonNull
+    public ViewHelper<T> findFirstViewHelper(@NonNull IsTransfer<T> transfer) {
+        int size = provider.size();
+        ViewHelper<T> helper;
+        for(int i=0; i<size; i++) {
+            helper = provider.valueAt(i);
+            if(helper != null && transfer.transfer(helper.getView())) {
+                return helper;
+            }
+        }
+        return EasyGos.newViewHelper();
     }
 }

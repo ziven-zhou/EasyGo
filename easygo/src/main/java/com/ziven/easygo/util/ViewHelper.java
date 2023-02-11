@@ -19,6 +19,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DimenRes;
 import androidx.annotation.DrawableRes;
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -660,11 +661,30 @@ public final class ViewHelper<T extends View> {
     }
 
     public <V extends View> ViewHelper<T> findViewById(int id, @NonNull Carry<V> carry) {
-        V child = mView != null ? mView.findViewById(id) : null;
+        V child = findViewById(id);
         if(child != null) {
             carry.carry(child);
         }
         return this;
+    }
+
+
+    public <V extends View> ViewHelper<T> findViewByTag(Object tag, @NonNull Carry<V> carry) {
+        V child = findViewByTag(tag);
+        if(child != null) {
+            carry.carry(child);
+        }
+        return this;
+    }
+
+    @Nullable
+    public <V extends View> V findViewById(@IdRes int id) {
+        return mView != null ? mView.findViewById(id) : null;
+    }
+
+    @Nullable
+    public <V extends View> V findViewByTag(Object tag) {
+        return mView != null ? mView.findViewWithTag(tag) : null;
     }
 
 
@@ -915,5 +935,10 @@ public final class ViewHelper<T extends View> {
             ViewUtils.forEachParent(mView, iView);
         }
         return this;
+    }
+
+    public <V extends View> ViewHelper<T> forEachClass(@NonNull Class<V> cls,
+                                                       @NonNull Carry<V> carry) {
+        return forEachView(v -> EasyUtils.instanceDo(v, cls, carry));
     }
 }

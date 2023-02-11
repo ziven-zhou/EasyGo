@@ -52,6 +52,10 @@ public class MapDataProvider<K, V> {
         return this;
     }
 
+    public int size() {
+        return provider.size();
+    }
+
     @Nullable
     public V get(K key) {
         return key != null ? getProvider().get(key) : null;
@@ -94,5 +98,21 @@ public class MapDataProvider<K, V> {
     public MapDataProvider<K, V> forEachKey(@NonNull Carry<K> carry) {
         EasyUtils.forEachKey(getProvider(), carry);
         return this;
+    }
+
+    public BiNulls<K, V> findFirst(@NonNull BiTransfer<Boolean, K, V> transfer) {
+        BiNulls<K, V> nulls = BiNulls.of();
+        EasyUtils.forEachBreak(getMap(), (key, value) -> !transfer.transfer(key, value));
+        return nulls;
+    }
+
+    public Map<K, V> findAll(@NonNull BiTransfer<Boolean, K, V> transfer) {
+        Map<K, V> map = new HashMap<>(size());
+        forEach((key, value) -> {
+            if(transfer.transfer(key, value)) {
+                map.put(key, value);
+            }
+        });
+        return map;
     }
 }

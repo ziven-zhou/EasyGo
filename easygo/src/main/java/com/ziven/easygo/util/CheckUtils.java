@@ -1,6 +1,7 @@
 package com.ziven.easygo.util;
 
 import androidx.annotation.Keep;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 /**
@@ -16,6 +17,7 @@ public final class CheckUtils {
         return Nulls.of(value).isNull() ? def : value;
     }
 
+    @NonNull
     public static <T> T checkNull(@Nullable T value) {
         if (value == null) {
             throw new NullPointerException("CheckUtils Null Value.");
@@ -23,6 +25,7 @@ public final class CheckUtils {
         return value;
     }
 
+    @NonNull
     public static <T> T checkNullDef(@Nullable T value, @Nullable T def) {
         return checkNull(nullDef(value, def));
     }
@@ -55,30 +58,37 @@ public final class CheckUtils {
         return notEqualDef(value1, value2, value2);
     }
 
+    @NonNull
     public static <T> T checkEqualDef(@Nullable Object value1, @Nullable Object value2, @Nullable T def1, @Nullable T def2) {
         return checkNull(equalDef(value1, value2, def1 , def2));
     }
 
+    @NonNull
     public static <T> T checkNotEqualDef(@Nullable Object value1, @Nullable Object value2, @Nullable T def1, @Nullable T def2) {
         return checkNull(notEqualDef(value1, value2, def1 , def2));
     }
 
+    @NonNull
     public static <T> T checkEqualDef(@Nullable Object value1, @Nullable Object value2, @Nullable T def) {
         return checkEqualDef(value1, value2, def, null);
     }
 
+    @NonNull
     public static <T> T checkNotEqualDef(@Nullable Object value1, @Nullable Object value2, @Nullable T def) {
         return checkNotEqualDef(value1, value2, def, null);
     }
 
+    @NonNull
     public static <T> T checkEqualDef(@Nullable T value1, @Nullable T value2) {
         return checkEqualDef(value1, value2, value1);
     }
 
+    @NonNull
     public static <T> T checkNotEqualDef1(@Nullable T value1, @Nullable T value2) {
         return checkNotEqualDef(value1, value2, value1);
     }
 
+    @NonNull
     public static <T> T checkNotEqualDef2(@Nullable T value1, @Nullable T value2) {
         return checkNotEqualDef(value1, value2, value2);
     }
