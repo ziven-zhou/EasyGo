@@ -2,9 +2,11 @@ package com.ziven.easygo.util;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * @author Ziven
@@ -48,6 +50,18 @@ public final class ViewUtils {
                 }
             }
         }
+    }
+
+    public static boolean removeFromParent(@Nullable View child) {
+        if(child == null) {
+            return false;
+        }
+        ViewParent vp = child.getParent();
+        if(vp instanceof ViewGroup) {
+            ((ViewGroup) vp).removeView(child);
+            return true;
+        }
+        return false;
     }
 
     @FunctionalInterface

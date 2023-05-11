@@ -7,7 +7,7 @@ import androidx.annotation.Keep;
  */
 @Keep
 @FunctionalInterface
-public interface StrTransfer<V> extends Transfer<String, V>{
+public interface StrTransfer<V> extends Transfer<String, V> {
     /**
      * value -> String or null
      * @param value Value

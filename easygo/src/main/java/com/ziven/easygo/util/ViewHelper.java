@@ -875,9 +875,7 @@ public final class ViewHelper<T extends View> {
     }
 
     public ViewHelper<T> removeFromParent() {
-        if(mView != null && mView.getParent() instanceof ViewGroup) {
-            ((ViewGroup) mView.getParent()).removeView(mView);
-        }
+        ViewUtils.removeFromParent(mView);
         return this;
     }
 
