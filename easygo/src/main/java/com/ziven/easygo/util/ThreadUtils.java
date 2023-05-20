@@ -1,6 +1,7 @@
 package com.ziven.easygo.util;
 
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
 
@@ -10,6 +11,7 @@ import androidx.annotation.Nullable;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
@@ -28,6 +30,8 @@ public final class ThreadUtils {
     }
 
     public static final Handler MAIN_HANDLER = new Handler(Looper.getMainLooper());
+
+    public static final EasyThreadFactory THREAD_FACTORY = new EasyThreadFactory();
 
     public static final ExecutorService EASY_EXECUTOR = newEasyThreadPool();
 
@@ -77,7 +81,7 @@ public final class ThreadUtils {
                 0L,
                 TimeUnit.MILLISECONDS,
                 new LinkedBlockingQueue<>(),
-                new EasyThreadFactory());
+                THREAD_FACTORY);
     }
 
     @Keep
@@ -501,5 +505,51 @@ public final class ThreadUtils {
         public void interrupt() {
             MAIN_HANDLER.removeMessages(mWhat);
         }
+    }
+
+    public static EasyGoHandlerThread newHandlerThread() {
+        return new EasyGoHandlerThread();
+    }
+
+    public static class EasyGoHandlerThread extends HandlerThread {
+
+        private static final AtomicInteger EXECUTOR_NUMBER = new AtomicInteger(1);
+        private final LazyInit<Handler> handlerCreator = LazyInit.lazy(() -> new Handler(getLooper()));
+
+        EasyGoHandlerThread() {
+            super("easy-go-handler-thread-" + EXECUTOR_NUMBER.getAndIncrement());
+        }
+
+        public EasyGoHandlerThread startMyself() {
+            start();
+            return this;
+        }
+
+        @NonNull
+        public Handler getHandler() {
+            return handlerCreator.value();
+        }
+    }
+
+    public static EasyGoExecutor newExecutor(@NonNull Handler handler) {
+        return new EasyGoExecutor(handler);
+    }
+
+    public static final class EasyGoExecutor implements Executor {
+
+        private final Handler handler;
+
+        EasyGoExecutor(@NonNull Handler handler) {
+            this.handler = handler;
+        }
+
+        @Override
+        public void execute(Runnable command) {
+            handler.post(command);
+        }
+    }
+
+    public static EasyGoExecutor newExecutor() {
+        return newExecutor(newHandlerThread().startMyself().getHandler());
     }
 }

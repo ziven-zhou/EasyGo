@@ -50,13 +50,18 @@ public class TestFragment extends AbstractOneDataFragment {
         lazy.value().setListener((data, position) -> {
             LogHelper.of("TestFragmentTag")
                     .join("position=" + position)
-                    .join("data=" + data);
+                    .join("data=" + data)
+                    .print();
 
             EasyGos.getDispatch()
                     .setView(value -> EasyGos.getEasyGo()
                             .easyGo(root.getContext(),
                                     (String) value.getOneData(),
-                                    intent -> intent.putExtra("title_name", (String) value.getOneData())))
+                                    intent -> {
+                                        intent.putExtra("data", data);
+                                        intent.putExtra("position", position);
+                                        intent.putExtra("title_name", (String) value.getOneData());
+                                    }))
                     .getPresenter()
                     .setParam(OverallDispatch.ACTIVITY_PATH_TAG, position)
                     .obtainOneData();
