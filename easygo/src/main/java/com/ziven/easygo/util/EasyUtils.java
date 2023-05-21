@@ -63,6 +63,16 @@ public final class EasyUtils {
         return false;
     }
 
+    @Nullable
+    public static <T> T transitionSafety(@Nullable Object target) {
+        try {
+            return transition(target);
+        } catch (Throwable th) {
+            LogHelper.log(TAG, "transitionSafety", th);
+        }
+        return null;
+    }
+
     @SuppressWarnings("unchecked")
     public static <T> T transition(@Nullable Object target) {
         return (T) target;

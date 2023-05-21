@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ModelView">
+        <attr name="view_model_cls" format="string"/>
+        <attr name="model_view_cls" format="string"/>
+        <attr name="model_view_id" format="reference"/>
+        <attr name="is_obtain_data" format="boolean"/>
+        <attr name="is_run_on_worker" format="boolean"/>
+
+        <attr name="param_s_1" format="string"/>
+        <attr name="param_s_2" format="string"/>
+        <attr name="param_s_3" format="string"/>
+        <attr name="param_s_4" format="string"/>
+        <attr name="param_s_5" format="string"/>
+
+        <attr name="param_i_1" format="integer"/>
+        <attr name="param_i_2" format="integer"/>
+        <attr name="param_i_3" format="integer"/>
+        <attr name="param_i_4" format="integer"/>
+        <attr name="param_i_5" format="integer"/>
+
+        <attr name="param_b_1" format="boolean"/>
+        <attr name="param_b_2" format="boolean"/>
+        <attr name="param_b_3" format="boolean"/>
+        <attr name="param_b_4" format="boolean"/>
+        <attr name="param_b_5" format="boolean"/>
+    </declare-styleable>
+</resources>
