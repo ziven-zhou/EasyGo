@@ -14,7 +14,7 @@ import com.ziven.easygo.util.ViewHelper;
  * @author Ziven
  */
 @Keep
-public class ImageViewModel implements IModelView<ImageView> {
+public class ImageModelView implements IModelView<ImageView> {
 
     @Override
     public void layoutViewData(@NonNull ViewHelper<ImageView> helper,

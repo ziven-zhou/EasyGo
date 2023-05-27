@@ -5,6 +5,7 @@ import android.content.Intent;
 import androidx.multidex.MultiDexApplication;
 
 import com.ziven.easygo.EasyGos;
+import com.ziven.easygo.design.mvvm.ModelViewUtil;
 import com.ziven.easygo.overall.IOverall;
 import com.ziven.easygo.simply.EasyGoReceiver.IAction;
 
@@ -36,5 +37,9 @@ public class MyApplication extends MultiDexApplication
                 Intent.ACTION_SCREEN_ON,
                 ACTION
         };
+    }
+
+    static {
+        ModelViewUtil.put("test", TestViewModel.class);
     }
 }

@@ -7,14 +7,18 @@ import androidx.annotation.Nullable;
 
 import com.ziven.easygo.design.mvvm.ViewData;
 import com.ziven.easygo.design.mvvm.ViewModel;
+import com.ziven.easygo.util.EasyUtils;
 import com.ziven.easygo.util.LogHelper;
 
+import java.util.List;
 import java.util.Map;
 
 /**
  * @author Ziven
  */
 public class TestViewModel extends ViewModel {
+
+    private final List<String> list = EasyUtils.newList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
 
     @Override
     protected void obtainViewData(@Nullable Context c,
@@ -55,8 +59,12 @@ public class TestViewModel extends ViewModel {
 
         LogHelper.log("TestViewModel:" + sb);
 
-        obtainedViewData(viewData
-                .putViewData(R.id.button, "按钮")
-                .putViewData(R.id.button2, "按钮2"));
+        if(getInt(PARAM_I_1, params) == 100) {
+            obtainedViewData(viewData
+                    .putViewData(R.id.item, "tel:123"));
+        } else {
+            obtainedViewData(viewData
+                    .putViewData(R.id.recycler_view, list));
+        }
     }
 }

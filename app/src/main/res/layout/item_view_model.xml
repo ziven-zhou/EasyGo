@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:layout_marginTop="16dp"
+    android:background="@color/colorPrimary">
+
+    <TextView
+        android:id="@+id/item"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textColor="@android:color/white"/>
+
+    <com.ziven.easygo.design.mvvm.ModelView
+        android:id="@+id/model_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp">
+
+        <com.ziven.easygo.design.mvvm.ModelView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:view_model_cls="dataModel"
+            app:model_view_cls="text"
+            app:model_view_id="@id/item"/>
+
+        <com.ziven.easygo.design.mvvm.ModelView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:view_model_cls="com.example.myapplication.TestViewModel"
+            app:model_view_cls="com.ziven.easygo.design.mvvm.ActionModelView"
+            app:model_view_id="@id/item"
+            app:param_i_1="100"/>
+
+    </com.ziven.easygo.design.mvvm.ModelView>
+
+</RelativeLayout>

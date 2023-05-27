@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
+
+    <com.ziven.easygo.design.mvvm.ModelView
+        android:id="@+id/model_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:view_model_cls="test"
+        app:model_view_cls="recycler"
+        app:model_view_id="@id/recycler_view"
+        app:is_obtain_data="false"
+        app:is_run_on_worker="false"
+        app:param_s_1="s1"
+        app:param_s_2="s2"
+        app:param_s_3="s3"
+        app:param_s_4="s4"
+        app:param_s_5="s5"
+        app:param_i_1="1"
+        app:param_i_2="2"
+        app:param_i_3="3"
+        app:param_i_4="4"
+        app:param_i_5="5"
+        app:param_b_1="true"
+        app:param_b_2="true"
+        app:param_b_3="true"
+        app:param_b_4="true"
+        app:param_b_5="true"/>
+
+</FrameLayout>

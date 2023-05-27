@@ -53,14 +53,30 @@ public class ModelView extends FrameLayout implements IOneView {
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ModelView, defStyleAttr, 0);
         modelViewId = a.getResourceId(R.styleable.ModelView_model_view_id, View.NO_ID);
-        isObtainData = a.getBoolean(R.styleable.ModelView_is_obtain_data, true);
+        isObtainData = a.getBoolean(R.styleable.ModelView_is_obtain_data, false);
 
         String modelViewString = a.getString(R.styleable.ModelView_model_view_cls);
-        modelView = !TextUtils.isEmpty(modelViewString) ? EasyUtils.newInstance(modelViewString) : null;
+        if(!TextUtils.isEmpty(modelViewString)) {
+            Class<?> cls = ModelViewUtil.get(modelViewString);
+            if(cls != null) {
+                modelView = EasyUtils.transitionSafety(EasyUtils.newInstance(cls));
+            } else {
+                modelView = EasyUtils.newInstance(modelViewString);
+            }
+        } else {
+            modelView = null;
+        }
 
         String viewModelString = a.getString(R.styleable.ModelView_view_model_cls);
-        ViewModel viewModel = !TextUtils.isEmpty(viewModelString) ? EasyUtils.newInstance(viewModelString) : null;
-
+        ViewModel viewModel = null;
+        if(!TextUtils.isEmpty(viewModelString)) {
+            Class<?> cls = ModelViewUtil.get(viewModelString);
+            if(cls != null) {
+                viewModel = EasyUtils.transitionSafety(EasyUtils.newInstance(cls));
+            } else {
+                viewModel = EasyUtils.newInstance(viewModelString);
+            }
+        }
         LogHelper.log(TAG, " modelView=" + modelView + " viewModel=" + viewModel);
 
         if(viewModel != null) {
@@ -72,6 +88,9 @@ public class ModelView extends FrameLayout implements IOneView {
             } else {
                 onePresenter.runOnMainThread();
             }
+
+            addParam(onePresenter, DataViewModel.ID, modelViewId);
+
             addParam(onePresenter, ViewModel.PARAM_S_1, a.getString(R.styleable.ModelView_param_s_1));
             addParam(onePresenter, ViewModel.PARAM_S_2, a.getString(R.styleable.ModelView_param_s_2));
             addParam(onePresenter, ViewModel.PARAM_S_3, a.getString(R.styleable.ModelView_param_s_3));
@@ -107,10 +126,69 @@ public class ModelView extends FrameLayout implements IOneView {
     }
 
     @Override
-    protected void dispatchDraw(Canvas canvas) {}
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        setMeasuredDimension(0, 0);
+    }
+
+    @Override
+    protected void dispatchDraw(Canvas canvas) {
+    }
 
     public Nulls<OnePresenter> presenter() {
         return Nulls.of(onePresenter);
+    }
+
+    public ModelView param(@Nullable Object key,
+                           @Nullable Object value) {
+        presenter().doNotNull(presenter -> presenter.setParam(key, value));
+        return this;
+    }
+
+    public ModelView update() {
+        presenter().doNotNull(presenter -> presenter.obtainOneData(getContext()));
+        return this;
+    }
+
+    public ModelView param(int id,
+                           @Nullable Object key,
+                           @Nullable Object value) {
+        getChildModelView(id).doNotNull(child -> child.param(key, value));
+        return this;
+    }
+
+    public ModelView paramPosition(int position,
+                                   @Nullable Object key,
+                                   @Nullable Object value) {
+        Nulls.of(EasyUtils.getValue(childModelViews, position))
+                .doNotNull(child -> child.param(key, value));
+        return this;
+    }
+
+    public ModelView update(int... ids) {
+        if(ids == null || ids.length == 0) {
+            return this;
+        }
+        for(int id : ids) {
+            getChildModelView(id).doNotNull(ModelView::update);
+        }
+        return this;
+    }
+
+    public ModelView updatePosition(int position) {
+        Nulls.of(EasyUtils.getValue(childModelViews, position))
+                .doNotNull(ModelView::update);
+        return this;
+    }
+
+    public ModelView updateAll() {
+        EasyUtils.forEach(childModelViews, child -> child.update());
+        return this;
+    }
+
+    private Nulls<ModelView> getChildModelView(int id) {
+        View child = findViewById(id);
+        ModelView mv = child instanceof ModelView ? (ModelView) child : null;
+        return Nulls.of(mv);
     }
 
     @Override

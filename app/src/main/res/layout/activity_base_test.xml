@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -23,41 +22,5 @@
         android:text="BUTTON2"
         android:textSize="24sp"
         android:textColor="@color/colorPrimary" />
-
-    <com.ziven.easygo.design.mvvm.ModelView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:view_model_cls="com.example.myapplication.TestViewModel"
-        app:is_obtain_data="true"
-        app:is_run_on_worker="false"
-        app:param_s_1="s1"
-        app:param_s_2="s2"
-        app:param_s_3="s3"
-        app:param_s_4="s4"
-        app:param_s_5="s5"
-        app:param_i_1="1"
-        app:param_i_2="2"
-        app:param_i_3="3"
-        app:param_i_4="4"
-        app:param_i_5="5"
-        app:param_b_1="true"
-        app:param_b_2="true"
-        app:param_b_3="true"
-        app:param_b_4="true"
-        app:param_b_5="true">
-
-        <com.ziven.easygo.design.mvvm.ModelView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:model_view_cls="com.ziven.easygo.design.mvvm.TextViewModel"
-            app:model_view_id="@id/button"/>
-
-        <com.ziven.easygo.design.mvvm.ModelView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:model_view_cls="com.ziven.easygo.design.mvvm.TextViewModel"
-            app:model_view_id="@id/button2"/>
-
-    </com.ziven.easygo.design.mvvm.ModelView>
 
 </LinearLayout>

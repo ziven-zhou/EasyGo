@@ -26,7 +26,9 @@ public class ViewData extends AbstractOneData {
     }
 
     public ViewData putViewData(int id, Object data) {
-        dataMap.put(id, data);
+        if(data != null) {
+            dataMap.put(id, data);
+        }
         return this;
     }
 

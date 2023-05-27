@@ -12,12 +12,18 @@ import com.ziven.easygo.util.ViewHelper;
  * @author Administrator
  */
 @Keep
-public class TextViewModel implements IModelView<TextView> {
-
+public class TextModelView implements IModelView<TextView> {
 
     @Override
     public void layoutViewData(@NonNull ViewHelper<TextView> helper,
                                @NonNull AbstractOneData data) {
-        helper.setText(data.getOneData());
+        Object d = data.getOneData();
+        if(d instanceof CharSequence) {
+            helper.setText((CharSequence) d);
+        } else if(d instanceof Integer) {
+            helper.setText((Integer) d);
+        } else if(d != null) {
+            helper.setText(d.toString());
+        }
     }
 }
