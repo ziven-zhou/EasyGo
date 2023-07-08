@@ -13,14 +13,14 @@ public interface Workshop<R> {
      */
     R make();
 
-    interface P1<R, P1> extends Workshop<R> {
+    interface P1<R1, P11> extends Workshop<R1> {
 
         /**
          * Make: Param -> Data
          * @return Return Data
          */
         @Override
-        default R make() {
+        default R1 make() {
             return make();
         }
 
@@ -29,10 +29,10 @@ public interface Workshop<R> {
          * @param param1 Param
          * @return Return Data
          */
-        R make(P1 param1);
+        R1 make(P11 param1);
     }
 
-    interface P2<R, P1, P2> extends Workshop.P1<R, P1> {
+    interface P2<R2, P21, P22> extends Workshop.P1<R2, P21> {
 
         /**
          * Make: Param -> Data
@@ -40,7 +40,7 @@ public interface Workshop<R> {
          * @return Return Data
          */
         @Override
-        default R make(P1 param) {
+        default R2 make(P21 param) {
             return make(param, null);
         }
 
@@ -50,10 +50,10 @@ public interface Workshop<R> {
          * @param param2 Param2
          * @return Return Data
          */
-        R make(P1 param1, P2 param2);
+        R2 make(P21 param1, P22 param2);
     }
 
-    interface P3<R, P1, P2, P3> extends Workshop.P2<R, P1, P2> {
+    interface P3<R3, P31, P32, P33> extends Workshop.P2<R3, P31, P32> {
 
         /**
          * Make: (Param1,Param2) -> Data
@@ -62,7 +62,7 @@ public interface Workshop<R> {
          * @return Return Data
          */
         @Override
-        default R make(P1 param1, P2 param2) {
+        default R3 make(P31 param1, P32 param2) {
             return make(param1, param2, null);
         }
 
@@ -73,10 +73,10 @@ public interface Workshop<R> {
          * @param param3 Param3
          * @return Return Data
          */
-        R make(P1 param1, P2 param2, P3 param3);
+        R3 make(P31 param1, P32 param2, P33 param3);
     }
 
-    interface P4<R, P1, P2, P3, P4> extends Workshop.P3<R, P1, P2, P3> {
+    interface P4<R4, P41, P42, P43, P44> extends Workshop.P3<R4, P41, P42, P43> {
 
         /**
          * Make: (Param1,Param2,Param3) -> Data
@@ -86,7 +86,7 @@ public interface Workshop<R> {
          * @return Return Data
          */
         @Override
-        default R make(P1 param1, P2 param2, P3 param3) {
+        default R4 make(P41 param1, P42 param2, P43 param3) {
             return make(param1, param2, param3, null);
         }
 
@@ -98,10 +98,10 @@ public interface Workshop<R> {
          * @param param4 Param4
          * @return Return Data
          */
-        R make(P1 param1, P2 param2, P3 param3, P4 param4);
+        R4 make(P41 param1, P42 param2, P43 param3, P44 param4);
     }
 
-    interface P5<R, P1, P2, P3, P4, P5> extends Workshop.P4<R, P1, P2, P3, P4> {
+    interface P5<R5, P51, P52, P53, P54, P55> extends Workshop.P4<R5, P51, P52, P53, P54> {
 
         /**
          * Make: (Param1,Param2,Param3,Param4) -> Data
@@ -112,7 +112,7 @@ public interface Workshop<R> {
          * @return Return Data
          */
         @Override
-        default R make(P1 param1, P2 param2, P3 param3, P4 param4) {
+        default R5 make(P51 param1, P52 param2, P53 param3, P54 param4) {
             return make(param1, param2, param3, param4, null);
         }
 
@@ -125,10 +125,10 @@ public interface Workshop<R> {
          * @param param5 Param5
          * @return Return Data
          */
-        R make(P1 param1, P2 param2, P3 param3, P4 param4, P5 param5);
+        R5 make(P51 param1, P52 param2, P53 param3, P54 param4, P55 param5);
     }
 
-    interface P6<R, P1, P2, P3, P4, P5, P6> extends Workshop.P5<R, P1, P2, P3, P4, P5> {
+    interface P6<R6, P61, P62, P63, P64, P65, P66> extends Workshop.P5<R6, P61, P62, P63, P64, P65> {
 
         /**
          * Make: (Param1,Param2,Param3,Param4,Param5) -> Data
@@ -140,7 +140,7 @@ public interface Workshop<R> {
          * @return Return Data
          */
         @Override
-        default R make(P1 param1, P2 param2, P3 param3, P4 param4, P5 param5) {
+        default R6 make(P61 param1, P62 param2, P63 param3, P64 param4, P65 param5) {
             return make(param1, param2, param3, param4, param5, null);
         }
 
@@ -154,6 +154,6 @@ public interface Workshop<R> {
          * @param param6 Param6
          * @return Return Data
          */
-        R make(P1 param1, P2 param2, P3 param3, P4 param4, P5 param5, P6 param6);
+        R6 make(P61 param1, P62 param2, P63 param3, P64 param4, P65 param5, P66 param6);
     }
 }
