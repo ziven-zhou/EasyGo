@@ -2,7 +2,12 @@ package com.ziven.easygo.processor;
 
 import androidx.annotation.Keep;
 
+import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.TypeName;
+import com.ziven.easygo.annotation.BeanType;
 import com.ziven.easygo.annotation.EasyGoActivity;
+import com.ziven.easygo.annotation.EasyGoBean;
+import com.ziven.easygo.annotation.EasyGoBeans;
 import com.ziven.easygo.annotation.EasyGoMethod;
 
 /**
@@ -14,8 +19,10 @@ final class Constant {
     private Constant() {
     }
 
-    static final Class<EasyGoMethod> ANNOTATION_CLASS = EasyGoMethod.class;
+    static final Class<EasyGoMethod> ANNOTATION_CLASS_METHOD = EasyGoMethod.class;
     static final Class<EasyGoActivity> ANNOTATION_CLASS_ACTIVITY = EasyGoActivity.class;
+    static final Class<EasyGoBean> ANNOTATION_CLASS_BEAN = EasyGoBean.class;
+    static final Class<EasyGoBeans> ANNOTATION_CLASS_BEANS = EasyGoBeans.class;
 
     static final String PROJECT = "EasyGo";
     static final String PREFIX_OF_LOGGER = PROJECT + "::Processor ";
@@ -32,4 +39,110 @@ final class Constant {
     static final String PATH_AUTOWIRED = "com.ziven.easygo.autowired";
 
     static final String TYPE_EASY_GO_TYPE = "EasyGoType";
+
+    private static final ClassName BOX_BOOLEAN = ClassName.get("java.lang", "Boolean");
+    private static final ClassName BOX_BYTE = ClassName.get("java.lang", "Byte");
+    private static final ClassName BOX_SHORT = ClassName.get("java.lang", "Short");
+    private static final ClassName BOX_INT = ClassName.get("java.lang", "Integer");
+    private static final ClassName BOX_LONG = ClassName.get("java.lang", "Long");
+    private static final ClassName BOX_CHAR = ClassName.get("java.lang", "Character");
+    private static final ClassName BOX_FLOAT = ClassName.get("java.lang", "Float");
+    private static final ClassName BOX_DOUBLE = ClassName.get("java.lang", "Double");
+    private static final ClassName STRING = ClassName.get("java.lang", "String");
+
+    static boolean isString(TypeName typeName) {
+        return STRING == typeName;
+    }
+
+    static TypeName typeName(String type) {
+        if(type == null || type.isEmpty()) {
+            return TypeName.OBJECT;
+        }
+        switch (type) {
+            case BeanType.BOOLEAN:
+                return TypeName.BOOLEAN;
+            case BeanType.BYTE:
+                return TypeName.BYTE;
+            case BeanType.SHORT:
+                return TypeName.SHORT;
+            case BeanType.INT:
+                return TypeName.INT;
+            case BeanType.LONG:
+                return TypeName.LONG;
+            case BeanType.CHAR:
+                return TypeName.CHAR;
+            case BeanType.FLOAT:
+                return TypeName.FLOAT;
+            case BeanType.DOUBLE:
+                return TypeName.DOUBLE;
+            case BeanType.BOX_BOOLEAN:
+                return BOX_BOOLEAN;
+            case BeanType.BOX_BYTE:
+                return BOX_BYTE;
+            case BeanType.BOX_SHORT:
+                return BOX_SHORT;
+            case BeanType.BOX_INT:
+                return BOX_INT;
+            case BeanType.BOX_LONG:
+                return BOX_LONG;
+            case BeanType.BOX_CHAR:
+                return BOX_CHAR;
+            case BeanType.BOX_FLOAT:
+                return BOX_FLOAT;
+            case BeanType.BOX_DOUBLE:
+                return BOX_DOUBLE;
+            case BeanType.STRING:
+                return STRING;
+            case BeanType.OBJECT:
+                return TypeName.OBJECT;
+            default:
+                return bestGuess(type);
+        }
+    }
+
+    static TypeName typeNameBox(String type) {
+        if(type == null || type.isEmpty()) {
+            return null;
+        }
+        switch (type) {
+            case BeanType.BOOLEAN:
+            case BeanType.BOX_BOOLEAN:
+                return BOX_BOOLEAN;
+            case BeanType.BYTE:
+            case BeanType.BOX_BYTE:
+                return BOX_BYTE;
+            case BeanType.SHORT:
+            case BeanType.BOX_SHORT:
+                return BOX_SHORT;
+            case BeanType.INT:
+            case BeanType.BOX_INT:
+                return BOX_INT;
+            case BeanType.LONG:
+            case BeanType.BOX_LONG:
+                return BOX_LONG;
+            case BeanType.CHAR:
+            case BeanType.BOX_CHAR:
+                return BOX_CHAR;
+            case BeanType.FLOAT:
+            case BeanType.BOX_FLOAT:
+                return BOX_FLOAT;
+            case BeanType.DOUBLE:
+            case BeanType.BOX_DOUBLE:
+                return BOX_DOUBLE;
+            case BeanType.STRING:
+                return STRING;
+            case BeanType.OBJECT:
+                return TypeName.OBJECT;
+            default:
+                return bestGuess(type);
+        }
+    }
+
+    static TypeName bestGuess(String type) {
+        try {
+            return ClassName.bestGuess(type);
+        } catch (Throwable th) {
+            return TypeName.OBJECT;
+        }
+    }
 }

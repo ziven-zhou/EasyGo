@@ -1,2 +1,3 @@
 com.ziven.easygo.processor.EasyGoMethodProcessor
 com.ziven.easygo.processor.EasyGoActivityProcessor
+com.ziven.easygo.processor.EasyGoBeanProcessor

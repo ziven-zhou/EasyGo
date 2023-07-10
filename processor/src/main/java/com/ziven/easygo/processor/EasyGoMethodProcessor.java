@@ -20,7 +20,7 @@ import java.util.Set;
 
 import javax.lang.model.element.Element;
 
-import static com.ziven.easygo.processor.Constant.ANNOTATION_CLASS;
+import static com.ziven.easygo.processor.Constant.ANNOTATION_CLASS_METHOD;
 import static com.ziven.easygo.processor.Constant.CAN_NOT_MODIFY;
 import static com.ziven.easygo.processor.Constant.CLASS_SEPARATOR;
 import static com.ziven.easygo.processor.Constant.METHOD_EASY_GO_METHOD;
@@ -88,7 +88,7 @@ public class EasyGoMethodProcessor extends AbstractEasyGoProcessor {
                     .beginControlFlow("switch(path)");
 
             for(Element e : elementList) {
-                EasyGoMethod annotation = e.getAnnotation(ANNOTATION_CLASS);
+                EasyGoMethod annotation = e.getAnnotation(ANNOTATION_CLASS_METHOD);
                 String path = annotation.path();
                 obtainEasyGoType.addStatement("listEasyGoType.add(new $T($S, $T.$L))", easyGoType, path, TypeName.get(EasyGoType.ThreadMode.class), annotation.threadMode());
 
@@ -158,6 +158,6 @@ public class EasyGoMethodProcessor extends AbstractEasyGoProcessor {
 
     @Override
     protected Class<? extends Annotation> getAnnotationClass() {
-        return ANNOTATION_CLASS;
+        return ANNOTATION_CLASS_METHOD;
     }
 }

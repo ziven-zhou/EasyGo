@@ -39,10 +39,10 @@ public class EasyGoActivityProcessor extends AbstractEasyGoProcessor {
     @Override
     protected void parseProcess(Set<? extends Element> elements) {
         if(elements == null || elements.isEmpty()) {
-            getLogger().info(" EasyGoActivityProcessor, has no method");
+            getLogger().info(" EasyGoActivityProcessor, has no activity");
             return;
         }
-        ParameterizedTypeName typeName = ParameterizedTypeName.get(ClassName.get(Map.class), ClassName.get(String.class), ClassName.get(Class.class.getClass()));
+        ParameterizedTypeName typeName = ParameterizedTypeName.get(ClassName.get(Map.class), ClassName.get(String.class), ClassName.get(Class.class));
         MethodSpec.Builder obtainActivityPath = MethodSpec.methodBuilder(METHOD_OBTAIN_ACTIVITY_PATH)
                 .addAnnotation(Override.class)
                 .returns(typeName)
