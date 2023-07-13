@@ -22,9 +22,9 @@ public interface BeanType {
     String BOX_CHAR = "java.lang.Character";
     String BOX_FLOAT = "java.lang.Float";
     String BOX_DOUBLE = "java.lang.Double";
+    String SERIALIZABLE = "java.io.Serializable";
 
-    String HAS_TO_STRING = "hasToString";
-    String NO_TO_STRING = "noToString";
-    String HAS_SERIALIZABLE = "hasSerializable";
-    String NO_SERIALIZABLE = "noSerializable";
+    String NO_TO_STRING = "NO_TO_STRING";
+    String IMPLEMENTS = "IMPLEMENTS";
+    String EXTENDS = "EXTENDS";
 }

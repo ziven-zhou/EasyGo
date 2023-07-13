@@ -138,7 +138,7 @@ final class Constant {
         }
     }
 
-    static TypeName bestGuess(String type) {
+    static ClassName bestGuess(String type) {
         try {
             return ClassName.bestGuess(type);
         } catch (Throwable th) {

@@ -20,7 +20,6 @@ import com.ziven.easygo.annotation.EasyGoBean;
 import com.ziven.easygo.annotation.EasyGoBeans;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,34 +56,43 @@ public class EasyGoBeanProcessor extends AbstractEasyGoProcessor {
                 .addAnnotation(Keep.class)
                 .addModifiers(PUBLIC);
         boolean hasToString = true;
-        boolean hasSerializable = false;
         boolean isFirstToString = true;
         StringBuilder toString = new StringBuilder("\"" + clsName + "{\" +");
         for (EasyGoBean bean : beans) {
             String name = bean.name();
-            if(BeanType.HAS_TO_STRING.equals(name)) {
-                hasToString = true;
-                continue;
-            } else if(BeanType.NO_TO_STRING.equals(name)) {
+            getLogger().info(" Step 5 EasyGoBeanProcessor, name:" + name);
+
+            if(BeanType.NO_TO_STRING.equals(name)) {
                 hasToString = false;
                 continue;
             }
-            if(BeanType.HAS_SERIALIZABLE.equals(name)) {
-                hasSerializable = true;
-                continue;
-            } else if(BeanType.NO_SERIALIZABLE.equals(name)) {
-                hasSerializable = false;
-                continue;
-            }
-
-            String methodName = name.length() > 1
-                    ? String.valueOf(name.charAt(0)).toUpperCase(Locale.US) + name.substring(1)
-                    : name.toUpperCase(Locale.US);
-            getLogger().info(" Step 5 EasyGoBeanProcessor, methodName:" + methodName);
 
             TypeName typeName;
             String[] tNames;
             String tName;
+
+            if(BeanType.EXTENDS.equals(name)) {
+                if((tName = bean.type()) != null && !tName.isEmpty()) {
+                    typeName = Constant.typeName(tName);
+                    classBuilder.superclass(typeName);
+                }
+                continue;
+            }
+
+            if(BeanType.IMPLEMENTS.equals(name)) {
+                if((tName = bean.type()) != null && !tName.isEmpty()) {
+                    typeName = Constant.typeName(tName);
+                    classBuilder.addSuperinterface(typeName);
+                } else if((tNames = bean.more()) != null && tNames.length > 0) {
+                    List<TypeName> list = new ArrayList<>();
+                    for (String s : tNames) {
+                        list.add(Constant.typeNameBox(s));
+                    }
+                    classBuilder.addSuperinterfaces(list);
+                }
+                continue;
+            }
+
             if((tName = bean.type()) != null && !tName.isEmpty()) {
                 typeName = Constant.typeName(tName);
             } else if((tName = bean.list()) != null && !tName.isEmpty()) {
@@ -102,33 +110,34 @@ public class EasyGoBeanProcessor extends AbstractEasyGoProcessor {
             } else {
                 typeName = TypeName.OBJECT;
             }
-            classBuilder.addField(FieldSpec.builder(typeName, name, PUBLIC).build());
-            classBuilder.addMethod(MethodSpec.methodBuilder("set" + methodName)
+
+            String methodName = name.length() > 1
+                    ? String.valueOf(name.charAt(0)).toUpperCase(Locale.US) + name.substring(1)
+                    : name.toUpperCase(Locale.US);
+            getLogger().info(" Step 6 EasyGoBeanProcessor, methodName:" + methodName);
+
+            FieldSpec.Builder fieldBuilder = FieldSpec.builder(typeName, name, PUBLIC);
+            classBuilder.addField(fieldBuilder.build());
+
+            MethodSpec.Builder methodBuilder = MethodSpec.methodBuilder("set" + methodName)
                     .addModifiers(PUBLIC)
                     .addParameter(typeName, name)
-                    .addStatement("this." + name + " = " + name)
-                    .build());
-            classBuilder.addMethod(MethodSpec.methodBuilder("get" + methodName)
+                    .addStatement("this." + name + " = " + name);
+            classBuilder.addMethod(methodBuilder.build());
+
+            methodBuilder = MethodSpec.methodBuilder("get" + methodName)
                     .addModifiers(PUBLIC)
                     .addStatement("return this." + name)
-                    .returns(typeName)
-                    .build());
+                    .returns(typeName);
+            classBuilder.addMethod(methodBuilder.build());
+
             boolean isString = Constant.isString(typeName);
-            if(isFirstToString) {
-                toString.append("\n")
-                        .append("\"").append(name).append(isString ? "='\"" : "=\"")
-                        .append(" + ").append(name).append(isString ? " + '\\'' +" : " +");
-                isFirstToString = false;
-            } else {
-                toString.append("\n")
-                        .append("\", ").append(name).append(isString ? "='\"" : "=\"")
-                        .append(" + ").append(name).append(isString ? " + '\\'' +" : " +");
-            }
+            toString.append(isFirstToString ? "\n\"" : "\n\", ")
+                    .append(name).append(isString ? "='\" + " : "=\" + ")
+                    .append(name).append(isString ? " + '\\'' +" : " +");
+            isFirstToString = false;
         }
         toString.append("\n'}'");
-        if(hasSerializable) {
-            classBuilder.addSuperinterface(Serializable.class);
-        }
         if(hasToString) {
             classBuilder.addMethod(MethodSpec.methodBuilder("toString")
                     .addAnnotation(NonNull.class)
